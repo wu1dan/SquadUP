@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "1098117194484",
+    "firebase_url": "https://thissucks-b5ac7.firebaseio.com",
+    "project_id": "thissucks-b5ac7",
+    "storage_bucket": "thissucks-b5ac7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098117194484:android:acd053ab0b74e79207b4a1",
+        "android_client_info": {
+          "package_name": "ca.memes.squadup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOnYH49r0NVUwRwkWwPUZ3hfvnu4UKkYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098117194484:android:bc840edcd5af4e3b07b4a1",
+        "android_client_info": {
+          "package_name": "com.example.player"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOnYH49r0NVUwRwkWwPUZ3hfvnu4UKkYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098117194484:android:dd531f2eb228899a07b4a1",
+        "android_client_info": {
+          "package_name": "com.example.squadup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098117194484-qk049emo04thn6qmbh355in6khoj56tu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.squadup",
+            "certificate_hash": "f7edfbf3b3e643c5cf1cbf9d0dd88b5e5cae5da2"
+          }
+        },
+        {
+          "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOnYH49r0NVUwRwkWwPUZ3hfvnu4UKkYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098117194484-2kooce0fo0479kll4nmkqrbegbpf7adk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

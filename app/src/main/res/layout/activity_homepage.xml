@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Homepage"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+
+
+    <Button
+        android:id="@+id/btnCreateEvent"
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:layout_below="@+id/btnblank"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:text="Create Event"
+        android:textSize="35sp" />
+
+    <Button
+        android:id="@+id/btnBrowseEvent"
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:layout_below="@+id/btnCreateEvent"
+        android:text="Browse Events"
+        android:textSize="35sp" />
+
+    <Button
+        android:id="@+id/btnblank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button"
+        android:text="blank"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btnblank"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/round_button"
+        android:text="Profile"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnPastEvents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btnProfile"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/round_button"
+        android:text="Past Events"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/btnPastEvents"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/round_button"
+        android:text="Settings"
+        android:textSize="15sp" />
+
+
+</RelativeLayout>
