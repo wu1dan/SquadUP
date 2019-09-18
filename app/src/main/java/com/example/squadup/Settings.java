@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -44,5 +45,28 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    Button btnsignOut = findViewById(R.id.btnSignOut);
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // ...
+            case R.id.btnSignOut:
+                signOut();
+                break;
+            // ...
+        }
+    }
+
+    private void signOut() {
+        googleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // ...
+                        Toast.makeText(Settings.this, "Sign-out was successful.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+    }
 
 }

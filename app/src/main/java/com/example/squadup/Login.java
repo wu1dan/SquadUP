@@ -17,16 +17,12 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class Login extends AppCompatActivity {  //tbd
-
-    public void onBackPressed(){       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
-        Intent intent = new Intent(Login.this,Registration_or_Login.class);
-        startActivity(intent);
-    }
+public class Login extends AppCompatActivity {
 
     GoogleSignInClient googleSignInClient;
 
     private Button btnLogin;
+    private Button btnRegistration;
     private SignInButton googlesigninbutton;
 
 
@@ -36,6 +32,16 @@ public class Login extends AppCompatActivity {  //tbd
         setContentView(R.layout.activity_login);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button
+        btnRegistration = (Button) findViewById(R.id.btnRegisternow);   //Registration button
+        btnRegistration.setOnClickListener(new View.OnClickListener() {  //Sends you to registration page
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, RegistrationPage.class); //next step is registration page
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)  //request user data
                 .requestEmail()

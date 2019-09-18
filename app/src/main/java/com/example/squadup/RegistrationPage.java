@@ -27,7 +27,7 @@ public class RegistrationPage extends AppCompatActivity {
     @Override
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
-        Intent intent = new Intent(RegistrationPage.this,Registration_or_Login.class);
+        Intent intent = new Intent(RegistrationPage.this,Login.class);
         startActivity(intent);
     }
 

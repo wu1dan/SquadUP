@@ -18,10 +18,7 @@
             android:label="@string/title_activity_settings" />
         <activity android:name=".BrowseEvents" />
         <activity android:name=".CreateEvent" />
-        <activity android:name=".Login" />
-        <activity android:name=".RegistrationPage" />
-        <activity android:name=".Homepage"/>
-        <activity android:name=".Registration_or_Login">
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" /> <!-- // this line is sus eventually remove// -->
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity android:name=".RegistrationPage" />
+        <activity android:name=".Homepage"/>
 
 
     </application>
