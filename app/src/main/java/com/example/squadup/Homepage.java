@@ -61,7 +61,7 @@ public class Homepage extends AppCompatActivity {
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intent = new Intent(Homepage.this, Settings.class);
+                intent = new Intent(Homepage.this, Homepage.class);
                 startActivity(intent);
             }
         });

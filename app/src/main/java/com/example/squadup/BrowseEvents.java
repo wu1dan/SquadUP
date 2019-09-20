@@ -8,7 +8,7 @@ import android.os.Bundle;
 public class BrowseEvents extends AppCompatActivity {
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
-        Intent intent = new Intent(BrowseEvents.this,Homepage.class);
+        Intent intent = new Intent(BrowseEvents.this,MainActivity.class);
         startActivity(intent);
     }
 

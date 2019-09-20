@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_main" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="674dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="center"
+        tools:context=".MainActivity">
+
+
+        <Button
+            android:id="@+id/btnCreateEvent"
+            android:layout_width="match_parent"
+            android:layout_height="187dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="354dp"
+            android:text="Create Event"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/btnBrowseEvent"
+            android:layout_width="match_parent"
+            android:layout_height="187dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="118dp"
+            android:text="Browse Events"
+            android:textSize="35sp" />
+
+        <Button
+            android:id="@+id/btnblank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/round_button"
+            android:text="blank"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="52dp"
+            android:layout_toRightOf="@id/btnblank"
+            android:background="@drawable/round_button"
+            android:text="Profile"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnPastEvents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@id/btnProfile"
+            android:background="@drawable/round_button"
+            android:text="Past Events"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btnSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="56dp"
+            android:layout_toRightOf="@id/btnPastEvents"
+            android:background="@drawable/round_button"
+            android:text="Settings"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
