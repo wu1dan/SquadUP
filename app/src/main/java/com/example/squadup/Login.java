@@ -9,6 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,17 +26,63 @@ import com.google.android.gms.tasks.Task;
 
 public class Login extends AppCompatActivity {
 
+    public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
+    {
+        finish();
+    }
+
+    private CallbackManager callbackManager;
+    private LoginButton btnfb;
+    private final String TAG = "Homepage";
+
     GoogleSignInClient googleSignInClient;
+    private SignInButton googlesigninbutton;
 
     private Button btnLogin;
     private Button btnRegistration;
-    private SignInButton googlesigninbutton;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        callbackManager = CallbackManager.Factory.create();
+
+        btnfb = findViewById(R.id.btnfb);
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if (isLoggedIn){
+            Intent intent = new Intent(Login.this, Facebook.class); //next step is homepage
+            startActivity(intent);
+            finish();
+        }
+
+        btnfb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult){
+                Log.d(TAG, "User has successfully logged in");
+                Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
+                startActivity(intent);
+                finish();
+                return;
+            }
+
+            @Override
+            public void onCancel(){
+                Log.d(TAG, "User has cancelled the login process");
+            }
+
+            @Override
+            public void onError(FacebookException exception){
+                Log.d(TAG, "There was an error. Please try again");
+            }
+        });
+
+
+
+
 
         btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button
         btnRegistration = (Button) findViewById(R.id.btnRegisternow);   //Registration button
@@ -42,6 +95,7 @@ public class Login extends AppCompatActivity {
                 return;
             }
         });
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)  //request user data
                 .requestEmail()
@@ -70,14 +124,16 @@ public class Login extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == 69) {           //if the right code is found (6942049), it'll handle the sign in
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }
+        else{
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -95,6 +151,7 @@ public class Login extends AppCompatActivity {
             Log.w("ERROR", "signInResult:failed code=" + e.getStatusCode());
         }
     }
+
 }
 
 

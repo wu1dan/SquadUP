@@ -17,12 +17,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.net.Authenticator;
+
 public class RegistrationPage extends AppCompatActivity {
 
     private Button btnRegistration;
     private EditText Email, VerifyEmail, Password, VerifyPassword, FirstName, LastName;
-    private FirebaseAuth Authenticator; //authenticates login
-    private FirebaseAuth.AuthStateListener AuthenticatorListener; //checks login success
 
     @Override
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
@@ -77,41 +77,12 @@ public class RegistrationPage extends AppCompatActivity {
                     Toast.makeText(RegistrationPage.this, "Your passwords did not match, please try again.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Authenticator.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegistrationPage.this, new OnCompleteListener<AuthResult>() {    //authenticator creates user with inputted email and pass
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
-                            Toast.makeText(RegistrationPage.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();  //error message if authentication unsuccessful
-                        }
-                    }
-                });
 
             }
         });
 
-        Authenticator = FirebaseAuth.getInstance();
-        AuthenticatorListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                final FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
-                if (fbuser != null) {
-                    Intent intent = new Intent(RegistrationPage.this, Login.class); //next step is return to login page
-                }
-                else{
-
-                }
-            }
-        };
 
     }
 
-    public void Startup(){  //start authenticator listener on startup of page
-        Startup();
-        Authenticator.addAuthStateListener(AuthenticatorListener);
-    }
 
-    public void Shutdown(){ //stop authenticator listener when page is closed
-        Shutdown();
-        Authenticator.removeAuthStateListener(AuthenticatorListener);
-    }
 }

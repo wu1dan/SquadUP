@@ -3,6 +3,7 @@ package com.example.squadup;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.facebook.AccessToken;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -102,8 +103,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 }
