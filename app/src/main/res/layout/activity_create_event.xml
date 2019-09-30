@@ -6,4 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".CreateEvent">
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiTime"
+        android:layout_width="175dp"
+        android:layout_height="42dp"
+        android:hint="Time (xx:yy)"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiLocation"
+        android:layout_width="337dp"
+        android:layout_height="53dp"
+        android:hint="Location (address or postal code)"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="351dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiEventName"
+        android:layout_width="337dp"
+        android:layout_height="53dp"
+        android:hint="Event Name"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="59dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiSpotsTotal"
+        android:layout_width="163dp"
+        android:layout_height="43dp"
+        android:hint="Total Spots"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="425dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiSpotsAvailable"
+        android:layout_width="163dp"
+        android:layout_height="43dp"
+        android:hint="Available Spots"
+        tools:layout_editor_absoluteX="191dp"
+        tools:layout_editor_absoluteY="425dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/tiCategories"
+        android:layout_width="338dp"
+        android:layout_height="145dp"
+        android:hint="Event Categories (please enter all that apply, separated by commas)"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="332dp"
+        android:layout_height="31dp"
+        android:text="Create New Event"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="19dp" />
+
+    <CheckBox
+        android:id="@+id/cbAM"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:text="am"
+        tools:layout_editor_absoluteX="212dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <CheckBox
+        android:id="@+id/cbPM"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:text="pm"
+        tools:layout_editor_absoluteX="293dp"
+        tools:layout_editor_absoluteY="288dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="236dp"
+        android:layout_height="145dp"
+        android:text="CREATE EVENT!"
+        tools:layout_editor_absoluteX="73dp"
+        tools:layout_editor_absoluteY="514dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
