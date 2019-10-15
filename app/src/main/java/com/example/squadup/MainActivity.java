@@ -1,6 +1,8 @@
 package com.example.squadup;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
@@ -9,12 +11,14 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,18 +26,14 @@ public class MainActivity extends AppCompatActivity {
     Button btnBrowseEvent;
 
     Button btnSettings;
-    Button btnFriendsList;
-    Button btnPastEvents;
     Button btnProfile;
-
-    Intent intent;
+    SharedPreferences sharedPreferences;
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.optionsmenu, menu);
-
         return true;
     }
 
@@ -52,12 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intent = new Intent(MainActivity.this, CreateEvent.class);
+                Intent intent = new Intent(MainActivity.this, CreateEvent.class);
                 startActivity(intent);
             }
         });
@@ -66,26 +65,16 @@ public class MainActivity extends AppCompatActivity {
         btnBrowseEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intent = new Intent(MainActivity.this, BrowseEvents.class);
+                Intent intent = new Intent(MainActivity.this, BrowseEvents.class);
                 startActivity(intent);
             }
         });
-
-        btnSettings = (Button)findViewById(R.id.btnSettings);                                     //SETTINGS
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                intent = new Intent(MainActivity.this, Settings.class);
-                startActivity(intent);
-            }
-        });
-
 
         btnProfile = (Button)findViewById(R.id.btnProfile);                                     //PROFILE
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intent = new Intent(MainActivity.this, Profile.class);
+                Intent intent = new Intent(MainActivity.this, Profile.class);
                 startActivity(intent);
             }
         });
@@ -104,4 +93,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!sharedPreferences.contains("FirstName")){
+            Intent intent = new Intent(MainActivity.this, createprofile.class);
+            Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+        }
+    }
 }
