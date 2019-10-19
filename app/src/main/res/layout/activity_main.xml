@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
@@ -50,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="187dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="354dp"
+            android:layout_marginBottom="300dp"
             android:text="Create Event"
             android:textSize="35sp" />
 
@@ -59,56 +60,49 @@
             android:layout_width="match_parent"
             android:layout_height="187dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="118dp"
-            android:text="Browse Events"
+            android:layout_marginBottom="96dp"
+            android:text="SQUADUP"
             android:textSize="35sp" />
 
         <Button
-            android:id="@+id/btnblank"
+            android:id="@+id/btnfriendslist"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="58dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="14dp"
+            android:layout_toEndOf="@+id/btnProfile"
+            android:layout_toRightOf="@+id/btnProfile"
             android:background="@drawable/round_button"
-            android:text="blank"
+            android:text="Friends List"
             android:textSize="15sp" />
 
         <Button
             android:id="@+id/btnProfile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="104dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="52dp"
-            android:layout_toRightOf="@id/btnblank"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="18dp"
             android:background="@drawable/round_button"
-            android:text="Profile"
+            android:text="View Profile"
             android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/btnPastEvents"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/squadUPPenguin"
+            android:layout_width="153dp"
+            android:layout_height="175dp"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="11dp"
-            android:layout_marginTop="60dp"
-            android:layout_toRightOf="@id/btnProfile"
-            android:background="@drawable/round_button"
-            android:text="Past Events"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/btnSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="56dp"
-            android:layout_toRightOf="@id/btnPastEvents"
-            android:background="@drawable/round_button"
-            android:text="Settings"
-            android:textSize="15sp" />
-
+            android:layout_marginStart="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="-15dp"
+            android:layout_toEndOf="@+id/btnfriendslist"
+            android:layout_toRightOf="@+id/btnfriendslist"
+            android:src="@drawable/squaduppenguin" />
 
     </RelativeLayout>
 

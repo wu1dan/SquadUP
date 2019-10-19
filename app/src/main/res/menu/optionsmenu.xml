@@ -3,8 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
      <item
+         android:id="@+id/btnViewprofile"
+         android:title="View Profile"
+         app:showAsAction="never"/>
+
+     <item
+         android:id="@+id/btnGhostmode"
+         android:title="Toggle Ghost Mode"
+         app:showAsAction="never"/>
+
+     <item
+         android:id="@+id/btnFriendslist"
+         android:title="Friends List"
+         app:showAsAction="never"/>
+
+     <item
          android:id="@+id/btnSettings"
          android:title="Settings"
          app:showAsAction="never"/>
+
+     <item
+          android:id="@+id/btnAbout"
+          android:title="About"
+          app:showAsAction="never"/>
+
+     <item
+          android:id="@+id/btnHelp"
+          android:title="Help"
+          app:showAsAction="never"/>
+
+     <item
+          android:id="@+id/btnSignout"
+          android:title="Sign Out"
+          app:showAsAction="never"/>
+
 
 </menu>

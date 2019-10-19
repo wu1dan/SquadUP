@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".InterestsBrowserFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/imgSearch"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:src="@android:drawable/ic_search_category_default" />
+
+        <EditText
+            android:id="@+id/txtSearchInterests"
+            android:layout_width="341dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="Search for Interest"
+            android:inputType="textPersonName" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listInterests"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

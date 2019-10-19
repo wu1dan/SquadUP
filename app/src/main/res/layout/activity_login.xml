@@ -16,11 +16,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="77dp"
-        android:layout_marginLeft="77dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginRight="86dp"
-        android:layout_marginBottom="431dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginRight="79dp"
+        android:layout_marginBottom="351dp"
         android:hint="Enter Email" />
 
     <EditText
@@ -32,14 +32,15 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginLeft="78dp"
-        android:layout_marginEnd="85dp"
-        android:layout_marginRight="85dp"
-        android:layout_marginBottom="374dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginEnd="79dp"
+        android:layout_marginRight="79dp"
+        android:layout_marginBottom="302dp"
         android:hint="Enter Password" />
 
     <Button
+        android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
@@ -51,9 +52,8 @@
         android:layout_marginLeft="122dp"
         android:layout_marginEnd="123dp"
         android:layout_marginRight="123dp"
-        android:layout_marginBottom="311dp"
-        android:text="Login"
-        android:id="@+id/btnLogin"/>
+        android:layout_marginBottom="247dp"
+        android:text="Login" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btngsi"
@@ -64,22 +64,26 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="94dp"
-        android:layout_marginLeft="94dp"
-        android:layout_marginEnd="103dp"
-        android:layout_marginRight="103dp"
-        android:layout_marginBottom="199dp" />
+        android:layout_marginStart="98dp"
+        android:layout_marginLeft="98dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginRight="99dp"
+        android:layout_marginBottom="146dp" />
 
     <Button
         android:id="@+id/btnRegisternow"
         android:layout_width="158dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="129dp"
-        android:layout_marginRight="129dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginLeft="129dp"
+        android:layout_marginEnd="124dp"
+        android:layout_marginRight="124dp"
+        android:layout_marginBottom="43dp"
         android:text="Register Now" />
 
     <com.facebook.login.widget.LoginButton
@@ -92,25 +96,47 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="128dp"
-        android:layout_marginLeft="128dp"
+        android:layout_marginStart="109dp"
+        android:layout_marginLeft="109dp"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="91dp"
-        android:layout_marginRight="91dp"
-        android:layout_marginBottom="169dp" />
+        android:layout_marginEnd="110dp"
+        android:layout_marginRight="110dp"
+        android:layout_marginBottom="117dp" />
 
     <TextView
         android:id="@+id/OR"
         android:layout_width="147dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="134dp"
-        android:layout_marginRight="134dp"
-        android:layout_marginBottom="256dp"
+        android:layout_marginStart="134dp"
+        android:layout_marginLeft="134dp"
+        android:layout_marginEnd="130dp"
+        android:layout_marginRight="130dp"
+        android:layout_marginBottom="203dp"
         android:text="Or Continue With"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <ImageView
+        android:id="@+id/squadUPPenguin"
+        android:layout_width="351dp"
+        android:layout_height="335dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginBottom="394dp"
+        android:src="@drawable/squaduppenguin"
+        tools:ignore="ContentDescription" />
 
 
 </RelativeLayout>
