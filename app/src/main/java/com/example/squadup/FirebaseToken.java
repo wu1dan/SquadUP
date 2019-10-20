@@ -19,6 +19,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 public class FirebaseToken extends AppCompatActivity {
 
+//code from google firebase tutorial
+
     private static final String TAG = "FirebaseToken";
     private Button logTokenButton;
 
