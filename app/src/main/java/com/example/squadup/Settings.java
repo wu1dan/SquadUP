@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
-    private Button btnsignout;
+    private Button btnsignout, btnFirebase;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
@@ -54,7 +54,19 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        btnFirebase = (Button)findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
+        btnFirebase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(Settings.this, FirebaseToken.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
+
+
 
 
 

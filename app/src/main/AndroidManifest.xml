@@ -3,7 +3,8 @@
     package="com.example.squadup">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:permissionGroup="android.permission-group.STORAGE"
         android:protectionLevel="dangerous" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,9 +16,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Interests"></activity>
+        <activity
+            android:name=".FirebaseToken"
+            android:parentActivityName=".Settings"/>
+        <activity android:name=".Interests" />
         <activity android:name=".createprofile" />
         <activity android:name=".Facebook" />
+
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".Settings"
             android:label="@string/title_activity_settings"
@@ -29,6 +42,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
 
         <activity
             android:name="com.facebook.FacebookActivity"
