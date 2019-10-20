@@ -8,6 +8,9 @@
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="default_notification_channel_name">fcm_default_channel</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="msg_subscribed">Successfully turned Ghost Mode OFF</string>
+    <string name="msg_unsubscribed">Successfully turned Ghost Mode ON</string>
+    <string name="msg_subscribe_failed">Ghost Mode toggle failed, please try again</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

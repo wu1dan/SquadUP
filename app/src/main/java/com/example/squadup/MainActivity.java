@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnCreateEvent;
@@ -29,12 +31,44 @@ public class MainActivity extends AppCompatActivity {
     Button btnProfile;
     SharedPreferences sharedPreferences;
 
+    private Boolean firstTime = null;
+    static Boolean ghostMode = null;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.optionsmenu, menu);
         return true;
+    }
+
+    /**
+     * Checks if the user is opening the app for the first time.
+     * Note that this method should be placed inside an activity and it can be called multiple times.
+     * @return boolean
+     */
+    private Boolean isFirstTime() {
+        if (firstTime == null) {
+            SharedPreferences mPreferences = this.getSharedPreferences("first_time", Context.MODE_PRIVATE);
+            firstTime = mPreferences.getBoolean("firstTime", true);
+            if (firstTime) {
+                SharedPreferences.Editor editor = mPreferences.edit();
+                editor.putBoolean("firstTime", false);
+                editor.commit();
+            }
+        }
+        return firstTime;
+    }
+
+    public static Boolean getGhostMode(){
+        return ghostMode;
+    }
+
+    public static void switchGhostMode(){
+        if(ghostMode == true)
+            ghostMode = false;
+        else
+            ghostMode = true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
@@ -51,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Subscribes user to "Events" firebase notifications, which can be toggled on/off by Ghost Mode
+        if(isFirstTime() == true){
+            FirebaseMessaging.getInstance().subscribeToTopic("events");
+            ghostMode = false;
+        }
+
 
         btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
