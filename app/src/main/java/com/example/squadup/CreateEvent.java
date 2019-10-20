@@ -11,11 +11,11 @@ import android.widget.*;
 public class CreateEvent extends AppCompatActivity {
 
     private Button btnCreateEvent;
-    private EditText EventName, Categories, Time, Location, SpotsTotal, SpotsAvailable;
+    private EditText eventName, categories, description, time, location, spotsTotal;
     private CheckBox cbAM, cbPM;
 
-    String sName, sCategories, sTime, sLocation, sSpotsTotal, sSpotsAvailable;
-    int totalSpots, availableSpots;
+    String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal;
+    int totalSpots;
 
 
     /*
@@ -35,37 +35,42 @@ public class CreateEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
-        EventName = (EditText) findViewById(R.id.tiEventName);                  //Event Name Text Input
-        Categories = (EditText) findViewById(R.id.tiCategories);                //Event Categories Text Input
-        Time = (EditText) findViewById(R.id.tiTime);                            //Time Text Input
-        Location = (EditText) findViewById(R.id.tiLocation);                    //Location Text Input
-        SpotsTotal = (EditText) findViewById(R.id.tiSpotsTotal);                //Total Spots Text Input
-        SpotsAvailable = (EditText) findViewById(R.id.tiSpotsAvailable);        //Available Spots Text Input
+        btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);            //Create Event Button
+        eventName = (EditText)findViewById(R.id.tiEventName);                  //Event Name Text Input
+        categories = (EditText)findViewById(R.id.tiCategories);                //Event Categories Text Input
+        categories = (EditText)findViewById(R.id.tiDescription);               //Event Description Text Input
+        time = (EditText)findViewById(R.id.tiTime);                            //Time Text Input
+        location = (EditText)findViewById(R.id.tiLocation);                    //Location Text Input
+        spotsTotal = (EditText)findViewById(R.id.tiSpotsTotal);                //Total Spots Text Input
 
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 sName = EventName.getText().toString();
-                 sCategories = Categories.getText().toString();
-                 sTime = Time.getText().toString();
-                 sLocation = Location.getText().toString();
-                 sSpotsTotal = SpotsTotal.getText().toString();
-                 sSpotsAvailable = SpotsAvailable.getText().toString();
+                 sName = eventName.getText().toString();
+                 sCategories = categories.getText().toString();
+                 sTime = time.getText().toString();
+                 sLocation = location.getText().toString();
+                 sSpotsTotal = spotsTotal.getText().toString();
 
                  String[] aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
-                 totalSpots = Integer.valueOf(sSpotsTotal);
-                 availableSpots = Integer.valueOf(sSpotsAvailable); //converts total and available spot strings into integers
+                 totalSpots = Integer.valueOf(sSpotsTotal);             //converts total spot string into integers
 
 
                 if (sName.length() == 0){                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
                     Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 if (sCategories.length() == 0){
                     Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if (sDescription.length() == 0){
+                    Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (sTime.length() == 0){
                     Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
                     return;
@@ -78,11 +83,6 @@ public class CreateEvent extends AppCompatActivity {
 
                 if (totalSpots < 2){
                     Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (availableSpots == 0 || availableSpots > totalSpots){
-                    Toast.makeText(CreateEvent.this, "Please allow at least one available spot", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
