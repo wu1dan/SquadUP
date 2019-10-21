@@ -3,6 +3,8 @@ package com.example.squadup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +39,7 @@ public class Login extends AppCompatActivity {
 
     GoogleSignInClient googleSignInClient;
     private SignInButton googlesigninbutton;
+    SharedPreferences sharedPreferences;
 
     private Button btnLogin;
     private Button btnRegistration;
@@ -144,6 +147,7 @@ public class Login extends AppCompatActivity {
             Toast.makeText(Login.this, "User has signed in successfully", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(Login.this, MainActivity.class);
+
             startActivity(intent);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

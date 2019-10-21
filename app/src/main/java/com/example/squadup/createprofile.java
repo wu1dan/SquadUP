@@ -12,10 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,12 +44,16 @@ public class createprofile extends AppCompatActivity{
     String lastName;
     String Email;
     String Date = "69";
+    String Gender;
+    String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
+    Spinner spinGender;
     ImageView imgProfilePicture;
     LocalDate currentDate = LocalDate.now();
     int currentYear = currentDate.getYear();
     int currentMonth = currentDate.getMonthValue();
     int currentDay = currentDate.getDayOfMonth();
     Uri uriImage;
+
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor sharedPreferencesEditor;
@@ -59,16 +65,6 @@ public class createprofile extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_createprofile);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        btnInterests = findViewById(R.id.btnInterests);
-        btnInterests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(createprofile.this, Interests.class);
-                startActivity(intent);
-            }
-        });
-
 
         btnDateofBirth = findViewById(R.id.btnDateofBirth);
         btnDateofBirth.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +118,14 @@ public class createprofile extends AppCompatActivity{
 
         });
 
+
+        spinGender = findViewById(R.id.spinnerGender);
+        spinGender.setPrompt("Gender");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(createprofile.this,
+                android.R.layout.simple_list_item_1, spinnerGender);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinGender.setAdapter(arrayAdapter);
+
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +137,9 @@ public class createprofile extends AppCompatActivity{
                 lastName = tbLastName.getText().toString();
                 tbEmail = findViewById(R.id.tbEmail);
                 Email = tbEmail.getText().toString();
+                Gender = spinGender.getSelectedItem().toString();
                 sharedPreferencesEditor = sharedPreferences.edit();
+
 
                 if(!firstName.equals("")){
                     sharedPreferencesEditor.putString("FirstName",firstName);
@@ -152,6 +158,11 @@ public class createprofile extends AppCompatActivity{
                     sharedPreferencesEditor.apply();
                 }
 
+                if(!Gender.equals("")){
+                    sharedPreferencesEditor.putString("Gender",Gender);
+                    sharedPreferencesEditor.apply();
+                }
+
                 if(!sharedPreferences.contains("FirstName")){
                     Toast.makeText(createprofile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
                     return;
@@ -166,6 +177,10 @@ public class createprofile extends AppCompatActivity{
                 }
                 if(!sharedPreferences.contains("DateofBirth")){
                     Toast.makeText(createprofile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!sharedPreferences.contains("Gender")){
+                    Toast.makeText(createprofile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

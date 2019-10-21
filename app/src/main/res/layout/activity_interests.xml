@@ -6,13 +6,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Interests">
-e
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.squadup.InterestsBrowserFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="530dp" />
+        android:layout_height="67dp"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <ImageView
+            android:id="@+id/imgSearch"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:src="@android:drawable/ic_search_category_default" />
+
+        <EditText
+            android:id="@+id/txtSearchInterests"
+            android:layout_width="341dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:ems="10"
+            android:hint="Search for Interest"
+            android:inputType="textPersonName" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listInterests"
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
+
+    </ListView>
 
     <Button
         android:id="@+id/btnSaveInterests"
