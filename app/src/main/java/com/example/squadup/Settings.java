@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.facebook.login.LoginManager;
 
@@ -42,73 +43,46 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings2);
 
-        btnsignout = (Button)findViewById(R.id.btnSignOut);                                     //PROFILE
+        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        MainActivity.editor = MainActivity.sharedPreferences.edit();
+
+        btnsignout = (Button) findViewById(R.id.btnSignOut);                                     //PROFILE
         btnsignout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(Settings.this, Login.class);
                 startActivity(intent);
             }
         });
 
-        btnFirebase = (Button)findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
+        btnFirebase = (Button) findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
         btnFirebase.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(Settings.this, FirebaseToken.class);
                 startActivity(intent);
             }
         });
 
-        btnGhostMode = (Button)findViewById(R.id.btnGhostMode);
+        btnGhostMode = (Button) findViewById(R.id.btnGhostMode);
         btnGhostMode.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                SharedPreferences prefs = getSharedPreferences("ghost_mode", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-
-                if(ghostMode == true){ //if GhostMode is on/true, turn it off
-                    btnGhostMode.setText("Toggle Ghost Mode (OFF)");
-                    editor.putBoolean("ghostMode", false);
-
-                    FirebaseMessaging.getInstance().subscribeToTopic("events")
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    String msg = getString(R.string.msg_subscribed);
-                                    if (!task.isSuccessful()) {
-                                        msg = getString(R.string.msg_subscribe_failed);
-                                    }
-                                    Log.d(TAG, msg);
-                                    Toast.makeText(Settings.this, msg, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                }else{
-                    btnGhostMode.setText("Toggle Ghost Mode (ON)");
-                    editor.putBoolean("ghostMode", true);
-
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic("events")
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    String msg = getString(R.string.msg_unsubscribed);
-                                    if (!task.isSuccessful()) {
-                                        msg = getString(R.string.msg_subscribe_failed);
-                                    }
-                                    Log.d(TAG, msg);
-                                    Toast.makeText(Settings.this, msg, Toast.LENGTH_SHORT).show();
-                                }
-                            });
+            public void onClick(View v) {
+                MainActivity.editor = MainActivity.sharedPreferences.edit();
+                if(MainActivity.sharedPreferences.getBoolean("Ghost Mode", false) == true){ //if ghost mode is on
+                    MainActivity.editor.putBoolean("Ghost Mode", false); //turn it off
+                    MainActivity.editor.apply();
+                    btnGhostMode.setText("Ghost Mode: OFF");
+                }else{ //if ghost mode is off
+                    MainActivity.editor.putBoolean("Ghost Mode", true); //turn it on
+                    MainActivity.editor.apply();
+                    btnGhostMode.setText("Ghost Mode: ON");
                 }
+
             }
+
         });
-
     }
-
-
-
-
 
 }

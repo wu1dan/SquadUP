@@ -6,23 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".PendingEvent">
 
-
-    <TextView
-        android:id="@+id/tvCName"
+    <Button
+        android:id="@+id/btnYes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="159dp"
+        android:layout_marginBottom="10dp"
+        android:text="Join Event!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Reject Event!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnYes"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="359dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="359dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="50dp"
         android:text="Name"
-        app:layout_constraintBottom_toTopOf="@+id/tvCCategories"
+        app:layout_constraintBottom_toTopOf="@+id/tvPCategories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvCCategories"
+        android:id="@+id/tvPCategories"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -30,13 +56,13 @@
         android:layout_marginEnd="328dp"
         android:layout_marginBottom="34dp"
         android:text="Categories"
-        app:layout_constraintBottom_toTopOf="@+id/tvCDescription"
+        app:layout_constraintBottom_toTopOf="@+id/tvPDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPName" />
 
     <TextView
-        android:id="@+id/tvCDescription"
+        android:id="@+id/tvPDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -44,13 +70,13 @@
         android:layout_marginEnd="324dp"
         android:layout_marginBottom="47dp"
         android:text="Description"
-        app:layout_constraintBottom_toTopOf="@+id/tvCTime"
+        app:layout_constraintBottom_toTopOf="@+id/tvPTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCCategories" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPCategories" />
 
     <TextView
-        android:id="@+id/tvCTime"
+        android:id="@+id/tvPTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
@@ -58,13 +84,13 @@
         android:layout_marginEnd="368dp"
         android:layout_marginBottom="42dp"
         android:text="Time"
-        app:layout_constraintBottom_toTopOf="@+id/tvCDate"
+        app:layout_constraintBottom_toTopOf="@+id/tvPDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPDescription" />
 
     <TextView
-        android:id="@+id/tvCDate"
+        android:id="@+id/tvPDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
@@ -72,13 +98,13 @@
         android:layout_marginEnd="371dp"
         android:layout_marginBottom="20dp"
         android:text="Date"
-        app:layout_constraintBottom_toTopOf="@+id/tvCLocation"
+        app:layout_constraintBottom_toTopOf="@+id/tvPLocation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCTime" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPTime" />
 
     <TextView
-        android:id="@+id/tvCLocation"
+        android:id="@+id/tvPLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -86,13 +112,13 @@
         android:layout_marginEnd="347dp"
         android:layout_marginBottom="3dp"
         android:text="Location"
-        app:layout_constraintBottom_toTopOf="@+id/tvCTotalSpots"
+        app:layout_constraintBottom_toTopOf="@+id/tvPTotalSpots"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCDate" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPDate" />
 
     <TextView
-        android:id="@+id/tvCTotalSpots"
+        android:id="@+id/tvPTotalSpots"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
@@ -103,19 +129,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCLocation" />
-
-    <Button
-        android:id="@+id/btnComplete"
-        android:layout_width="150dp"
-        android:layout_height="137dp"
-        android:layout_marginStart="226dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="660dp"
-        android:text="Event Complete! (Placeholder)"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPLocation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

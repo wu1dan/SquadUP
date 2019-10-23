@@ -9,6 +9,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
+
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -32,19 +34,24 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        MainActivity.editor = MainActivity.sharedPreferences.edit();
 
         Log.e(TAG, remoteMessage.getData().size() + " is the size of the data");
 
-        if (remoteMessage.getData().size() > 0) { //if message contains data
-            eventID = remoteMessage.getData().get(0);
-            System.out.println(eventID);
+        if (MainActivity.sharedPreferences.getBoolean("Ghost Mode", false) == false) { //if ghost mode is off, receive the notification.
 
-        }
+            if (remoteMessage.getData().size() > 0) { //if message contains data
+                eventID = remoteMessage.getData().get(0);
+                MainActivity.editor.putString("Pending Event", eventID);
+
+            }
 
             String title = remoteMessage.getNotification().getTitle();
             String body = remoteMessage.getNotification().getBody();
 
             MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
 
+        }
     }
 }
