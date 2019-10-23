@@ -1,7 +1,6 @@
 package com.example.squadup;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, Settings.class);
                 this.startActivity(intent);
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -64,17 +61,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        String apiKey = "AIzaSyB2QJ7cSMQMcGSXTCYaA4ZirrInEJXekdo";
-
-        if (apiKey.equals("")) {
-            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
-            return;
-        }
-        // Setup Places Client
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
-        }
 
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { //only need to create a channel on android oreo and above
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -88,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        //TODO: make it so they can't hit this button if they're already in an event or a pending event (and then fix the if statements in create event)
         btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PendingEvent.class);
-                startActivity(intent);
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -137,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
         if (!sharedPreferences.contains("DateofBirth")){
             Intent intent = new Intent(MainActivity.this, createprofile.class);
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
-            editor = sharedPreferences.edit();
-            editor.putBoolean("Ghost Mode", false);
-            editor.apply();
             startActivity(intent);
         }
     }

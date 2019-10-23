@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -34,16 +35,20 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        MainActivity.editor = MainActivity.sharedPreferences.edit();
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
 
         Log.e(TAG, remoteMessage.getData().size() + " is the size of the data");
 
-        if (MainActivity.sharedPreferences.getBoolean("Ghost Mode", false) == false) { //if ghost mode is off, receive the notification.
+        if (sharedPreferences.getBoolean("Ghost Mode", false) == false) { //if ghost mode is off, receive the notification.
 
             if (remoteMessage.getData().size() > 0) { //if message contains data
                 eventID = remoteMessage.getData().get(0);
-                MainActivity.editor.putString("Pending Event", eventID);
+                sharedPreferencesEditor.putString("Pending Event", eventID);
 
             }
 

@@ -300,7 +300,7 @@ public class createprofile extends AppCompatActivity {
     public void PostJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "20.43.19.13";
+            String url = "20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
