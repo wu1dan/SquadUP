@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
+import org.json.JSONObject;
+
 public class CreateEvent extends AppCompatActivity {
 
     private Button btnCreateEvent;
     private EditText eventName, categories, description, time, location, spotsTotal;
     private CheckBox cbAM, cbPM;
+    JSONObject jsonObject;
 
     String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal;
     int totalSpots;

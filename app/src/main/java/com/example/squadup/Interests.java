@@ -24,22 +24,49 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.net.ssl.SSLEngineResult;
 
 public class Interests extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        this.finish();
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
+
+        if (sharedPreferences.getStringSet("Interests", null).size() == 0 ||sharedPreferences.getStringSet("Interests", null) == null) {
+            Toast.makeText(Interests.this, "Please select at least 1 interest.", Toast.LENGTH_SHORT).show();
+            super.onBackPressed();
+        }
+        else{
+            this.finish();
+        }
     }
 
     private ArrayAdapter arrayAdapter;
@@ -55,6 +82,7 @@ public class Interests extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interests);
 
@@ -69,8 +97,12 @@ public class Interests extends AppCompatActivity {
         final SharedPreferences.Editor sharedPreferencesEditor;
         sharedPreferencesEditor = sharedPreferences.edit();
         final Set<String> updatedInterests;
-        updatedInterests= sharedPreferences.getStringSet("Interests", null);
-
+        if (sharedPreferences.getStringSet("Interests", null) == null){
+            updatedInterests = new HashSet<String>();
+        }
+        else {
+            updatedInterests = sharedPreferences.getStringSet("Interests", null);
+        }
 
         txtSearchInterests = findViewById(R.id.txtSearchInterests);
         txtSearchInterests.addTextChangedListener(new TextWatcher() {
@@ -100,8 +132,14 @@ public class Interests extends AppCompatActivity {
         btnSaveInterests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(updatedInterests.size() == 0){
+                    Toast.makeText(Interests.this, "Please select at least 1 interest.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 sharedPreferencesEditor.putStringSet("Interests", updatedInterests);
                 sharedPreferencesEditor.apply();
+                ParseJSON();
                 Intent intent = new Intent(Interests.this, Profile.class);
                 startActivity(intent);
             }
@@ -140,6 +178,11 @@ public class Interests extends AppCompatActivity {
 
             final Switch interestSwitch = view.findViewById(R.id.switchInterest);
 
+
+            if (userInterests == null){
+                userInterests = Collections.emptySet();
+            }
+
             if (userInterests.contains(listTitles[position])) {
                 if (!interestSwitch.isChecked()){
                     interestSwitch.setChecked(true);
@@ -152,6 +195,7 @@ public class Interests extends AppCompatActivity {
                 }
             }
 
+
             ImageView imgInterest = view.findViewById(R.id.imgInterest);
             TextView tvInterestTitle = view.findViewById(R.id.tvInterestTitle);
             Glide.with(context)
@@ -163,16 +207,35 @@ public class Interests extends AppCompatActivity {
             interestSwitch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SharedPreferences sharedPreferences;
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Interests.this);
+                    SharedPreferences.Editor sharedPreferencesEditor;
+                    sharedPreferencesEditor = sharedPreferences.edit();
+
                     Set<String> updatedInterests;
-                    updatedInterests = sharedPreferences.getStringSet("Interests", null);
-                    if(interestSwitch.isChecked()){
-                        updatedInterests.add(listTitles[position]);
+
+                    if (sharedPreferences.getStringSet("Interests", null) == null){
+                        updatedInterests = new HashSet<String>();
                     }
-                    else if (!interestSwitch.isChecked()){
-                        if(updatedInterests.contains(listTitles[position])){
+                    else {
+                        updatedInterests = sharedPreferences.getStringSet("Interests", null);
+                    }
+
+                    if (interestSwitch.isChecked()) {
+                        updatedInterests.add(listTitles[position]);
+
+                        sharedPreferencesEditor.putStringSet("Interests", updatedInterests);
+                        sharedPreferencesEditor.apply();
+
+
+                    } else if (!interestSwitch.isChecked()) {
+                        if (updatedInterests.contains(listTitles[position])) {
                             updatedInterests.remove(listTitles[position]);
+                            sharedPreferencesEditor.putStringSet("Interests", updatedInterests);
+                            sharedPreferencesEditor.apply();
                         }
                     }
+
                 }
             });
 
@@ -197,6 +260,144 @@ public class Interests extends AppCompatActivity {
                 }
             }*/
             notifyDataSetChanged();
+        }
+    }
+
+    public void ParseJSON(){
+        RequestQueue queue = Volley.newRequestQueue(Interests.this);
+        final String url = "https://api.myjson.com/bins/zhoe4";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    SharedPreferences sharedPreferences;
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Interests.this);
+                    SharedPreferences.Editor sharedPreferencesEditor;
+                    sharedPreferencesEditor = sharedPreferences.edit();
+
+                    JSONObject returnedJsonObject = response.getJSONObject("User");
+                    JSONArray jsonInterests = returnedJsonObject.getJSONArray("Interests");
+
+                    Set<String> temporarySet = new HashSet<>();
+
+                    for(int i = 0; i < jsonInterests.length(); i++){
+                        temporarySet.add(jsonInterests.getJSONObject(i).getString("Interest"));
+                    }
+
+                    if (!sharedPreferences.getStringSet("Interests", null).equals(temporarySet)){
+                        sharedPreferencesEditor.putStringSet("Interests", temporarySet);
+                        sharedPreferencesEditor.apply();
+                    }
+
+                } catch (JSONException exception){
+                    exception.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    public void PostJSON() {
+        RequestQueue queue = Volley.newRequestQueue(Interests.this);
+        final SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
+        try {
+            String url = "";
+            JSONArray jsonArray = new JSONArray();
+            JSONObject userJSON = new JSONObject();
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+
+
+            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(Interests.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("FirstName", sharedPreferences.getString("FirstName", ""));
+                    headers.put("LastName", sharedPreferences.getString("LastName", ""));
+                    headers.put("Email", sharedPreferences.getString("Email", ""));
+                    headers.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+                    headers.put("Gender", sharedPreferences.getString("Gender", ""));
+                    headers.put("UserID", sharedPreferences.getString("UserID", ""));
+                    return headers;
+                }
+            };
+            queue.add(postRequest);
+
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void PutJSON() {
+        RequestQueue queue = Volley.newRequestQueue(Interests.this);
+        final SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
+        try {
+            String url = "";
+            JSONObject userJSON = new JSONObject();
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+
+
+            JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(Interests.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("FirstName", sharedPreferences.getString("FirstName", ""));
+                    headers.put("LastName", sharedPreferences.getString("LastName", ""));
+                    headers.put("Email", sharedPreferences.getString("Email", ""));
+                    headers.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+                    headers.put("Gender", sharedPreferences.getString("Gender", ""));
+                    headers.put("UserID", sharedPreferences.getString("UserID", ""));
+                    return headers;
+                }
+            };
+            queue.add(putRequest);
+
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
         }
     }
 

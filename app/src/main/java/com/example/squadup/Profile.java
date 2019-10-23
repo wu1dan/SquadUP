@@ -100,25 +100,6 @@ public class Profile extends AppCompatActivity {
         TextView tvtest = findViewById(R.id.testest);
         Set<String> settt =((sharedPreferences.getStringSet("Interests", new HashSet<String>())));
         tvtest.setText(settt.toString());
-
-
-
-
-
-
-        /* GoogleSignInAccount googleacct = GoogleSignIn.getLastSignedInAccount(this);       //We get to steal their info from google
-        if (googleacct != null) {
-            String personName = googleacct.getDisplayName();      //self explanatory
-            String personGivenName = googleacct.getGivenName();       //self explanatory
-            String personFamilyName = googleacct.getFamilyName();     //self explanatory
-            String personEmail = googleacct.getEmail();       //self explanatory
-            String personId = googleacct.getId();     //unique id
-            String IdToken = googleacct.getIdToken();     //id token can be sent to server
-            Uri personPhoto = googleacct.getPhotoUrl();       //self explanatory
-        }
-        */
-
-
     }
 
 
