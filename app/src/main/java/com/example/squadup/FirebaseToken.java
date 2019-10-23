@@ -79,7 +79,6 @@ public class FirebaseToken extends AppCompatActivity {
                                 String msg = getString(R.string.msg_token_fmt, token);
                                 Log.d(TAG, msg);
                                 Toast.makeText(FirebaseToken.this, msg, Toast.LENGTH_SHORT).show();
-                                System.out.println(msg);
                             }
                         });
                 // [END retrieve_current_token]

@@ -56,12 +56,12 @@
             android:textSize="35sp" />
 
         <Button
-            android:id="@+id/btnBrowseEvent"
+            android:id="@+id/btnCurrentEvent"
             android:layout_width="match_parent"
             android:layout_height="187dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="96dp"
-            android:text="SQUADUP"
+            android:text="Current Event"
             android:textSize="35sp" />
 
         <Button

@@ -1,13 +1,9 @@
 package com.example.squadup;
 
-import com.example.squadup.AuxFunctions;
-import com.example.squadup.MainActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,25 +12,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.ApiException;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApi;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
     private Button btnsignout, btnFirebase, btnGhostMode;
+    Boolean ghostMode = null;
 
     private static final String TAG = "Settings";
 
@@ -43,6 +32,7 @@ public class Settings extends AppCompatActivity {
         Intent intent = new Intent(Settings.this, MainActivity.class);
         startActivity(intent);
     }
+
 
     GoogleSignInClient googleSignInClient;
     GoogleApi googleapiclient;
@@ -75,8 +65,12 @@ public class Settings extends AppCompatActivity {
         btnGhostMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if(AuxFunctions.isGhostMode()){ //if GhostMode is on/true, turn it off
+                SharedPreferences prefs = getSharedPreferences("ghost_mode", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+
+                if(ghostMode == true){ //if GhostMode is on/true, turn it off
                     btnGhostMode.setText("Toggle Ghost Mode (OFF)");
+                    editor.putBoolean("ghostMode", false);
 
                     FirebaseMessaging.getInstance().subscribeToTopic("events")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -93,6 +87,7 @@ public class Settings extends AppCompatActivity {
 
                 }else{
                     btnGhostMode.setText("Toggle Ghost Mode (ON)");
+                    editor.putBoolean("ghostMode", true);
 
                     FirebaseMessaging.getInstance().unsubscribeFromTopic("events")
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -107,8 +102,6 @@ public class Settings extends AppCompatActivity {
                                 }
                             });
                 }
-
-                MainActivity.switchGhostMode(); //turns ghostMode variable to true or false, depending on what it was
             }
         });
 
