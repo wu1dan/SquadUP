@@ -25,6 +25,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Profile extends AppCompatActivity {
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
@@ -33,11 +35,13 @@ public class Profile extends AppCompatActivity {
         startActivity(intent);
     }
 
+    Button btnEditInterests;
     Button btnEditProfile;
     TextView tvFirstName;
     TextView tvLastName;
     TextView tvEmail;
     TextView tvDateofBirth;
+    TextView tvGender;
     ImageView imgProfilePicture;
     Uri uriProfilePicture;
     SharedPreferences sharedPreferences;
@@ -48,6 +52,16 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+        btnEditInterests = findViewById(R.id.btnInterests);
+        btnEditInterests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, Interests.class);
+                startActivity(intent);
+            }
+        });
 
         btnEditProfile = findViewById(R.id.btnEditProfile);
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +92,14 @@ public class Profile extends AppCompatActivity {
         imgProfilePicture = findViewById(R.id.imgProfilePicture);
         uriProfilePicture = Uri.parse(sharedPreferences.getString("ProfilePicture", ""));
         imgProfilePicture.setImageURI(uriProfilePicture);
+
+        tvGender = findViewById(R.id.tvGender);
+        tvGender.setPaintFlags(tvGender.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        tvGender.setText((sharedPreferences.getString("Gender","")));
+
+        TextView tvtest = findViewById(R.id.testest);
+        Set<String> settt =((sharedPreferences.getStringSet("Interests", new HashSet<String>())));
+        tvtest.setText(settt.toString());
 
 
 

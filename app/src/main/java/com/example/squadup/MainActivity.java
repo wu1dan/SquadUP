@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnProfile;
     SharedPreferences sharedPreferences;
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
