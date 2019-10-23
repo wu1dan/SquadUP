@@ -1,7 +1,10 @@
 package com.example.squadup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.app.Person;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,12 +21,15 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class Login extends AppCompatActivity {
@@ -119,6 +125,15 @@ public class Login extends AppCompatActivity {
             }
         });
 
+       /* googleSignInClient.silentSignIn().addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
+            @Override
+            public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });*/
+
     }
 
     private void signIn() {
@@ -131,6 +146,41 @@ public class Login extends AppCompatActivity {
         if (requestCode == 69) {           //if the right code is found (6942049), it'll handle the sign in
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount googleAcct = signInResult.getSignInAccount();
+
+            SharedPreferences sharedPreferences;
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+
+
+            //String personName = googleAcct.getDisplayName();      //self explanatory
+            String googleFirstName = googleAcct.getGivenName();       //self explanatory
+            String googleLastName = googleAcct.getFamilyName();     //self explanatory
+            String googleEmail = googleAcct.getEmail();       //self explanatory
+            String personId = googleAcct.getId();          //unique id
+            String IdToken = googleAcct.getIdToken();     //id token can be sent to server
+            Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
+
+            if (!sharedPreferences.contains("FirstName")){
+                sharedPreferencesEditor.putString("FirstName", googleFirstName);
+                sharedPreferencesEditor.apply();
+            }
+            if (!sharedPreferences.contains("LastName")){
+                sharedPreferencesEditor.putString("LastName", googleLastName);
+                sharedPreferencesEditor.apply();
+            }
+            if (!sharedPreferences.contains("Email")){
+                sharedPreferencesEditor.putString("Email", googleEmail);
+                sharedPreferencesEditor.apply();
+            }
+            //if (!sharedPreferences.contains("ProfilePicture")){
+                if(personPhoto != null) {
+                    sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
+                    sharedPreferencesEditor.apply();
+                }
+            //}
+
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -145,7 +195,6 @@ public class Login extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
             Toast.makeText(Login.this, "User has signed in successfully", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(Login.this, MainActivity.class);
 
             startActivity(intent);
@@ -155,6 +204,8 @@ public class Login extends AppCompatActivity {
             Log.w("ERROR", "signInResult:failed code=" + e.getStatusCode());
         }
     }
+
+
 
 }
 

@@ -16,6 +16,7 @@ import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -90,8 +91,12 @@ public class Profile extends AppCompatActivity {
 
 
         imgProfilePicture = findViewById(R.id.imgProfilePicture);
-        uriProfilePicture = Uri.parse(sharedPreferences.getString("ProfilePicture", ""));
-        imgProfilePicture.setImageURI(uriProfilePicture);
+        String profilePictureURL = sharedPreferences.getString("ProfilePicture", "");
+
+        Glide
+                .with(Profile.this)
+                .load(profilePictureURL)
+                .into(imgProfilePicture);
 
         tvGender = findViewById(R.id.tvGender);
         tvGender.setPaintFlags(tvGender.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
