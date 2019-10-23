@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        //TODO: make it so they can't hit this button if they're already in an event or a pending event (and then fix the if statements in create event)
         btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
