@@ -200,7 +200,7 @@ public class createprofile extends AppCompatActivity {
                 }
 
 
-                GetJSON();
+                PostJSON();
 
 
                 /*if(userInfoJSON == null) {
@@ -247,7 +247,7 @@ public class createprofile extends AppCompatActivity {
 
     public void GetJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
-        final String url = "20.43.19.13";  //    "https://api.myjson.com/bins/au48c";
+        final String url = "https://api.myjson.com/bins/au48c";  //    "https://api.myjson.com/bins/au48c";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -300,7 +300,7 @@ public class createprofile extends AppCompatActivity {
     public void PostJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "20.43.19.13";
+            String url = "20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));

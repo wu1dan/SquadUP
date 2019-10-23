@@ -1,6 +1,7 @@
 package com.example.squadup;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,8 +33,13 @@ public class CurrentEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_event);
 
-        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        MainActivity.editor = MainActivity.sharedPreferences.edit();
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         
         String defValue = "defValue";
         
@@ -48,13 +54,13 @@ public class CurrentEvent extends AppCompatActivity {
         tvCLocation = (TextView)findViewById(R.id.tvCLocation);
         tvCTotalSpots = (TextView)findViewById(R.id.tvCTotalSpots);
 
-        currentName = MainActivity.sharedPreferences.getString("Event Name", defValue);
-        currentCategories = MainActivity.sharedPreferences.getString("Event Categories", defValue);
-        currentDescription = MainActivity.sharedPreferences.getString("Event Description", defValue);
-        currentTime = MainActivity.sharedPreferences.getString("Event Time", defValue);
-        currentDate = MainActivity.sharedPreferences.getString("Event Date", defValue);
-        currentLocation = MainActivity.sharedPreferences.getString("Event Location", defValue);
-        currentTotalSpots = MainActivity.sharedPreferences.getString("Total Spots", defValue);
+        currentName = sharedPreferences.getString("Event Name", defValue);
+        currentCategories = sharedPreferences.getString("Event Categories", defValue);
+        currentDescription = sharedPreferences.getString("Event Description", defValue);
+        currentTime = sharedPreferences.getString("Event Time", defValue);
+        currentDate = sharedPreferences.getString("Event Date", defValue);
+        currentLocation = sharedPreferences.getString("Event Location", defValue);
+        currentTotalSpots = sharedPreferences.getString("Total Spots", defValue);
         
         tvCName.setText(currentName);
         tvCCategories.setText(currentCategories);
@@ -69,20 +75,20 @@ public class CurrentEvent extends AppCompatActivity {
             public void onClick(View v) {
                 //MainActivity.editor.remove("Event ID");
                 //MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Name");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Categories");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Description");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Time");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Date");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Event Location");
-                MainActivity.editor.apply();
-                MainActivity.editor.remove("Total Spots");
-                MainActivity.editor.apply();
+                sharedPreferencesEditor.remove("Event Name");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Event Categories");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Event Description");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Event Time");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Event Date");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Event Location");
+                sharedPreferencesEditor.apply();
+                sharedPreferencesEditor.remove("Total Spots");
+                sharedPreferencesEditor.apply();
 
                 Intent intent = new Intent(CurrentEvent.this, MainActivity.class);
                 startActivity(intent);

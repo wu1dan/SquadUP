@@ -45,10 +45,12 @@ public class CreateEvent extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        MainActivity.editor = MainActivity.sharedPreferences.edit();
-        MainActivity.editor.putString("Event ID", "0");
-        MainActivity.editor.apply();
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString("Event ID", "0");
+        sharedPreferencesEditor.apply();
 
         btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
         btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
@@ -109,11 +111,11 @@ public class CreateEvent extends AppCompatActivity{
 
                  String[] aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
-                if(!MainActivity.sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
+                if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
                     Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(CreateEvent.this, MainActivity.class);
 
-                }else if(!MainActivity.sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
+                }else if(!sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
                     Toast.makeText(CreateEvent.this, "Please reject your current pending event before creating a new one.", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(CreateEvent.this, PendingEvent.class);
 
@@ -166,22 +168,22 @@ public class CreateEvent extends AppCompatActivity{
                     //Updating shared preferences so that this event they just made is put into their current event
                     //Event ID will be generated, hardcoded 0 is just a placeholder
 
-                    MainActivity.editor.putString("Event ID", "96");
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Name", sName);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Categories", sCategories);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Description", sDescription);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Time", sTime);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Date", sDate);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Location", sLocation);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Total Spots", sSpotsTotal);
-                    MainActivity.editor.apply();
+                    sharedPreferencesEditor.putString("Event ID", "96");
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Name", sName);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Categories", sCategories);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Description", sDescription);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Time", sTime);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Date", sDate);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Event Location", sLocation);
+                    sharedPreferencesEditor.apply();
+                    sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
+                    sharedPreferencesEditor.apply();
 
                     Intent intent = new Intent(CreateEvent.this, CurrentEvent.class);
                     startActivity(intent);
