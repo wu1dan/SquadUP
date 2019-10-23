@@ -1,13 +1,19 @@
 package com.example.squadup;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import android.app.NotificationChannel;
+
+import android.graphics.Color;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,10 +26,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnCreateEvent;
-    Button btnBrowseEvent;
+    Button btnCurrentEvent;
 
     Button btnSettings;
     Button btnProfile;
@@ -36,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.optionsmenu, menu);
         return true;
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
         switch(item.getItemId()){
@@ -52,6 +61,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { //only need to create a channel on android oreo and above
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationChannel mChannel =
+                    new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+
+            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+            mChannel.enableLights(false);
+
+            mNotificationManager.createNotificationChannel(mChannel);
+
+        }
+
         btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnBrowseEvent = (Button)findViewById(R.id.btnBrowseEvent);                                     //BROWSE EVENTS
-        btnBrowseEvent.setOnClickListener(new View.OnClickListener() {
+        btnCurrentEvent = (Button)findViewById(R.id.btnCurrentEvent);                                     //BROWSE EVENTS
+        btnCurrentEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, BrowseEvents.class);
+                Intent intent = new Intent(MainActivity.this, CurrentEvent.class);
                 startActivity(intent);
             }
         });
