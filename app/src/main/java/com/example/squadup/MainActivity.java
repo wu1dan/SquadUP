@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!sharedPreferences.contains("FirstName")){
+        if (!sharedPreferences.contains("DateofBirth")){
             Intent intent = new Intent(MainActivity.this, createprofile.class);
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
             editor = sharedPreferences.edit();
