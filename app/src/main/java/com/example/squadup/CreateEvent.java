@@ -25,6 +25,7 @@ public class CreateEvent extends AppCompatActivity{
     int totalSpots;
 
     String defValue = "defValue";
+    String tempDate = "Your Date:";
 
     /*
     ti prefix means "Text Input"
@@ -59,6 +60,8 @@ public class CreateEvent extends AppCompatActivity{
         //location = (TextView) findViewById(R.id.tiLocation);                  //Location Text View
         location = (EditText) findViewById(R.id.tiLocation);                    //Location Text Input
         spotsTotal = (EditText) findViewById(R.id.tiSpotsTotal);                //Total Spots Text Input
+        date = (TextView)findViewById(R.id.tvDate);                             //Date Text View
+        date.setText(tempDate);                                                 //for if condition later
 
         btnLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +106,7 @@ public class CreateEvent extends AppCompatActivity{
                  sSpotsTotal = spotsTotal.getText().toString();
                  sDate = date.getText().toString();
 
+
                  String[] aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
                 if(!MainActivity.sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
@@ -136,6 +140,11 @@ public class CreateEvent extends AppCompatActivity{
 
                     if (sLocation.length() == 0) {
                         Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if(sDate.equals(tempDate)){
+                        Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
