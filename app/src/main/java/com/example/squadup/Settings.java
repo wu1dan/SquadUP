@@ -3,6 +3,7 @@ package com.example.squadup;
 import com.example.squadup.JSONParser;
 
 //import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 //import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,8 +30,8 @@ import org.json.JSONObject;
 //import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
-    private Button btnsignout, btnFirebase, btnGhostMode, btnVolley;
-    Boolean ghostMode = null;
+
+    private Button btnGhostMode;
 
     private static final String TAG = "Settings";
 
@@ -41,9 +42,10 @@ public class Settings extends AppCompatActivity {
     }
 
 
-    GoogleSignInClient googleSignInClient;
-    GoogleApi googleapiclient;
+    // GoogleSignInClient googleSignInClient;
+    //GoogleApi googleapiclient;
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,7 @@ public class Settings extends AppCompatActivity {
         MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         MainActivity.editor = MainActivity.sharedPreferences.edit();
 
-        btnsignout = (Button) findViewById(R.id.btnSignOut);                                     //PROFILE
+        Button btnsignout = (Button) findViewById(R.id.btnSignOut);                                     //PROFILE
         btnsignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +64,7 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        btnFirebase = (Button) findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
+        Button btnFirebase = (Button) findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
         btnFirebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,29 +76,12 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        btnVolley = (Button) findViewById(R.id.btnVolley);                                     //BROWSE EVENTS
-        btnVolley.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject json = new JSONObject();
-                try {
-                    json.put("user", "Thomas");
-                    json.put("password", "fakepassword");
-                } catch (JSONException e) {
-                    Log.d("JSONParser", "Can't format JSON");
-                }
-
-                VolleyServerConnection.sendData(json.toString(), Settings.this);
-
-            }
-        });
-
         btnGhostMode = (Button) findViewById(R.id.btnGhostMode);
         btnGhostMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.editor = MainActivity.sharedPreferences.edit();
-                if(MainActivity.sharedPreferences.getBoolean("Ghost Mode", false) == true){ //if ghost mode is on
+                if(MainActivity.sharedPreferences.getBoolean("Ghost Mode", false)){ //if ghost mode is on
                     MainActivity.editor.putBoolean("Ghost Mode", false); //turn it off
                     MainActivity.editor.apply();
                     btnGhostMode.setText("Ghost Mode: OFF");

@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 public class JSONParser {
 
-    final static String url = "http://10.0.2.2:3000/";
+    private final static String url = "http://10.0.2.2:3000/";
 
     public static String formatDataAsJSON(){
         final JSONObject root = new JSONObject();

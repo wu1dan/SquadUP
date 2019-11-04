@@ -16,11 +16,17 @@ import java.util.Calendar;
 public class CreateEvent extends AppCompatActivity{
 
     private TextView date; //, location;
-    private EditText eventName, categories, description, time, spotsTotal, location;
+    private EditText eventName;
+    private EditText categories;
+    private EditText description;
+    private EditText time;
+    private EditText spotsTotal;
+    private EditText location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private int totalSpots, year, day, month;
-    private String[] aCategories;
-    private Calendar calendar;
+    private int year;
+    private int day;
+    private int month;
+   // private String[] aCategories;
 
     private Intent intent;
 
@@ -57,7 +63,7 @@ public class CreateEvent extends AppCompatActivity{
         String sDate = date.getText().toString();
 
 
-        aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
+      //  aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
         String defValue = "defValue";
         if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
@@ -99,6 +105,7 @@ public class CreateEvent extends AppCompatActivity{
                 return;
             }
 
+            int totalSpots;
             if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null) { //the null thing doesn't actually work, need to catch NumberFormatException
                 Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
                 return;
@@ -166,7 +173,7 @@ public class CreateEvent extends AppCompatActivity{
         btnPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar = Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance();
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 day = calendar.get(Calendar.DAY_OF_MONTH);
