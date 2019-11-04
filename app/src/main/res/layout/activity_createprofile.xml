@@ -224,5 +224,23 @@
 
     </Button>
 
+    <Button
+        android:id="@+id/button69"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="132dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="591dp" />
+
+    <TextView
+        android:id="@+id/textView69"
+        android:layout_width="220dp"
+        android:layout_height="145dp"
+        android:layout_marginTop="68dp"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="90dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

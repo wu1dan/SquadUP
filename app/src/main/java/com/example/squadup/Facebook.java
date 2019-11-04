@@ -2,7 +2,6 @@ package com.example.squadup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.FaceDetector;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
