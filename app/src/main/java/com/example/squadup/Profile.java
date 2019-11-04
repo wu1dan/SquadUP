@@ -6,7 +6,6 @@ import androidx.preference.PreferenceManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,6 @@ public class Profile extends AppCompatActivity {
 
     private Button btnEditInterests;
     private Button btnEditProfile;
-    private TextView tvFirstName;
     private TextView tvLastName;
     private TextView tvEmail;
     private TextView tvDateofBirth;
@@ -61,7 +59,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        tvFirstName = findViewById(R.id.tvFirstName);
+        TextView tvFirstName = findViewById(R.id.tvFirstName);
         tvFirstName.setPaintFlags(tvFirstName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvFirstName.setText(sharedPreferences.getString("FirstName", ""));
 

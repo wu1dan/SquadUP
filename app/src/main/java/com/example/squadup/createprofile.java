@@ -1,18 +1,14 @@
 package com.example.squadup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,24 +24,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.common.net.MediaType;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.net.URI;
-import java.text.DateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -350,7 +336,6 @@ public class createprofile extends AppCompatActivity {
 
     private void PostJSON() {
 
-        /*
         try {
             String URL = "http://10.0.2.2:3000/Users";
             JSONObject jsonBody = new JSONObject();
@@ -390,7 +375,6 @@ public class createprofile extends AppCompatActivity {
         }
         // Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_LONG).show();
 
-         */
 
     }
 
@@ -398,7 +382,7 @@ public class createprofile extends AppCompatActivity {
     public void PutJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "http://10.0.2.2:3000/";
+            String url = "http://10.0.2.2:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
@@ -406,6 +390,8 @@ public class createprofile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+
 
 
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {

@@ -11,14 +11,11 @@ import com.facebook.login.LoginManager;
 
 public class Facebook extends AppCompatActivity {
 
-    private Button fblogout;
-    private Button fbcont;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_facebook);
-        fblogout = (Button)findViewById(R.id.btnfblogout);                                     //PROFILE
+        Button fblogout = (Button)findViewById(R.id.btnfblogout);                                     //PROFILE
         fblogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -28,7 +25,7 @@ public class Facebook extends AppCompatActivity {
             }
         });
 
-        fbcont = (Button)findViewById(R.id.btnfbcont);                                     //PROFILE
+        Button fbcont = (Button)findViewById(R.id.btnfbcont);                                     //PROFILE
         fbcont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
