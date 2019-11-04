@@ -1,5 +1,6 @@
 package com.example.squadup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -11,6 +12,7 @@ import androidx.core.app.NotificationCompat;
 public class MyNotificationManager {
 
     private Context myContext;
+    @SuppressLint("StaticFieldLeak")
     private static MyNotificationManager myInstance;
 
     private MyNotificationManager(Context context){
@@ -31,7 +33,7 @@ public class MyNotificationManager {
                 .setContentText(body)
                 .setPriority(NotificationCompat.PRIORITY_MAX);
 
-        String defValue = "default";
+        //String defValue = "default";
 
         //if(!MainActivity.sharedPreferences.getString("Pending Event", defValue).equals(defValue)) {
             Intent intent = new Intent(myContext, PendingEvent.class);

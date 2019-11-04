@@ -22,7 +22,6 @@ public class FirebaseToken extends AppCompatActivity {
 //code from google firebase tutorial
 
     private static final String TAG = "FirebaseToken";
-    private Button logTokenButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class FirebaseToken extends AppCompatActivity {
         // [END handle_data_extras]
 
 
-        logTokenButton = (Button)findViewById(R.id.logTokenButton);
+        Button logTokenButton = (Button) findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
