@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 
 public class CreateEvent extends AppCompatActivity{
@@ -23,6 +22,8 @@ public class CreateEvent extends AppCompatActivity{
 
     String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal, sDate;
     int totalSpots;
+
+    Intent intent;
 
     String defValue = "defValue";
     String tempDate = "Your Date:";
@@ -185,7 +186,7 @@ public class CreateEvent extends AppCompatActivity{
                     sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
                     sharedPreferencesEditor.apply();
 
-                    Intent intent = new Intent(CreateEvent.this, CurrentEvent.class);
+                    intent = new Intent(CreateEvent.this, CurrentEvent.class);
                     startActivity(intent);
                 }
                 //leave this empty
