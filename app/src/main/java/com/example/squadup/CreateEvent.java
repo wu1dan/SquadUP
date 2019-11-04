@@ -42,10 +42,7 @@ public class CreateEvent extends AppCompatActivity{
         startActivity(intent);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_event);
+    private void createEvent(){
 
         SharedPreferences sharedPreferences;
         SharedPreferences.Editor sharedPreferencesEditor;
@@ -53,6 +50,102 @@ public class CreateEvent extends AppCompatActivity{
         sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString("Event ID", "0");
         sharedPreferencesEditor.apply();
+
+        sName = eventName.getText().toString();
+        sCategories = categories.getText().toString();
+        sDescription = description.getText().toString();
+        sTime = time.getText().toString();
+        sLocation = location.getText().toString();
+        sSpotsTotal = spotsTotal.getText().toString();
+        sDate = date.getText().toString();
+
+
+        aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
+
+        if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
+            Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
+            intent = new Intent(CreateEvent.this, MainActivity.class);
+
+        }else if(!sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
+            Toast.makeText(CreateEvent.this, "Please reject your current pending event before creating a new one.", Toast.LENGTH_SHORT).show();
+            intent = new Intent(CreateEvent.this, PendingEvent.class);
+
+        }else{
+            if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
+                Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (sCategories.length() == 0) {
+                Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (sDescription.length() == 0) {
+                Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (sTime.length() == 0) {
+                Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (sLocation.length() == 0) {
+                Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if(sDate.equals(tempDate)){
+                Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null) { //the null thing doesn't actually work, need to catch NumberFormatException
+                Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (Integer.valueOf(sSpotsTotal) < 2) {
+                Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
+                return;
+            } else
+                totalSpots = Integer.valueOf(sSpotsTotal);             //converts total spot string into integers
+
+            Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
+
+            //use this space to assign event with all its above parameters into the database
+
+
+
+            //Updating shared preferences so that this event they just made is put into their current event
+            //Event ID will be generated, hardcoded 0 is just a placeholder
+
+            sharedPreferencesEditor.putString("Event ID", "96");
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Name", sName);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Categories", sCategories);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Description", sDescription);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Time", sTime);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Date", sDate);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Event Location", sLocation);
+            sharedPreferencesEditor.apply();
+            sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
+            sharedPreferencesEditor.apply();
+
+            intent = new Intent(CreateEvent.this, CurrentEvent.class);
+            startActivity(intent);
+        }
+        //leave this empty
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_event);
 
         btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
         btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
@@ -99,95 +192,9 @@ public class CreateEvent extends AppCompatActivity{
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 sName = eventName.getText().toString();
-                 sCategories = categories.getText().toString();
-                 sDescription = description.getText().toString();
-                 sTime = time.getText().toString();
-                 sLocation = location.getText().toString();
-                 sSpotsTotal = spotsTotal.getText().toString();
-                 sDate = date.getText().toString();
 
+                createEvent();
 
-                 aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
-
-                if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
-                    Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(CreateEvent.this, MainActivity.class);
-
-                }else if(!sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
-                    Toast.makeText(CreateEvent.this, "Please reject your current pending event before creating a new one.", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(CreateEvent.this, PendingEvent.class);
-
-                }else{
-                    if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
-                        Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (sCategories.length() == 0) {
-                        Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (sDescription.length() == 0) {
-                        Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (sTime.length() == 0) {
-                        Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (sLocation.length() == 0) {
-                        Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if(sDate.equals(tempDate)){
-                        Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null) { //the null thing doesn't actually work, need to catch NumberFormatException
-                        Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else if (Integer.valueOf(sSpotsTotal) < 2) {
-                        Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
-                        return;
-                    } else
-                        totalSpots = Integer.valueOf(sSpotsTotal);             //converts total spot string into integers
-
-                    Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
-
-                    //use this space to assign event with all its above parameters into the database
-
-
-
-                    //Updating shared preferences so that this event they just made is put into their current event
-                    //Event ID will be generated, hardcoded 0 is just a placeholder
-
-                    sharedPreferencesEditor.putString("Event ID", "96");
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Name", sName);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Categories", sCategories);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Description", sDescription);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Time", sTime);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Date", sDate);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Event Location", sLocation);
-                    sharedPreferencesEditor.apply();
-                    sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
-                    sharedPreferencesEditor.apply();
-
-                    intent = new Intent(CreateEvent.this, CurrentEvent.class);
-                    startActivity(intent);
-                }
-                //leave this empty
             }
 
         }); //end of CreateEvent button
