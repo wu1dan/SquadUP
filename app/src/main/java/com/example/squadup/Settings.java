@@ -1,5 +1,7 @@
 package com.example.squadup;
 
+import com.example.squadup.JSONParser;
+
 //import android.content.Context;
 import android.content.Intent;
 //import android.content.SharedPreferences;
@@ -60,8 +62,11 @@ public class Settings extends AppCompatActivity {
         btnFirebase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Settings.this, FirebaseToken.class);
-                startActivity(intent);
+
+                JSONParser.sendDataToServer();
+
+                //Intent intent = new Intent(Settings.this, FirebaseToken.class);
+                //startActivity(intent);
             }
         });
 
