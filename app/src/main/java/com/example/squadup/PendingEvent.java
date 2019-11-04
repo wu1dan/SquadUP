@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 public class PendingEvent extends AppCompatActivity {
 
+    private String tempID;
     private String tempName;
     private String tempCategories;
     private String tempDescription;
@@ -70,7 +71,7 @@ public class PendingEvent extends AppCompatActivity {
             //Have code here for using the event id to extract all the event information out of the json
             //Here's some placeholder for now:
 
-            String tempID = "96";
+            tempID = "96";
             tempName = "Pick-up Basketball";
             tempCategories = "Sports, Basketball";
             tempDescription = "Just some classic court-side comraderie with the lads (boys only!!!!!!!)";
@@ -92,7 +93,7 @@ public class PendingEvent extends AppCompatActivity {
                 public void onClick(View v) {
 
                     Toast.makeText(PendingEvent.this, "Successfully joined the event!", Toast.LENGTH_SHORT).show();
-                    MainActivity.editor.putString("Event ID", "96"); //put in the event id that was used to fetch the json
+                    MainActivity.editor.putString("Event ID", tempID); //put in the event id that was used to fetch the json
                     MainActivity.editor.apply();
                     MainActivity.editor.putString("Event Name", tempName);
                     MainActivity.editor.apply();

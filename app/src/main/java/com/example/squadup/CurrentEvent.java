@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class CurrentEvent extends AppCompatActivity {
 
-    private String currentID;
+    //private String currentID;
 
     public void onBackPressed()
     {
