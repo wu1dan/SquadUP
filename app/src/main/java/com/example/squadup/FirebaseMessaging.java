@@ -1,15 +1,6 @@
 package com.example.squadup;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.os.Build;
-import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
@@ -30,8 +21,14 @@ import com.google.firebase.messaging.RemoteMessage;
  */
 public class FirebaseMessaging extends FirebaseMessagingService {
 
+
     private static final String TAG = "FirebaseMessaging";
     public static String eventID;
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -41,10 +38,9 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-
         Log.e(TAG, remoteMessage.getData().size() + " is the size of the data");
 
-        if (sharedPreferences.getBoolean("Ghost Mode", false) == false) { //if ghost mode is off, receive the notification.
+        if (!sharedPreferences.getBoolean("Ghost Mode", false)) { //if ghost mode is off, receive the notification.
 
             if (remoteMessage.getData().size() > 0) { //if message contains data
                 eventID = remoteMessage.getData().get(0);

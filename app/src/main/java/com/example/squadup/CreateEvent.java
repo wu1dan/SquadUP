@@ -11,21 +11,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 
 public class CreateEvent extends AppCompatActivity{
 
     private Button btnCreateEvent, btnLocation, btnPickDate;
-    TextView date; //location;
+    private TextView date; //, location;
     private EditText eventName, categories, description, time, spotsTotal, location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal, sDate, eventDate;
+    private int totalSpots, year, day, month;
+    private String[] aCategories;
+    private Calendar calendar;
 
-    String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal, sDate;
-    int totalSpots;
+    private Intent intent;
 
-    String defValue = "defValue";
-    String tempDate = "Your Date:";
+    private String defValue = "defValue";
+    private String tempDate = "Your Date:";
 
     /*
     ti prefix means "Text Input"
@@ -36,7 +38,7 @@ public class CreateEvent extends AppCompatActivity{
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
-        Intent intent = new Intent(CreateEvent.this, MainActivity.class);
+        intent = new Intent(CreateEvent.this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -65,21 +67,18 @@ public class CreateEvent extends AppCompatActivity{
         date = (TextView)findViewById(R.id.tvDate);                             //Date Text View
         date.setText(tempDate);                                                 //for if condition later
 
-        btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreateEvent.this, LocationPickerMap.class);
-                startActivity(intent);
-            }
+        btnLocation.setOnClickListener(v -> {
+            intent = new Intent(CreateEvent.this, LocationPickerMap.class);
+            startActivity(intent);
         });
 
         btnPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
-                int day = c.get(Calendar.DAY_OF_MONTH);
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog eventDatePicker = new DatePickerDialog(CreateEvent.this, android.R.style.Theme_Black,
                         mDateSetListener, year, month, day);
@@ -91,7 +90,7 @@ public class CreateEvent extends AppCompatActivity{
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month += 1; //january is 0
-                String eventDate = month + "/" + dayOfMonth + "/" + year;
+                eventDate = month + "/" + dayOfMonth + "/" + year;
                 date = (TextView)findViewById(R.id.tvDate);
                 date.setText(eventDate);
             }
@@ -109,15 +108,15 @@ public class CreateEvent extends AppCompatActivity{
                  sDate = date.getText().toString();
 
 
-                 String[] aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
+                 aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
                 if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
                     Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateEvent.this, MainActivity.class);
+                    intent = new Intent(CreateEvent.this, MainActivity.class);
 
                 }else if(!sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
                     Toast.makeText(CreateEvent.this, "Please reject your current pending event before creating a new one.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(CreateEvent.this, PendingEvent.class);
+                    intent = new Intent(CreateEvent.this, PendingEvent.class);
 
                 }else{
                     if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
@@ -185,7 +184,7 @@ public class CreateEvent extends AppCompatActivity{
                     sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
                     sharedPreferencesEditor.apply();
 
-                    Intent intent = new Intent(CreateEvent.this, CurrentEvent.class);
+                    intent = new Intent(CreateEvent.this, CurrentEvent.class);
                     startActivity(intent);
                 }
                 //leave this empty

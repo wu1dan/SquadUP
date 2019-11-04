@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.facebook.AccessToken;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -15,10 +17,12 @@ import android.app.NotificationChannel;
 
 import android.graphics.Color;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +30,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnProfile;
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
+
+    private final String TAG = "MainActivity";
 
 
     @Override
@@ -108,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, PendingEvent.class);
+                startActivity(intent);
             }
         });
 
@@ -119,6 +127,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
+
+        //retrieve firebase token
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Put user token into sharedpreferences
+                        editor.putString("Firebase Token", token);
+                        editor.apply();
+
+                        // Log it
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                    }
+                });
+
         if (!sharedPreferences.contains("DateofBirth")){
             Intent intent = new Intent(MainActivity.this, createprofile.class);
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
