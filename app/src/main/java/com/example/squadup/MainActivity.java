@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         String token = task.getResult().getToken();
 
                         // Put user token into sharedpreferences
-                        editor.putString("Firebase Token", token);
+                        editor.putString("FirebaseToken", token);
                         editor.apply();
 
                         // Log it

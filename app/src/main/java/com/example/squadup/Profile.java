@@ -1,6 +1,5 @@
 package com.example.squadup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
@@ -9,23 +8,12 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
-import java.io.IOException;
-import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,16 +24,16 @@ public class Profile extends AppCompatActivity {
         startActivity(intent);
     }
 
-    Button btnEditInterests;
-    Button btnEditProfile;
-    TextView tvFirstName;
-    TextView tvLastName;
-    TextView tvEmail;
-    TextView tvDateofBirth;
-    TextView tvGender;
-    ImageView imgProfilePicture;
-    Uri uriProfilePicture;
-    SharedPreferences sharedPreferences;
+    private Button btnEditInterests;
+    private Button btnEditProfile;
+    private TextView tvFirstName;
+    private TextView tvLastName;
+    private TextView tvEmail;
+    private TextView tvDateofBirth;
+    private TextView tvGender;
+    private ImageView imgProfilePicture;
+    //private Uri uriProfilePicture;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -105,24 +93,6 @@ public class Profile extends AppCompatActivity {
         TextView tvtest = findViewById(R.id.testest);
         Set<String> settt =((sharedPreferences.getStringSet("Interests", new HashSet<String>())));
         tvtest.setText(settt.toString());
-
-
-
-
-
-
-        /* GoogleSignInAccount googleacct = GoogleSignIn.getLastSignedInAccount(this);       //We get to steal their info from google
-        if (googleacct != null) {
-            String personName = googleacct.getDisplayName();      //self explanatory
-            String personGivenName = googleacct.getGivenName();       //self explanatory
-            String personFamilyName = googleacct.getFamilyName();     //self explanatory
-            String personEmail = googleacct.getEmail();       //self explanatory
-            String personId = googleacct.getId();     //unique id
-            String IdToken = googleacct.getIdToken();     //id token can be sent to server
-            Uri personPhoto = googleacct.getPhotoUrl();       //self explanatory
-        }
-        */
-
 
     }
 

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -27,15 +28,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.common.net.MediaType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.net.URI;
 import java.text.DateFormat;
 import java.time.LocalDate;
@@ -44,6 +48,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 
 public class createprofile extends AppCompatActivity {
 
@@ -81,6 +89,15 @@ public class createprofile extends AppCompatActivity {
         setContentView(R.layout.activity_createprofile);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        Button button = findViewById(R.id.button69);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okhttpGetRequest();
+            }
+        });
+
         btnDateofBirth = findViewById(R.id.btnDateofBirth);
         btnDateofBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +131,7 @@ public class createprofile extends AppCompatActivity {
                                 tvDateofBirth = findViewById(R.id.tvDateofBirth);
                                 tvDateofBirth.setText(Date);
                             } else if (currentMonth - month < 0) {
-                                Toast.makeText(createprofile.this, "You must be 18 to use squadUP. :(", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } else {
@@ -242,13 +259,48 @@ public class createprofile extends AppCompatActivity {
         }
     }
 
+    public void okhttpGetRequest(){
+        TextView tv69 = findViewById(R.id.textView69);
+
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "https://reqres.in/api/users?page=2";
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String sresponse = response.body().string();
+
+                    createprofile.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv69.setText(sresponse);
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+
     public void ParseJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
-        final String url = "https://api.myjson.com/bins/au48c";
+        final String url = "http://10.0.2.2:3000/Users";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                try {
+                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                /*try {
                     JSONObject returnedJsonObject = response.getJSONObject("User");
                     String jsonFirstName = returnedJsonObject.getString("FirstName");
                     String jsonLastName = returnedJsonObject.getString("LastName");
@@ -282,6 +334,8 @@ public class createprofile extends AppCompatActivity {
                 } catch (JSONException exception) {
                     exception.printStackTrace();
                 }
+                */
+
 
             }
         }, new Response.ErrorListener() {
@@ -294,50 +348,57 @@ public class createprofile extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    public void PostJSON() {
-        RequestQueue queue = Volley.newRequestQueue(createprofile.this);
+    private void PostJSON() {
 
+        /*
         try {
-            String url = "http://20.43.19.13:3000/Users";
-            JSONObject userJSON = new JSONObject();
-            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            userJSON.put("Email", sharedPreferences.getString("Email", ""));
-            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            String URL = "http://10.0.2.2:3000/Users";
+            JSONObject jsonBody = new JSONObject();
 
+            jsonBody.put("email", "abc@abc.com");
+            jsonBody.put("password", "");
+            jsonBody.put("user_type", "");
+            jsonBody.put("company_id", "");
+            jsonBody.put("status", "");
 
-            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, url, userJSON, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Toast.makeText(createprofile.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "xddddd", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
 
                 }
             }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     final Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", "Basic " + "c2FnYXJAa2FydHBheS5jb206cnMwM2UxQUp5RnQzNkQ5NDBxbjNmUDgzNVE3STAyNzI=");//put your token here
                     return headers;
                 }
             };
-            queue.add(postRequest);
-            queue.start();
+            RequestQueue requestQueue = Volley.newRequestQueue(createprofile.this);
+            requestQueue.add(jsonOblect);
 
-        } catch (JSONException exception) {
-            exception.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        // Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_LONG).show();
+
+         */
+
     }
+
 
     public void PutJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "";
+            String url = "http://10.0.2.2:3000/";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));

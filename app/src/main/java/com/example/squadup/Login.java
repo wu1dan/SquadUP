@@ -1,10 +1,8 @@
 package com.example.squadup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import android.app.Person;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,7 +16,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -29,10 +26,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class Login extends AppCompatActivity {
+
+    private final String TAG = "Homepage";
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
@@ -40,12 +38,9 @@ public class Login extends AppCompatActivity {
     }
 
     private CallbackManager callbackManager;
-    private LoginButton btnfb;
-    private final String TAG = "Homepage";
 
     GoogleSignInClient googleSignInClient;
     private SignInButton googlesigninbutton;
-    SharedPreferences sharedPreferences;
 
     private Button btnLogin;
     private Button btnRegistration;
@@ -58,6 +53,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
 
+        LoginButton btnfb;
         btnfb = findViewById(R.id.btnfb);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -124,16 +120,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-
-       /* googleSignInClient.silentSignIn().addOnCompleteListener(this, new OnCompleteListener<GoogleSignInAccount>() {
-            @Override
-            public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-
-                Intent intent = new Intent(Login.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
     }
 
     private void signIn() {
@@ -153,13 +139,11 @@ public class Login extends AppCompatActivity {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
-
-            //String personName = googleAcct.getDisplayName();      //self explanatory
             String googleFirstName = googleAcct.getGivenName();       //self explanatory
             String googleLastName = googleAcct.getFamilyName();     //self explanatory
             String googleEmail = googleAcct.getEmail();       //self explanatory
-            String personId = googleAcct.getId();          //unique id
-            String IdToken = googleAcct.getIdToken();     //id token can be sent to server
+            String personID = googleAcct.getId();          //unique id
+            String IDToken = googleAcct.getIdToken();     //id token can be sent to server
             Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
 
             if (!sharedPreferences.contains("FirstName")){
@@ -174,12 +158,24 @@ public class Login extends AppCompatActivity {
                 sharedPreferencesEditor.putString("Email", googleEmail);
                 sharedPreferencesEditor.apply();
             }
-            //if (!sharedPreferences.contains("ProfilePicture")){
+            if (!sharedPreferences.contains("ProfilePicture")){
                 if(personPhoto != null) {
                     sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
                     sharedPreferencesEditor.apply();
                 }
-            //}
+            }
+            if (!sharedPreferences.contains("GoogleID")){
+                if(personPhoto != null) {
+                    sharedPreferencesEditor.putString("GoogleID", personID);
+                    sharedPreferencesEditor.apply();
+                }
+            }
+            if (!sharedPreferences.contains("GoogleIDToken")){
+                if(personPhoto != null) {
+                    sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
+                    sharedPreferencesEditor.apply();
+                }
+            }
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
