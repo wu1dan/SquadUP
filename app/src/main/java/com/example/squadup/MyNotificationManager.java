@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.app.NotificationManager;
 
 import androidx.core.app.NotificationCompat;
-import androidx.preference.PreferenceManager;
 
 public class MyNotificationManager {
 
@@ -26,7 +25,7 @@ public class MyNotificationManager {
     }
 
     public void displayNotification(String title, String body){
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(myContext, Constants.CHANNEL_ID)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(myContext, ConstantsUtil.CHANNEL_ID)
                 .setSmallIcon(R.drawable.squaduppenguin)
                 .setContentTitle(title)
                 .setContentText(body)

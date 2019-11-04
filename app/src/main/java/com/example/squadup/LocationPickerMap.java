@@ -1,7 +1,7 @@
 package com.example.squadup;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLngBounds;
+//import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
@@ -18,7 +18,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 import android.text.TextUtils;
 import android.content.Intent;
 import android.os.Bundle;

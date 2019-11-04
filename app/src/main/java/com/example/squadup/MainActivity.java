@@ -1,21 +1,15 @@
 package com.example.squadup;
 
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
-import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.app.NotificationChannel;
-
-import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,15 +26,13 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnCreateEvent;
-    Button btnCurrentEvent;
+    private Button btnCreateEvent, btnCurrentEvent, btnProfile;
 
-    Button btnSettings;
-    Button btnProfile;
+    private Intent intent;
+
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
@@ -58,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
         switch(item.getItemId()){
             case R.id.btnSettings:
-                Intent intent = new Intent(this, Settings.class);
+                intent = new Intent(this, Settings.class);
                 this.startActivity(intent);
                 return true;
         }
@@ -73,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { //only need to create a channel on android oreo and above
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             NotificationChannel mChannel =
-                    new NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+                    new NotificationChannel(ConstantsUtil.CHANNEL_ID, ConstantsUtil.CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
 
-            mChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+            mChannel.setDescription(ConstantsUtil.CHANNEL_DESCRIPTION);
             mChannel.enableLights(false);
 
             mNotificationManager.createNotificationChannel(mChannel);
