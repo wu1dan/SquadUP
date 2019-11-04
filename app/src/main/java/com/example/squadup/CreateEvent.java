@@ -15,18 +15,16 @@ import java.util.Calendar;
 
 public class CreateEvent extends AppCompatActivity{
 
-    private Button btnCreateEvent, btnLocation, btnPickDate;
     private TextView date; //, location;
     private EditText eventName, categories, description, time, spotsTotal, location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private String sName, sCategories, sDescription, sTime, sLocation, sSpotsTotal, sDate, eventDate;
+    private String eventDate;
     private int totalSpots, year, day, month;
     private String[] aCategories;
     private Calendar calendar;
 
     private Intent intent;
 
-    private String defValue = "defValue";
     private String tempDate = "Your Date:";
 
     /*
@@ -51,17 +49,18 @@ public class CreateEvent extends AppCompatActivity{
         sharedPreferencesEditor.putString("Event ID", "0");
         sharedPreferencesEditor.apply();
 
-        sName = eventName.getText().toString();
-        sCategories = categories.getText().toString();
-        sDescription = description.getText().toString();
-        sTime = time.getText().toString();
-        sLocation = location.getText().toString();
-        sSpotsTotal = spotsTotal.getText().toString();
-        sDate = date.getText().toString();
+        String sName = eventName.getText().toString();
+        String sCategories = categories.getText().toString();
+        String sDescription = description.getText().toString();
+        String sTime = time.getText().toString();
+        String sLocation = location.getText().toString();
+        String sSpotsTotal = spotsTotal.getText().toString();
+        String sDate = date.getText().toString();
 
 
         aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
+        String defValue = "defValue";
         if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
             Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
             intent = new Intent(CreateEvent.this, MainActivity.class);
@@ -147,9 +146,9 @@ public class CreateEvent extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
-        btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
-        btnPickDate = (Button) findViewById(R.id.btnPickDate);                  //Pick Data Button
+        Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
+        Button btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
+        Button btnPickDate = (Button) findViewById(R.id.btnPickDate);                  //Pick Data Button
         eventName = (EditText) findViewById(R.id.tiEventName);                  //Event Name Text Input
         categories = (EditText) findViewById(R.id.tiCategories);                //Event Categories Text Input
         description = (EditText) findViewById(R.id.tiDescription);              //Event Description Text Input
@@ -181,9 +180,9 @@ public class CreateEvent extends AppCompatActivity{
 
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month += 1; //january is 0
-                eventDate = month + "/" + dayOfMonth + "/" + year;
+            public void onDateSet(DatePicker view, int year, int pickerMonth, int dayOfMonth) {
+                pickerMonth += 1; //january is 0
+                eventDate = pickerMonth + "/" + dayOfMonth + "/" + year;
                 date = (TextView)findViewById(R.id.tvDate);
                 date.setText(eventDate);
             }
