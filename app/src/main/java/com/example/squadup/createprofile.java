@@ -199,8 +199,7 @@ public class createprofile extends AppCompatActivity {
                     sharedPreferencesEditor.apply();
                 }
 
-
-                PostJSON();
+                ParseJSON();
 
 
                 /*if(userInfoJSON == null) {
@@ -229,8 +228,6 @@ public class createprofile extends AppCompatActivity {
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        sharedPreferencesEditor.putString("ProfilePicture", MediaStore.Images.Media.INTERNAL_CONTENT_URI.toString());
-        sharedPreferencesEditor.apply();
         startActivityForResult(intent, Image);
     }
 
@@ -245,9 +242,9 @@ public class createprofile extends AppCompatActivity {
         }
     }
 
-    public void GetJSON() {
+    public void ParseJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
-        final String url = "https://api.myjson.com/bins/au48c";  //    "https://api.myjson.com/bins/au48c";
+        final String url = "https://api.myjson.com/bins/au48c";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -299,8 +296,9 @@ public class createprofile extends AppCompatActivity {
 
     public void PostJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
+
         try {
-            String url = "20.43.19.13:3000/Users";
+            String url = "http://20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
@@ -324,17 +322,12 @@ public class createprofile extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     final Map<String, String> headers = new HashMap<>();
-                    headers.put("FirstName", sharedPreferences.getString("FirstName", ""));
-                    headers.put("LastName", sharedPreferences.getString("LastName", ""));
-                    headers.put("Email", sharedPreferences.getString("Email", ""));
-                    headers.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-                    headers.put("Gender", sharedPreferences.getString("Gender", ""));
-                    headers.put("UserID", sharedPreferences.getString("UserID", ""));
+                    headers.put("Content-Type", "application/json");
                     return headers;
                 }
             };
             queue.add(postRequest);
-
+            queue.start();
 
         } catch (JSONException exception) {
             exception.printStackTrace();
@@ -344,7 +337,7 @@ public class createprofile extends AppCompatActivity {
     public void PutJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "20.43.19.13";
+            String url = "";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
