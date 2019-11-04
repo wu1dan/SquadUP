@@ -18,7 +18,6 @@ public class CreateEvent extends AppCompatActivity{
     private TextView date; //, location;
     private EditText eventName, categories, description, time, spotsTotal, location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private String eventDate;
     private int totalSpots, year, day, month;
     private String[] aCategories;
     private Calendar calendar;
@@ -181,8 +180,8 @@ public class CreateEvent extends AppCompatActivity{
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int pickerMonth, int dayOfMonth) {
-                pickerMonth += 1; //january is 0
-                eventDate = pickerMonth + "/" + dayOfMonth + "/" + year;
+                int pMonth = pickerMonth + 1; //january is 0
+                String eventDate = pMonth + "/" + dayOfMonth + "/" + year;
                 date = (TextView)findViewById(R.id.tvDate);
                 date.setText(eventDate);
             }
