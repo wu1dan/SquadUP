@@ -6,6 +6,7 @@ import com.example.squadup.JSONParser;
 import android.content.Intent;
 //import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 //import android.widget.Toast;
@@ -21,11 +22,14 @@ import com.facebook.login.LoginManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApi;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 //import com.google.android.gms.tasks.OnCompleteListener;
 //import com.google.android.gms.tasks.Task;
 
 public class Settings extends AppCompatActivity {
-    private Button btnsignout, btnFirebase, btnGhostMode;
+    private Button btnsignout, btnFirebase, btnGhostMode, btnVolley;
     Boolean ghostMode = null;
 
     private static final String TAG = "Settings";
@@ -67,6 +71,23 @@ public class Settings extends AppCompatActivity {
 
                 //Intent intent = new Intent(Settings.this, FirebaseToken.class);
                 //startActivity(intent);
+            }
+        });
+
+        btnVolley = (Button) findViewById(R.id.btnVolley);                                     //BROWSE EVENTS
+        btnVolley.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("user", "Thomas");
+                    json.put("password", "fakepassword");
+                } catch (JSONException e) {
+                    Log.d("JSONParser", "Can't format JSON");
+                }
+
+                VolleyServerConnection.sendData(json.toString(), Settings.this);
+
             }
         });
 
