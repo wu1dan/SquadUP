@@ -12,7 +12,7 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class ExampleUnitTest {
     @Test
-    public void additionisCorrect() {
+    public void additionIsCorrect() {
         assertEquals(4, 2 + 2);
     }
 }
