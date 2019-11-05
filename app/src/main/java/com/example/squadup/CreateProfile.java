@@ -18,25 +18,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 
 public class CreateProfile extends AppCompatActivity {
 
@@ -71,7 +62,7 @@ public class CreateProfile extends AppCompatActivity {
             }
         });
 
-        Calendar();
+        calendar();
 
         Button btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +244,7 @@ public class CreateProfile extends AppCompatActivity {
         }
     }*/
 
-    private void Calendar(){
+    private void calendar(){
         Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
         btnDateofBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,6 +316,12 @@ public class CreateProfile extends AppCompatActivity {
         String Gender = spinGender.getSelectedItem().toString();
         sharedPreferencesEditor = sharedPreferences.edit();
 
+        changesCheck(firstName, lastName, Email, Gender);
+        changesReplace();
+
+    }
+
+    public void changesCheck(String firstName, String lastName, String Email, String Gender){
         if (!"".equals(firstName)) {
             sharedPreferencesEditor.putString("FirstName", firstName);
             sharedPreferencesEditor.apply();
@@ -346,7 +343,9 @@ public class CreateProfile extends AppCompatActivity {
             sharedPreferencesEditor.putString("Gender", Gender);
             sharedPreferencesEditor.apply();
         }
+    }
 
+    public void changesReplace(){
         if (!sharedPreferences.contains("FirstName")) {
             Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
             return;
