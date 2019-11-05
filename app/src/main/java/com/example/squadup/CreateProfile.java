@@ -72,88 +72,16 @@ public class CreateProfile extends AppCompatActivity {
         });
 
         Calendar();
-        
-        Spinner spinGender = findViewById(R.id.spinnerGender);
-        spinGender.setPrompt("Gender");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
-                android.R.layout.simple_list_item_1, spinnerGender);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinGender.setAdapter(arrayAdapter);
 
         Button btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TextView tbFirstName = findViewById(R.id.tbFirstName);
-                String firstName = tbFirstName.getText().toString();
-                TextView tbLastName = findViewById(R.id.tbLastName);
-                String lastName = tbLastName.getText().toString();
-                TextView tbEmail = findViewById(R.id.tbEmail);
-                String Email = tbEmail.getText().toString();
-                String Gender = spinGender.getSelectedItem().toString();
-                sharedPreferencesEditor = sharedPreferences.edit();
-
-
-                if (!"".equals(firstName)) {
-                    sharedPreferencesEditor.putString("FirstName", firstName);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"".equals(lastName)) {
-                    sharedPreferencesEditor.putString("LastName", lastName);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"".equals(Email)) {
-                    sharedPreferencesEditor.putString("Email", Email);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"69".equals(Date)) {
-                    sharedPreferencesEditor.putString("DateofBirth", Date);
-                    sharedPreferencesEditor.apply();
-                }
-
-                if (!"".equals(Gender)) {
-                    sharedPreferencesEditor.putString("Gender", Gender);
-                    sharedPreferencesEditor.apply();
-                }
-
-                if (!sharedPreferences.contains("FirstName")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("LastName")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("Email")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("DateofBirth")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("Gender")) {
-                    Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("UserID")) {
-                    sharedPreferencesEditor.putString("UserID", "69");
-                    sharedPreferencesEditor.apply();
-                }
+               saveChanges();
 
                 parseJSON();
 
-
-                /*if(userInfoJSON == null) {
-                    userInfoJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-                    userInfoJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-                    userInfoJSON.put("Email", sharedPreferences.getString("Email", ""));
-                    userInfoJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-                    userInfoJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-                }*/
-
-// ...
                 Intent intent = new Intent(CreateProfile.this, Profile.class);
                 startActivity(intent);
             }
@@ -185,7 +113,7 @@ public class CreateProfile extends AppCompatActivity {
         }
     }
 
-    public void okhttpGetRequest(){
+    /*public void okhttpGetRequest(){
         TextView tv69 = findViewById(R.id.textView69);
 
         OkHttpClient client = new OkHttpClient();
@@ -217,7 +145,7 @@ public class CreateProfile extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
     public void parseJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
@@ -239,7 +167,7 @@ public class CreateProfile extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    private void postJSON() {
+    /*private void postJSON() {
 
         try {
             String URL = "20.43.19.13:3000/Users";
@@ -281,9 +209,9 @@ public class CreateProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
-    public void putJSON() {
+    /*public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
             String url = "20.43.19.13:3000/Users";
@@ -323,7 +251,7 @@ public class CreateProfile extends AppCompatActivity {
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
-    }
+    }*/
 
     private void Calendar(){
         Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
@@ -377,5 +305,71 @@ public class CreateProfile extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void saveChanges(){
+
+        Spinner spinGender = findViewById(R.id.spinnerGender);
+        spinGender.setPrompt("Gender");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
+                android.R.layout.simple_list_item_1, spinnerGender);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinGender.setAdapter(arrayAdapter);
+
+        TextView tbFirstName = findViewById(R.id.tbFirstName);
+        String firstName = tbFirstName.getText().toString();
+        TextView tbLastName = findViewById(R.id.tbLastName);
+        String lastName = tbLastName.getText().toString();
+        TextView tbEmail = findViewById(R.id.tbEmail);
+        String Email = tbEmail.getText().toString();
+        String Gender = spinGender.getSelectedItem().toString();
+        sharedPreferencesEditor = sharedPreferences.edit();
+
+        if (!"".equals(firstName)) {
+            sharedPreferencesEditor.putString("FirstName", firstName);
+            sharedPreferencesEditor.apply();
+        }
+        if (!"".equals(lastName)) {
+            sharedPreferencesEditor.putString("LastName", lastName);
+            sharedPreferencesEditor.apply();
+        }
+        if (!"".equals(Email)) {
+            sharedPreferencesEditor.putString("Email", Email);
+            sharedPreferencesEditor.apply();
+        }
+        if (!"69".equals(Date)) {
+            sharedPreferencesEditor.putString("DateofBirth", Date);
+            sharedPreferencesEditor.apply();
+        }
+
+        if (!"".equals(Gender)) {
+            sharedPreferencesEditor.putString("Gender", Gender);
+            sharedPreferencesEditor.apply();
+        }
+
+        if (!sharedPreferences.contains("FirstName")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("LastName")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("Email")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("DateofBirth")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("Gender")) {
+            Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("UserID")) {
+            sharedPreferencesEditor.putString("UserID", "69");
+            sharedPreferencesEditor.apply();
+        }
     }
 }
