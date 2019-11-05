@@ -71,6 +71,189 @@ public class CreateProfile extends AppCompatActivity {
             }
         });
 
+        Calendar();
+
+        Button btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               saveChanges();
+
+                parseJSON();
+
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
+        btnEditProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(intent, Image);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 69 && requestCode == Image) {
+            uriImage = data.getData();
+            ImageView imgProfilePicture = findViewById(R.id.imgProfilePicture);
+            imgProfilePicture.setImageURI(uriImage);
+            sharedPreferencesEditor.putString("ProfilePicture", uriImage.toString());
+            sharedPreferencesEditor.apply();
+        }
+    }
+
+    /*public void okhttpGetRequest(){
+        TextView tv69 = findViewById(R.id.textView69);
+
+        OkHttpClient client = new OkHttpClient();
+
+        String url = "http://20.43.19.13:3000/Users";
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+                if(response.isSuccessful()){
+                    final String sresponse = response.body().string();
+
+                    CreateProfile.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv69.setText(sresponse);
+                        }
+                    });
+                }
+            }
+        });
+
+    }*/
+
+    public void parseJSON() {
+        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
+        final String url = "20.43.19.13:3000/Users";
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+            //Empty
+        });
+
+        queue.add(getRequest);
+    }
+
+    /*private void postJSON() {
+
+        try {
+            String URL = "20.43.19.13:3000/Users";
+            JSONObject userJSON = new JSONObject();
+
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+
+            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    Toast.makeText(getApplicationContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(CreateProfile.this);
+            requestQueue.add(jsonOblect);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }*/
+
+    /*public void putJSON() {
+        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
+        try {
+            String url = "20.43.19.13:3000/Users";
+            JSONObject userJSON = new JSONObject();
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+
+
+
+            JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(CreateProfile.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //yeet
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            queue.add(putRequest);
+
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+        }
+    }*/
+
+    private void Calendar(){
         Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
         btnDateofBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +305,9 @@ public class CreateProfile extends AppCompatActivity {
             }
 
         });
+    }
 
+    private void saveChanges(){
 
         Spinner spinGender = findViewById(R.id.spinnerGender);
         spinGender.setPrompt("Gender");
@@ -131,248 +316,60 @@ public class CreateProfile extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinGender.setAdapter(arrayAdapter);
 
-        Button btnSaveChanges = findViewById(R.id.btnSaveChanges);
-        btnSaveChanges.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        TextView tbFirstName = findViewById(R.id.tbFirstName);
+        String firstName = tbFirstName.getText().toString();
+        TextView tbLastName = findViewById(R.id.tbLastName);
+        String lastName = tbLastName.getText().toString();
+        TextView tbEmail = findViewById(R.id.tbEmail);
+        String Email = tbEmail.getText().toString();
+        String Gender = spinGender.getSelectedItem().toString();
+        sharedPreferencesEditor = sharedPreferences.edit();
 
-                TextView tbFirstName = findViewById(R.id.tbFirstName);
-                String firstName = tbFirstName.getText().toString();
-                TextView tbLastName = findViewById(R.id.tbLastName);
-                String lastName = tbLastName.getText().toString();
-                TextView tbEmail = findViewById(R.id.tbEmail);
-                String Email = tbEmail.getText().toString();
-                String Gender = spinGender.getSelectedItem().toString();
-                sharedPreferencesEditor = sharedPreferences.edit();
-
-
-                if (!"".equals(firstName)) {
-                    sharedPreferencesEditor.putString("FirstName", firstName);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"".equals(lastName)) {
-                    sharedPreferencesEditor.putString("LastName", lastName);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"".equals(Email)) {
-                    sharedPreferencesEditor.putString("Email", Email);
-                    sharedPreferencesEditor.apply();
-                }
-                if (!"69".equals(Date)) {
-                    sharedPreferencesEditor.putString("DateofBirth", Date);
-                    sharedPreferencesEditor.apply();
-                }
-
-                if (!"".equals(Gender)) {
-                    sharedPreferencesEditor.putString("Gender", Gender);
-                    sharedPreferencesEditor.apply();
-                }
-
-                if (!sharedPreferences.contains("FirstName")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("LastName")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("Email")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("DateofBirth")) {
-                    Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("Gender")) {
-                    Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!sharedPreferences.contains("UserID")) {
-                    sharedPreferencesEditor.putString("UserID", "69");
-                    sharedPreferencesEditor.apply();
-                }
-
-                parseJSON();
-
-
-                /*if(userInfoJSON == null) {
-                    userInfoJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-                    userInfoJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-                    userInfoJSON.put("Email", sharedPreferences.getString("Email", ""));
-                    userInfoJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-                    userInfoJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-                }*/
-
-// ...
-                Intent intent = new Intent(CreateProfile.this, Profile.class);
-                startActivity(intent);
-            }
-        });
-
-        Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
-        btnEditProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
-
-    }
-
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(intent, Image);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 69 && requestCode == Image) {
-            uriImage = data.getData();
-            ImageView imgProfilePicture = findViewById(R.id.imgProfilePicture);
-            imgProfilePicture.setImageURI(uriImage);
-            sharedPreferencesEditor.putString("ProfilePicture", uriImage.toString());
+        if (!"".equals(firstName)) {
+            sharedPreferencesEditor.putString("FirstName", firstName);
             sharedPreferencesEditor.apply();
         }
-    }
-
-    public void okhttpGetRequest(){
-        TextView tv69 = findViewById(R.id.textView69);
-
-        OkHttpClient client = new OkHttpClient();
-
-        String url = "http://20.43.19.13:3000/Users";
-
-        okhttp3.Request request = new okhttp3.Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                if(response.isSuccessful()){
-                    final String sresponse = response.body().string();
-
-                    CreateProfile.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv69.setText(sresponse);
-                        }
-                    });
-                }
-            }
-        });
-
-    }
-
-    public void parseJSON() {
-        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
-        final String url = "20.43.19.13:3000/Users";
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-            //Empty
-        });
-
-        queue.add(getRequest);
-    }
-
-    private void postJSON() {
-
-        try {
-            String URL = "20.43.19.13:3000/Users";
-            JSONObject userJSON = new JSONObject();
-
-            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            userJSON.put("Email", sharedPreferences.getString("Email", ""));
-            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
-            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-
-            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    Toast.makeText(getApplicationContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(CreateProfile.this);
-            requestQueue.add(jsonOblect);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (!"".equals(lastName)) {
+            sharedPreferencesEditor.putString("LastName", lastName);
+            sharedPreferencesEditor.apply();
+        }
+        if (!"".equals(Email)) {
+            sharedPreferencesEditor.putString("Email", Email);
+            sharedPreferencesEditor.apply();
+        }
+        if (!"69".equals(Date)) {
+            sharedPreferencesEditor.putString("DateofBirth", Date);
+            sharedPreferencesEditor.apply();
         }
 
-    }
+        if (!"".equals(Gender)) {
+            sharedPreferencesEditor.putString("Gender", Gender);
+            sharedPreferencesEditor.apply();
+        }
 
-    public void putJSON() {
-        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
-        try {
-            String url = "20.43.19.13:3000/Users";
-            JSONObject userJSON = new JSONObject();
-            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            userJSON.put("Email", sharedPreferences.getString("Email", ""));
-            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
-            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
-
-
-
-            JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    Toast.makeText(CreateProfile.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //yeet
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-            queue.add(putRequest);
-
-
-        } catch (JSONException exception) {
-            exception.printStackTrace();
+        if (!sharedPreferences.contains("FirstName")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("LastName")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("Email")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("DateofBirth")) {
+            Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("Gender")) {
+            Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!sharedPreferences.contains("UserID")) {
+            sharedPreferencesEditor.putString("UserID", "69");
+            sharedPreferencesEditor.apply();
         }
     }
 }
