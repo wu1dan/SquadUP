@@ -125,27 +125,41 @@ public class CreateEvent extends AppCompatActivity{
             //Updating shared preferences so that this event they just made is put into their current event
             //Event ID will be generated, hardcoded 0 is just a placeholder
 
-            sharedPreferencesEditor.putString("Event ID", "96");
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Name", sName);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Categories", sCategories);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Description", sDescription);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Time", sTime);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Date", sDate);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Event Location", sLocation);
-            sharedPreferencesEditor.apply();
-            sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
-            sharedPreferencesEditor.apply();
+            updateSharedPrefs(sName, sCategories, sDescription, sTime, sDate, sLocation, sSpotsTotal);
 
             intent = new Intent(CreateEvent.this, CurrentEvent.class);
             startActivity(intent);
         }
         //leave this empty
+    }
+
+    protected void updateSharedPrefs(String spName, String spCategories, String spDescription, String spTime,
+                                     String spDate, String spLocation, String spSpotsTotal){
+
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString("Event ID", "0");
+        sharedPreferencesEditor.apply();
+
+        sharedPreferencesEditor.putString("Event ID", "96");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Name", spName);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Categories", spCategories);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Description", spDescription);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Time", spTime);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Date", spDate);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Event Location", spLocation);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("Total Spots", spSpotsTotal);
+        sharedPreferencesEditor.apply();
+
     }
 
     @Override
