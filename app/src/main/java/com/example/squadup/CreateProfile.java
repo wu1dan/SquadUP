@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,25 +38,23 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 
-public class createprofile extends AppCompatActivity {
+public class CreateProfile extends AppCompatActivity {
 
     private TextView tvDateofBirth;
 
     private String Date = "69";
     private String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
-    Spinner spinGender;
-    ImageView imgProfilePicture;
-    LocalDate currentDate = LocalDate.now();
+    private LocalDate currentDate = LocalDate.now();
     private int currentYear = currentDate.getYear();
     private int currentMonth = currentDate.getMonthValue();
     private int currentDay = currentDate.getDayOfMonth();
     private Uri uriImage;
 
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor sharedPreferencesEditor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferencesEditor;
 
-    int Image = 1;
+    private int Image = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class createprofile extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                final DatePickerDialog dateofbirthpicker = new DatePickerDialog(createprofile.this, new DatePickerDialog.OnDateSetListener() {
+                final DatePickerDialog dateofbirthpicker = new DatePickerDialog(CreateProfile.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         int monthCorrection = month + 1;
@@ -92,13 +89,13 @@ public class createprofile extends AppCompatActivity {
                         String syear = Integer.toString(year);
 
                         if (currentYear - year <= 18){
-                            Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         if (currentYear - year == 18) {
                             if (currentMonth - monthCorrection == 0) {
                                 if (currentDay - day < 0) {
-                                    Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                     return;
                                 } else if (currentDay - day >= 0) {
                                     Date = (smonth + "/" + sday + "/" + syear);
@@ -111,7 +108,7 @@ public class createprofile extends AppCompatActivity {
                                 tvDateofBirth = findViewById(R.id.tvDateofBirth);
                                 tvDateofBirth.setText(Date);
                             } else if (currentMonth - monthCorrection < 0) {
-                                Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } else {
@@ -127,9 +124,9 @@ public class createprofile extends AppCompatActivity {
         });
 
 
-        spinGender = findViewById(R.id.spinnerGender);
+        Spinner spinGender = findViewById(R.id.spinnerGender);
         spinGender.setPrompt("Gender");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(createprofile.this,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
                 android.R.layout.simple_list_item_1, spinnerGender);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinGender.setAdapter(arrayAdapter);
@@ -172,23 +169,23 @@ public class createprofile extends AppCompatActivity {
                 }
 
                 if (!sharedPreferences.contains("FirstName")) {
-                    Toast.makeText(createprofile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Please fill in a valid First Name.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!sharedPreferences.contains("LastName")) {
-                    Toast.makeText(createprofile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Please fill in a valid Last Name.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!sharedPreferences.contains("Email")) {
-                    Toast.makeText(createprofile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!sharedPreferences.contains("DateofBirth")) {
-                    Toast.makeText(createprofile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!sharedPreferences.contains("Gender")) {
-                    Toast.makeText(createprofile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!sharedPreferences.contains("UserID")) {
@@ -208,7 +205,7 @@ public class createprofile extends AppCompatActivity {
                 }*/
 
 // ...
-                Intent intent = new Intent(createprofile.this, Profile.class);
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
                 startActivity(intent);
             }
         });
@@ -232,7 +229,7 @@ public class createprofile extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 69 && requestCode == Image) {
             uriImage = data.getData();
-            imgProfilePicture = findViewById(R.id.imgProfilePicture);
+            ImageView imgProfilePicture = findViewById(R.id.imgProfilePicture);
             imgProfilePicture.setImageURI(uriImage);
             sharedPreferencesEditor.putString("ProfilePicture", uriImage.toString());
             sharedPreferencesEditor.apply();
@@ -261,7 +258,7 @@ public class createprofile extends AppCompatActivity {
                 if(response.isSuccessful()){
                     final String sresponse = response.body().string();
 
-                    createprofile.this.runOnUiThread(new Runnable() {
+                    CreateProfile.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             tv69.setText(sresponse);
@@ -274,7 +271,7 @@ public class createprofile extends AppCompatActivity {
     }
 
     public void parseJSON() {
-        RequestQueue queue = Volley.newRequestQueue(createprofile.this);
+        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         final String url = "20.43.19.13:3000/Users";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -328,7 +325,7 @@ public class createprofile extends AppCompatActivity {
                     return headers;
                 }
             };
-            RequestQueue requestQueue = Volley.newRequestQueue(createprofile.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(CreateProfile.this);
             requestQueue.add(jsonOblect);
 
         } catch (JSONException e) {
@@ -338,7 +335,7 @@ public class createprofile extends AppCompatActivity {
     }
 
     public void putJSON() {
-        RequestQueue queue = Volley.newRequestQueue(createprofile.this);
+        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
             String url = "20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
@@ -356,12 +353,12 @@ public class createprofile extends AppCompatActivity {
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Toast.makeText(createprofile.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateProfile.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    //yeet
                 }
             }) {
                 @Override
