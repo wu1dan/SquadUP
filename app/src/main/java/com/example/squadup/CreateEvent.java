@@ -9,7 +9,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+//import android.widget.*;
 
 import java.util.Calendar;
 

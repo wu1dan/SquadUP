@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
 
     private Button btnGhostMode;
 
-    private static final String TAG = "Settings";
+   // private static final String TAG = "Settings";
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
