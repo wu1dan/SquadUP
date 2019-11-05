@@ -28,7 +28,18 @@ public class CreateEvent extends AppCompatActivity{
     private EditText spotsTotal;
     private EditText location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private String sName;
+    private String sCategories;
+    private String sDescription;
+    private String sTime;
+    private String sLocation;
+    private String sSpotsTotal;
+    private String sDate;
    // private String[] aCategories;
+
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferencesEditor;
 
     private Intent intent;
 
@@ -49,20 +60,20 @@ public class CreateEvent extends AppCompatActivity{
 
     private void createEvent(){
 
-        SharedPreferences sharedPreferences;
-        SharedPreferences.Editor sharedPreferencesEditor;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString("Event ID", "0");
         sharedPreferencesEditor.apply();
 
-        String sName = eventName.getText().toString();
-        String sCategories = categories.getText().toString();
-        String sDescription = description.getText().toString();
-        String sTime = time.getText().toString();
-        String sLocation = location.getText().toString();
-        String sSpotsTotal = spotsTotal.getText().toString();
-        String sDate = date.getText().toString();
+        sName = eventName.getText().toString();
+        sCategories = categories.getText().toString();
+        sDescription = description.getText().toString();
+        sTime = time.getText().toString();
+        sLocation = location.getText().toString();
+        sSpotsTotal = spotsTotal.getText().toString();
+        sDate = date.getText().toString();
+
+        Boolean areParamsFilled;
 
 
       //  aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
@@ -77,55 +88,20 @@ public class CreateEvent extends AppCompatActivity{
             intent = new Intent(CreateEvent.this, PendingEvent.class);
 
         }else{
-            if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
-                Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            areParamsFilled = checkAllInputs();
 
-            if (sCategories.length() == 0) {
-                Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
+            if(!areParamsFilled)
                 return;
-            }
-
-            if (sDescription.length() == 0) {
-                Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (sTime.length() == 0) {
-                Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (sLocation.length() == 0) {
-                Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if(sDate.equals(tempDate)){
-                Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-            if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null) { //the null thing doesn't actually work, need to catch NumberFormatException
-                Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (Integer.valueOf(sSpotsTotal) < 2) {
-                Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
 
             //use this space to assign event with all its above parameters into the database
 
 
-
             //Updating shared preferences so that this event they just made is put into their current event
             //Event ID will be generated, hardcoded 0 is just a placeholder
 
-            updateSharedPrefs(sName, sCategories, sDescription, sTime, sDate, sLocation, sSpotsTotal);
+            updateSharedPrefs();
 
             intent = new Intent(CreateEvent.this, CurrentEvent.class);
             startActivity(intent);
@@ -133,31 +109,65 @@ public class CreateEvent extends AppCompatActivity{
         //leave this empty
     }
 
-    protected void updateSharedPrefs(String spName, String spCategories, String spDescription, String spTime,
-                                     String spDate, String spLocation, String spSpotsTotal){
+    protected Boolean checkAllInputs(){
+        if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
+            Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-        SharedPreferences sharedPreferences;
-        SharedPreferences.Editor sharedPreferencesEditor;
+        if (sCategories.length() == 0) {
+            Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (sDescription.length() == 0) {
+            Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (sTime.length() == 0) {
+            Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (sLocation.length() == 0) {
+            Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if(sDate.equals(tempDate)){
+            Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null || Integer.valueOf(sSpotsTotal) < 2) { //the null thing doesn't actually work, need to catch NumberFormatException
+            Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    protected void updateSharedPrefs(){
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putString("Event ID", "0");
         sharedPreferencesEditor.apply();
 
-        sharedPreferencesEditor.putString("Event ID", "96");
+        sharedPreferencesEditor.putString("Event Name", sName);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Name", spName);
+        sharedPreferencesEditor.putString("Event Categories", sCategories);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Categories", spCategories);
+        sharedPreferencesEditor.putString("Event Description", sDescription);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Description", spDescription);
+        sharedPreferencesEditor.putString("Event Time", sTime);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Time", spTime);
+        sharedPreferencesEditor.putString("Event Date", sDate);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Date", spDate);
+        sharedPreferencesEditor.putString("Event Location", sLocation);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Location", spLocation);
-        sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Total Spots", spSpotsTotal);
+        sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
         sharedPreferencesEditor.apply();
 
     }
@@ -169,16 +179,17 @@ public class CreateEvent extends AppCompatActivity{
 
         Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
         Button btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
+        btnLocation.setEnabled(false);
         Button btnPickDate = (Button) findViewById(R.id.btnPickDate);                  //Pick Data Button
-        eventName = (EditText) findViewById(R.id.tiEventName);                  //Event Name Text Input
-        categories = (EditText) findViewById(R.id.tiCategories);                //Event Categories Text Input
-        description = (EditText) findViewById(R.id.tiDescription);              //Event Description Text Input
-        time = (EditText) findViewById(R.id.tiTime);                            //Time Text Input
-        //location = (TextView) findViewById(R.id.tiLocation);                  //Location Text View
-        location = (EditText) findViewById(R.id.tiLocation);                    //Location Text Input
-        spotsTotal = (EditText) findViewById(R.id.tiSpotsTotal);                //Total Spots Text Input
-        date = (TextView)findViewById(R.id.tvDate);                             //Date Text View
-        date.setText(tempDate);                                                 //for if condition later
+        eventName = (EditText) findViewById(R.id.tiEventName);                         //Event Name Text Input
+        categories = (EditText) findViewById(R.id.tiCategories);                       //Event Categories Text Input
+        description = (EditText) findViewById(R.id.tiDescription);                     //Event Description Text Input
+        time = (EditText) findViewById(R.id.tiTime);                                   //Time Text Input
+        //location = (TextView) findViewById(R.id.tiLocation);                         //Location Text View
+        location = (EditText) findViewById(R.id.tiLocation);                           //Location Text Input
+        spotsTotal = (EditText) findViewById(R.id.tiSpotsTotal);                       //Total Spots Text Input
+        date = (TextView)findViewById(R.id.tvDate);                                    //Date Text View
+        date.setText(tempDate);                                                        //for if condition later
 
         btnLocation.setOnClickListener(v -> {
             intent = new Intent(CreateEvent.this, LocationPickerMap.class);
