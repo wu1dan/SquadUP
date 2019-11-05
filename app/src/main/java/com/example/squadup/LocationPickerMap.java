@@ -22,7 +22,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import android.text.TextUtils;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+//import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -36,8 +36,8 @@ import java.util.List;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
+//import androidx.annotation.StringRes;
+//import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -90,6 +90,7 @@ public class LocationPickerMap extends AppCompatActivity {
         final AutocompleteSupportFragment autocompleteSupportFragment =
                 (AutocompleteSupportFragment)
                         getSupportFragmentManager().findFragmentById(R.id.autocomplete_support_fragment);
+        assert autocompleteSupportFragment != null;
         autocompleteSupportFragment.setPlaceFields(getPlaceFields());
         autocompleteSupportFragment.setOnPlaceSelectedListener(getPlaceSelectionListener());
         findViewById(R.id.autocomplete_support_fragment_update_button)
@@ -131,12 +132,13 @@ public class LocationPickerMap extends AppCompatActivity {
             if (resultCode == AutocompleteActivity.RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(intent);
                 responseView.setText(
-                        "This is a placeholder message because StringUtils doesn't work");
+                        place.toString());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 Status status = Autocomplete.getStatusFromIntent(intent);
                 responseView.setText(status.getStatusMessage());
             } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
                 // The user canceled the operation.
+                System.out.println("User cancelled operation.");
             }
         }
 
@@ -259,9 +261,9 @@ public class LocationPickerMap extends AppCompatActivity {
         return isOverlayMode ? AutocompleteActivityMode.OVERLAY : AutocompleteActivityMode.FULLSCREEN;
     }
 
-    private boolean isDisplayRawResultsChecked() {
+ /*   private boolean isDisplayRawResultsChecked() {
         return ((CheckBox) findViewById(R.id.display_raw_results)).isChecked();
-    }
+    } */
 
     private boolean isUseSessionTokenChecked() {
         return ((CheckBox) findViewById(R.id.autocomplete_use_session_token)).isChecked();
@@ -270,11 +272,11 @@ public class LocationPickerMap extends AppCompatActivity {
     private void setLoading(boolean loading) {
         findViewById(R.id.loading).setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
     }
-
+/*
     private void showErrorAlert(@StringRes int messageResId) {
         new AlertDialog.Builder(this)
                 .setTitle(0)
                 .setMessage(messageResId)
                 .show();
-    }
+    } */
 }

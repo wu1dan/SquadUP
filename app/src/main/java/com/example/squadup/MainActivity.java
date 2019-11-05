@@ -29,10 +29,6 @@ import com.google.firebase.iid.InstanceIdResult;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnCreateEvent, btnCurrentEvent, btnProfile;
-
-    private Intent intent;
-
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
         switch(item.getItemId()){
             case R.id.btnSettings:
-                intent = new Intent(this, Settings.class);
+                Intent intent = new Intent(this, Settings.class);
                 this.startActivity(intent);
                 return true;
         }
@@ -74,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        btnCreateEvent = (Button)findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
+        Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnCurrentEvent = (Button)findViewById(R.id.btnCurrentEvent);                                     //BROWSE EVENTS
+        Button btnCurrentEvent = (Button) findViewById(R.id.btnCurrentEvent);                                     //BROWSE EVENTS
         btnCurrentEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -92,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnProfile = (Button)findViewById(R.id.btnProfile);                                     //PROFILE
+        Button btnProfile = (Button) findViewById(R.id.btnProfile);                                     //PROFILE
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
