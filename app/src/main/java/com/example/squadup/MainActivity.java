@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, Settings.class);
                 this.startActivity(intent);
                 return true;
+            default:
+                Toast.makeText(MainActivity.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -141,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         if (!sharedPreferences.contains("DateofBirth")){
-            Intent intent = new Intent(MainActivity.this, createprofile.class);
+            Intent intent = new Intent(MainActivity.this, CreateProfile.class);
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
