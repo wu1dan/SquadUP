@@ -42,7 +42,6 @@ import okhttp3.OkHttpClient;
 public class createprofile extends AppCompatActivity {
 
 
-    private Button btnInterests;
     private EditText tbFirstName;
     private EditText tbLastName;
     private EditText tbEmail;
@@ -56,9 +55,9 @@ public class createprofile extends AppCompatActivity {
     Spinner spinGender;
     ImageView imgProfilePicture;
     LocalDate currentDate = LocalDate.now();
-    int currentYear = currentDate.getYear();
-    int currentMonth = currentDate.getMonthValue();
-    int currentDay = currentDate.getDayOfMonth();
+    private int currentYear = currentDate.getYear();
+    private int currentMonth = currentDate.getMonthValue();
+    private int currentDay = currentDate.getDayOfMonth();
     Uri uriImage;
 
 
@@ -78,7 +77,7 @@ public class createprofile extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                okhttpGetRequest();
+                ParseJSON();
             }
         });
 
@@ -157,24 +156,24 @@ public class createprofile extends AppCompatActivity {
                 sharedPreferencesEditor = sharedPreferences.edit();
 
 
-                if ("".equals(firstName)) {
+                if (!"".equals(firstName)) {
                     sharedPreferencesEditor.putString("FirstName", firstName);
                     sharedPreferencesEditor.apply();
                 }
-                if ("".equals(lastName)) {
+                if (!"".equals(lastName)) {
                     sharedPreferencesEditor.putString("LastName", lastName);
                     sharedPreferencesEditor.apply();
                 }
-                if ("".equals(Email)) {
+                if (!"".equals(Email)) {
                     sharedPreferencesEditor.putString("Email", Email);
                     sharedPreferencesEditor.apply();
                 }
-                if ("69".equals(Date)) {
+                if (!"69".equals(Date)) {
                     sharedPreferencesEditor.putString("DateofBirth", Date);
                     sharedPreferencesEditor.apply();
                 }
 
-                if ("".equals(Gender)) {
+                if (!"".equals(Gender)) {
                     sharedPreferencesEditor.putString("Gender", Gender);
                     sharedPreferencesEditor.apply();
                 }

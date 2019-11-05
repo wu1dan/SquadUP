@@ -63,7 +63,6 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
                 startActivity(intent);
                 finish();
-                return;
             }
 
             @Override
@@ -138,7 +137,7 @@ public class Login extends AppCompatActivity {
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
             Toast.makeText(Login.this, "User has signed in successfully", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Login.this, MainActivity.class);

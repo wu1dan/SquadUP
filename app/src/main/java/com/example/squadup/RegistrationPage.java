@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 public class RegistrationPage extends AppCompatActivity {
 
-    private Button btnRegistration;
     private EditText Email, VerifyEmail, Password, VerifyPassword, FirstName, LastName;
 
     @Override
@@ -26,7 +25,7 @@ public class RegistrationPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
 
-        btnRegistration = (Button) findViewById(R.id.btnrpRegisterNow);   //Register now Button
+        Button btnRegistration = (Button) findViewById(R.id.btnrpRegisterNow);   //Register now Button
         Email = (EditText) findViewById(R.id.tbEmail);    //Email Textbox
         VerifyEmail = (EditText) findViewById(R.id.tbVerifiedEmail);  //Verify Email Textbox
         Password = (EditText) findViewById(R.id.tbPassword);  //Password Textbox
