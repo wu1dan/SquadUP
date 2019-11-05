@@ -185,11 +185,10 @@ public class Login extends AppCompatActivity {
                 sharedPreferencesEditor.apply();
             }
         }
-        if (!sharedPreferences.contains("GoogleIDToken")) {
-            if (personPhoto != null) {
-                sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
-                sharedPreferencesEditor.apply();
-            }
+        if (!sharedPreferences.contains("GoogleIDToken") && personPhoto != null) {
+            sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
+            sharedPreferencesEditor.apply();
+
         }
     }
 }

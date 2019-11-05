@@ -11,7 +11,12 @@ import android.widget.Toast;
 
 public class RegistrationPage extends AppCompatActivity {
 
-    private EditText Email, VerifyEmail, Password, VerifyPassword, FirstName, LastName;
+    private EditText Email;
+    private EditText VerifyEmail;
+    private EditText Password;
+    private EditText VerifyPassword;
+    private EditText FirstName;
+    private EditText LastName;
 
     @Override
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE

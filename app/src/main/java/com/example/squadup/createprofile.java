@@ -41,16 +41,9 @@ import okhttp3.OkHttpClient;
 
 public class createprofile extends AppCompatActivity {
 
-
-    private EditText tbFirstName;
-    private EditText tbLastName;
-    private EditText tbEmail;
     private TextView tvDateofBirth;
-    private String firstName;
-    private String lastName;
-    private String Email;
+
     private String Date = "69";
-    private String Gender;
     private String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
     Spinner spinGender;
     ImageView imgProfilePicture;
@@ -58,7 +51,7 @@ public class createprofile extends AppCompatActivity {
     private int currentYear = currentDate.getYear();
     private int currentMonth = currentDate.getMonthValue();
     private int currentDay = currentDate.getDayOfMonth();
-    Uri uriImage;
+    private Uri uriImage;
 
 
     SharedPreferences sharedPreferences;
@@ -77,7 +70,7 @@ public class createprofile extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseJSON();
+                parseJSON();
             }
         });
 
@@ -93,7 +86,7 @@ public class createprofile extends AppCompatActivity {
                 final DatePickerDialog dateofbirthpicker = new DatePickerDialog(createprofile.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        month += 1;
+                        int monthCorrection = month + 1;
                         String sday = Integer.toString(day);
                         String smonth = Integer.toString(month);
                         String syear = Integer.toString(year);
@@ -103,7 +96,7 @@ public class createprofile extends AppCompatActivity {
                             return;
                         }
                         if (currentYear - year == 18) {
-                            if (currentMonth - month == 0) {
+                            if (currentMonth - monthCorrection == 0) {
                                 if (currentDay - day < 0) {
                                     Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                     return;
@@ -113,11 +106,11 @@ public class createprofile extends AppCompatActivity {
                                     tvDateofBirth.setText(Date);
                                 }
                             }
-                            if (currentMonth - month > 0) {
+                            if (currentMonth - monthCorrection > 0) {
                                 Date = (smonth + "/" + sday + "/" + syear);
                                 tvDateofBirth = findViewById(R.id.tvDateofBirth);
                                 tvDateofBirth.setText(Date);
-                            } else if (currentMonth - month < 0) {
+                            } else if (currentMonth - monthCorrection < 0) {
                                 Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
@@ -146,13 +139,13 @@ public class createprofile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                tbFirstName = findViewById(R.id.tbFirstName);
-                firstName = tbFirstName.getText().toString();
-                tbLastName = findViewById(R.id.tbLastName);
-                lastName = tbLastName.getText().toString();
-                tbEmail = findViewById(R.id.tbEmail);
-                Email = tbEmail.getText().toString();
-                Gender = spinGender.getSelectedItem().toString();
+                TextView tbFirstName = findViewById(R.id.tbFirstName);
+                String firstName = tbFirstName.getText().toString();
+                TextView tbLastName = findViewById(R.id.tbLastName);
+                String lastName = tbLastName.getText().toString();
+                TextView tbEmail = findViewById(R.id.tbEmail);
+                String Email = tbEmail.getText().toString();
+                String Gender = spinGender.getSelectedItem().toString();
                 sharedPreferencesEditor = sharedPreferences.edit();
 
 
@@ -203,7 +196,7 @@ public class createprofile extends AppCompatActivity {
                     sharedPreferencesEditor.apply();
                 }
 
-                ParseJSON();
+                parseJSON();
 
 
                 /*if(userInfoJSON == null) {
@@ -280,7 +273,7 @@ public class createprofile extends AppCompatActivity {
 
     }
 
-    public void ParseJSON() {
+    public void parseJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         final String url = "20.43.19.13:3000/Users";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -300,7 +293,7 @@ public class createprofile extends AppCompatActivity {
         queue.add(getRequest);
     }
 
-    private void PostJSON() {
+    private void postJSON() {
 
         try {
             String URL = "20.43.19.13:3000/Users";
@@ -344,7 +337,7 @@ public class createprofile extends AppCompatActivity {
 
     }
 
-    public void PutJSON() {
+    public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
             String url = "20.43.19.13:3000/Users";
