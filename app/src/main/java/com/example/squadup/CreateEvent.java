@@ -23,9 +23,6 @@ public class CreateEvent extends AppCompatActivity{
     private EditText spotsTotal;
     private EditText location;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
-    private int year;
-    private int day;
-    private int month;
    // private String[] aCategories;
 
     private Intent intent;
@@ -105,15 +102,14 @@ public class CreateEvent extends AppCompatActivity{
                 return;
             }
 
-            int totalSpots;
+
             if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null) { //the null thing doesn't actually work, need to catch NumberFormatException
                 Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
                 return;
             } else if (Integer.valueOf(sSpotsTotal) < 2) {
                 Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
                 return;
-            } else
-                totalSpots = Integer.valueOf(sSpotsTotal);             //converts total spot string into integers
+            }            
 
             Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
 
@@ -174,9 +170,9 @@ public class CreateEvent extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                day = calendar.get(Calendar.DAY_OF_MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog eventDatePicker = new DatePickerDialog(CreateEvent.this, android.R.style.Theme_Black,
                         mDateSetListener, year, month, day);
