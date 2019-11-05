@@ -71,59 +71,8 @@ public class CreateProfile extends AppCompatActivity {
             }
         });
 
-        Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
-        btnDateofBirth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                final DatePickerDialog dateofbirthpicker = new DatePickerDialog(CreateProfile.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int day) {
-                        int monthCorrection = month + 1;
-                        String sday = Integer.toString(day);
-                        String smonth = Integer.toString(month);
-                        String syear = Integer.toString(year);
-
-                        if (currentYear - year <= 18){
-                            Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (currentYear - year == 18) {
-                            if (currentMonth - monthCorrection == 0) {
-                                if (currentDay - day < 0) {
-                                    Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else if (currentDay - day >= 0) {
-                                    Date = (smonth + "/" + sday + "/" + syear);
-                                    tvDateofBirth = findViewById(R.id.tvDateofBirth);
-                                    tvDateofBirth.setText(Date);
-                                }
-                            }
-                            if (currentMonth - monthCorrection > 0) {
-                                Date = (smonth + "/" + sday + "/" + syear);
-                                tvDateofBirth = findViewById(R.id.tvDateofBirth);
-                                tvDateofBirth.setText(Date);
-                            } else if (currentMonth - monthCorrection < 0) {
-                                Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        } else {
-                            Date = (smonth + "/" + sday + "/" + syear);
-                            tvDateofBirth = findViewById(R.id.tvDateofBirth);
-                            tvDateofBirth.setText(Date);
-                        }
-                    }
-                }, day, month, year);
-                dateofbirthpicker.show();
-            }
-
-        });
-
-
+        Calendar();
+        
         Spinner spinGender = findViewById(R.id.spinnerGender);
         spinGender.setPrompt("Gender");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
@@ -374,5 +323,59 @@ public class CreateProfile extends AppCompatActivity {
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
+    }
+
+    private void Calendar(){
+        Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
+        btnDateofBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                final DatePickerDialog dateofbirthpicker = new DatePickerDialog(CreateProfile.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        int monthCorrection = month + 1;
+                        String sday = Integer.toString(day);
+                        String smonth = Integer.toString(month);
+                        String syear = Integer.toString(year);
+
+                        if (currentYear - year <= 18){
+                            Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (currentYear - year == 18) {
+                            if (currentMonth - monthCorrection == 0) {
+                                if (currentDay - day < 0) {
+                                    Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else if (currentDay - day >= 0) {
+                                    Date = (smonth + "/" + sday + "/" + syear);
+                                    tvDateofBirth = findViewById(R.id.tvDateofBirth);
+                                    tvDateofBirth.setText(Date);
+                                }
+                            }
+                            if (currentMonth - monthCorrection > 0) {
+                                Date = (smonth + "/" + sday + "/" + syear);
+                                tvDateofBirth = findViewById(R.id.tvDateofBirth);
+                                tvDateofBirth.setText(Date);
+                            } else if (currentMonth - monthCorrection < 0) {
+                                Toast.makeText(CreateProfile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } else {
+                            Date = (smonth + "/" + sday + "/" + syear);
+                            tvDateofBirth = findViewById(R.id.tvDateofBirth);
+                            tvDateofBirth.setText(Date);
+                        }
+                    }
+                }, day, month, year);
+                dateofbirthpicker.show();
+            }
+
+        });
     }
 }
