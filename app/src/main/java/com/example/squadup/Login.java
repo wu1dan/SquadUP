@@ -126,6 +126,7 @@ public class Login extends AppCompatActivity {
             GoogleSignInAccount googleAcct = signInResult.getSignInAccount();
 
             saveGoogleInfo(googleAcct);
+            getUserID(googleAcct);
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
@@ -157,8 +158,6 @@ public class Login extends AppCompatActivity {
         String googleFirstName = googleAcct.getGivenName();       //self explanatory
         String googleLastName = googleAcct.getFamilyName();     //self explanatory
         String googleEmail = googleAcct.getEmail();       //self explanatory
-        String personID = googleAcct.getId();          //unique id
-        String IDToken = googleAcct.getIdToken();     //id token can be sent to server
         Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
 
         if (!sharedPreferences.contains("FirstName")) {
@@ -173,17 +172,23 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.putString("Email", googleEmail);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("ProfilePicture")) {
-            if (personPhoto != null) {
-                sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
-                sharedPreferencesEditor.apply();
-            }
+        if (!sharedPreferences.contains("ProfilePicture") && personPhoto != null) {
+            sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
+            sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("GoogleID") && personPhoto != null) {
+    }
+
+    private void getUserID(GoogleSignInAccount googleAcct){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+
+        String personID = googleAcct.getId();          //unique id
+        String IDToken = googleAcct.getIdToken();     //id token can be sent to server
+        if (!sharedPreferences.contains("GoogleID")) {
             sharedPreferencesEditor.putString("GoogleID", personID);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("GoogleIDToken") && personPhoto != null) {
+        if (!sharedPreferences.contains("GoogleIDToken")) {
             sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
             sharedPreferencesEditor.apply();
 
