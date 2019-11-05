@@ -23,7 +23,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.example.squadup.MainActivity.sharedPreferences;
