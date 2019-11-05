@@ -41,20 +41,18 @@ import okhttp3.OkHttpClient;
 
 public class createprofile extends AppCompatActivity {
 
-    Button btnDateofBirth;
-    Button btnSaveChanges;
-    Button btnInterests;
-    Button btnEditProfilePicture;
-    EditText tbFirstName;
-    EditText tbLastName;
-    EditText tbEmail;
-    TextView tvDateofBirth;
-    String firstName;
-    String lastName;
-    String Email;
-    String Date = "69";
-    String Gender;
-    String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
+
+    private Button btnInterests;
+    private EditText tbFirstName;
+    private EditText tbLastName;
+    private EditText tbEmail;
+    private TextView tvDateofBirth;
+    private String firstName;
+    private String lastName;
+    private String Email;
+    private String Date = "69";
+    private String Gender;
+    private String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
     Spinner spinGender;
     ImageView imgProfilePicture;
     LocalDate currentDate = LocalDate.now();
@@ -84,7 +82,7 @@ public class createprofile extends AppCompatActivity {
             }
         });
 
-        btnDateofBirth = findViewById(R.id.btnDateofBirth);
+        Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
         btnDateofBirth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +142,7 @@ public class createprofile extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinGender.setAdapter(arrayAdapter);
 
-        btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        Button btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,24 +157,24 @@ public class createprofile extends AppCompatActivity {
                 sharedPreferencesEditor = sharedPreferences.edit();
 
 
-                if (!firstName.equals("")) {
+                if ("".equals(firstName)) {
                     sharedPreferencesEditor.putString("FirstName", firstName);
                     sharedPreferencesEditor.apply();
                 }
-                if (!lastName.equals("")) {
+                if ("".equals(lastName)) {
                     sharedPreferencesEditor.putString("LastName", lastName);
                     sharedPreferencesEditor.apply();
                 }
-                if (!Email.equals("")) {
+                if ("".equals(Email)) {
                     sharedPreferencesEditor.putString("Email", Email);
                     sharedPreferencesEditor.apply();
                 }
-                if (!Date.equals("69")) {
+                if ("69".equals(Date)) {
                     sharedPreferencesEditor.putString("DateofBirth", Date);
                     sharedPreferencesEditor.apply();
                 }
 
-                if (!Gender.equals("")) {
+                if ("".equals(Gender)) {
                     sharedPreferencesEditor.putString("Gender", Gender);
                     sharedPreferencesEditor.apply();
                 }
@@ -223,7 +221,7 @@ public class createprofile extends AppCompatActivity {
             }
         });
 
-        btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
+        Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
         btnEditProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -297,6 +295,7 @@ public class createprofile extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
+            //Empty
         });
 
         queue.add(getRequest);
