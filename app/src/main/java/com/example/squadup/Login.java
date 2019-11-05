@@ -32,10 +32,7 @@ public class Login extends AppCompatActivity {
 
     private final String TAG = "Homepage";
     private CallbackManager callbackManager;
-    GoogleSignInClient googleSignInClient;
-    private SignInButton googlesigninbutton;
-
-    private Button btnLogin;
+    private GoogleSignInClient googleSignInClient;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
@@ -53,7 +50,7 @@ public class Login extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn){
+        if (isLoggedIn) {
             Intent intent = new Intent(Login.this, Facebook.class); //next step is homepage
             startActivity(intent);
             finish();
@@ -61,7 +58,7 @@ public class Login extends AppCompatActivity {
 
         btnfb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult){
+            public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "User has successfully logged in");
                 Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
                 startActivity(intent);
@@ -70,29 +67,25 @@ public class Login extends AppCompatActivity {
             }
 
             @Override
-            public void onCancel(){
+            public void onCancel() {
                 Log.d(TAG, "User has cancelled the login process");
             }
 
             @Override
-            public void onError(FacebookException exception){
+            public void onError(FacebookException exception) {
                 Log.d(TAG, "There was an error. Please try again");
             }
         });
 
 
-
-
-
-        btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button
-        Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);   //Registration button
-        btnRegistration.setOnClickListener(new View.OnClickListener() {  //Sends you to registration page
+        //Button btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button, might be deleting self registration later
+        Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);
+        btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, RegistrationPage.class); //next step is registration page
                 startActivity(intent);
                 finish();
-                return;
             }
         });
 
@@ -103,7 +96,7 @@ public class Login extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);  //get the google sign in client
 
-        googlesigninbutton = findViewById(R.id.btngsi);
+        SignInButton googlesigninbutton = findViewById(R.id.btngsi);
         googlesigninbutton.setOnClickListener(new View.OnClickListener() {      //when button is pressed
             @Override
             public void onClick(View v) {           //when google sign in button pressed, start up signIn class
@@ -112,6 +105,9 @@ public class Login extends AppCompatActivity {
                         signIn();
                         break;
                     // ...
+                    default:
+                        Toast.makeText(Login.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         });
@@ -130,52 +126,11 @@ public class Login extends AppCompatActivity {
             GoogleSignInResult signInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             GoogleSignInAccount googleAcct = signInResult.getSignInAccount();
 
-            SharedPreferences sharedPreferences;
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-
-            String googleFirstName = googleAcct.getGivenName();       //self explanatory
-            String googleLastName = googleAcct.getFamilyName();     //self explanatory
-            String googleEmail = googleAcct.getEmail();       //self explanatory
-            String personID = googleAcct.getId();          //unique id
-            String IDToken = googleAcct.getIdToken();     //id token can be sent to server
-            Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
-
-            if (!sharedPreferences.contains("FirstName")){
-                sharedPreferencesEditor.putString("FirstName", googleFirstName);
-                sharedPreferencesEditor.apply();
-            }
-            if (!sharedPreferences.contains("LastName")){
-                sharedPreferencesEditor.putString("LastName", googleLastName);
-                sharedPreferencesEditor.apply();
-            }
-            if (!sharedPreferences.contains("Email")){
-                sharedPreferencesEditor.putString("Email", googleEmail);
-                sharedPreferencesEditor.apply();
-            }
-            if (!sharedPreferences.contains("ProfilePicture")){
-                if(personPhoto != null) {
-                    sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
-                    sharedPreferencesEditor.apply();
-                }
-            }
-            if (!sharedPreferences.contains("GoogleID")){
-                if(personPhoto != null) {
-                    sharedPreferencesEditor.putString("GoogleID", personID);
-                    sharedPreferencesEditor.apply();
-                }
-            }
-            if (!sharedPreferences.contains("GoogleIDToken")){
-                if(personPhoto != null) {
-                    sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
-                    sharedPreferencesEditor.apply();
-                }
-            }
+            saveGoogleInfo(googleAcct);
 
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-        }
-        else{
+        } else {
             callbackManager.onActivityResult(requestCode, resultCode, data);
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -196,8 +151,48 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    private void saveGoogleInfo(GoogleSignInAccount googleAcct) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
+        String googleFirstName = googleAcct.getGivenName();       //self explanatory
+        String googleLastName = googleAcct.getFamilyName();     //self explanatory
+        String googleEmail = googleAcct.getEmail();       //self explanatory
+        String personID = googleAcct.getId();          //unique id
+        String IDToken = googleAcct.getIdToken();     //id token can be sent to server
+        Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
 
+        if (!sharedPreferences.contains("FirstName")) {
+            sharedPreferencesEditor.putString("FirstName", googleFirstName);
+            sharedPreferencesEditor.apply();
+        }
+        if (!sharedPreferences.contains("LastName")) {
+            sharedPreferencesEditor.putString("LastName", googleLastName);
+            sharedPreferencesEditor.apply();
+        }
+        if (!sharedPreferences.contains("Email")) {
+            sharedPreferencesEditor.putString("Email", googleEmail);
+            sharedPreferencesEditor.apply();
+        }
+        if (!sharedPreferences.contains("ProfilePicture")) {
+            if (personPhoto != null) {
+                sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
+                sharedPreferencesEditor.apply();
+            }
+        }
+        if (!sharedPreferences.contains("GoogleID")) {
+            if (personPhoto != null) {
+                sharedPreferencesEditor.putString("GoogleID", personID);
+                sharedPreferencesEditor.apply();
+            }
+        }
+        if (!sharedPreferences.contains("GoogleIDToken")) {
+            if (personPhoto != null) {
+                sharedPreferencesEditor.putString("GoogleIDToken", IDToken);
+                sharedPreferencesEditor.apply();
+            }
+        }
+    }
 }
 
 
