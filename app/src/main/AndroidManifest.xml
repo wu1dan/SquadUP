@@ -101,7 +101,7 @@
             android:name=".FirebaseToken"
             android:parentActivityName=".Settings" />
         <activity android:name=".Interests" />
-        <activity android:name=".createprofile" />
+        <activity android:name=".CreateProfile" />
         <activity android:name=".Facebook" />
     </application>
 
