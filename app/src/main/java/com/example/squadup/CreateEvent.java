@@ -110,36 +110,96 @@ public class CreateEvent extends AppCompatActivity{
     }
 
     protected Boolean checkAllInputs(){
+        Boolean params = true;
+
+        params = checkName();
+        if(!params)
+            return params;
+
+        params = checkCategories();
+        if(!params)
+            return params;
+
+        params = checkDescription();
+        if(!params)
+            return params;
+
+        params = checkTime();
+        if(!params)
+            return params;
+
+        params = checkLocation();
+        if(!params)
+            return params;
+
+        params = checkDate();
+        if(!params)
+            return params;
+
+        params = checkSpots();
+        if(!params)
+            return params;
+
+        return params;
+    }
+
+    //BELOW ARE ALL HELPER METHODS USED ABOVE
+
+    protected Boolean checkName(){
         if (sName.length() == 0) {                   //ERROR MESSAGES IF MISSING INFORMATION OR VERIFIED DOES NOT MATCH ORIGINAL
             Toast.makeText(CreateEvent.this, "Please enter a valid event name", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkCategories(){
         if (sCategories.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter at least one relevant event category", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkDescription(){
         if (sDescription.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter an event description", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkTime(){
         if (sTime.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkLocation(){
         if (sLocation.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkDate(){
         if(sDate.equals(tempDate)){
             Toast.makeText(CreateEvent.this, "Please enter a valid date", Toast.LENGTH_SHORT).show();
             return false;
         }
 
+        return true;
+    }
+
+    protected Boolean checkSpots(){
         if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null || Integer.valueOf(sSpotsTotal) < 2) { //the null thing doesn't actually work, need to catch NumberFormatException
             Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
             return false;
