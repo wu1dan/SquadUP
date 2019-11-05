@@ -36,8 +36,8 @@ import java.util.List;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AlertDialog;
+//import androidx.annotation.StringRes;
+//import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -138,6 +138,7 @@ public class LocationPickerMap extends AppCompatActivity {
                 responseView.setText(status.getStatusMessage());
             } else if (resultCode == AutocompleteActivity.RESULT_CANCELED) {
                 // The user canceled the operation.
+                System.out.println("User cancelled operation.");
             }
         }
 

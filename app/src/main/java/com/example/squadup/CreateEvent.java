@@ -109,7 +109,7 @@ public class CreateEvent extends AppCompatActivity{
             } else if (Integer.valueOf(sSpotsTotal) < 2) {
                 Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
                 return;
-            }            
+            }
 
             Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
 

@@ -92,25 +92,7 @@ public class PendingEvent extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(PendingEvent.this, "Successfully joined the event!", Toast.LENGTH_SHORT).show();
-                    MainActivity.editor.putString("Event ID", tempID); //put in the event id that was used to fetch the json
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Name", tempName);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Categories", tempCategories);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Description", tempDescription);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Time", tempTime);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Date", tempDate);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Event Location", tempLocation);
-                    MainActivity.editor.apply();
-                    MainActivity.editor.putString("Total Spots", tempTotalSpots);
-                    MainActivity.editor.apply();
-
-                    deleteTempPrefs();
+                    pendingToCurrent();
 
                     Intent intent = new Intent(PendingEvent.this, CurrentEvent.class);
                     startActivity(intent);
@@ -135,6 +117,29 @@ public class PendingEvent extends AppCompatActivity {
             //they have no pending event
             tvPName.setText("You have no pending events! Update your interests or turn off Ghost Mode to get a match sooner.");
         }
+    }
+
+    private void pendingToCurrent() {
+
+        Toast.makeText(PendingEvent.this, "Successfully joined the event!", Toast.LENGTH_SHORT).show();
+        MainActivity.editor.putString("Event ID", tempID); //put in the event id that was used to fetch the json
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Name", tempName);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Categories", tempCategories);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Description", tempDescription);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Time", tempTime);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Date", tempDate);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Event Location", tempLocation);
+        MainActivity.editor.apply();
+        MainActivity.editor.putString("Total Spots", tempTotalSpots);
+        MainActivity.editor.apply();
+
+        deleteTempPrefs();
     }
 
     private void deleteTempPrefs(){
