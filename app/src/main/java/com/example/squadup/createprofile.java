@@ -250,7 +250,7 @@ public class createprofile extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient();
 
-        String url = "https://reqres.in/api/users?page=2";
+        String url = "http://20.43.19.13:3000/Users";
 
         okhttp3.Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -281,47 +281,11 @@ public class createprofile extends AppCompatActivity {
 
     public void ParseJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
-        final String url = "http://10.0.2.2:3000/Users";
+        final String url = "20.43.19.13:3000/Users";
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
-                /*try {
-                    JSONObject returnedJsonObject = response.getJSONObject("User");
-                    String jsonFirstName = returnedJsonObject.getString("FirstName");
-                    String jsonLastName = returnedJsonObject.getString("LastName");
-                    String jsonEmail = returnedJsonObject.getString("Email");
-                    String jsonDateofBirth = returnedJsonObject.getString("DateofBirth");
-                    String jsonUserID = returnedJsonObject.getString("UserID");
-                    String jsonGender = returnedJsonObject.getString("Gender");
-
-                    if (!sharedPreferences.getString("FirstName", "").equals(jsonFirstName)) {
-                        sharedPreferencesEditor.putString("FirstName", jsonFirstName);
-                        sharedPreferencesEditor.apply();
-                    }
-                    if (!sharedPreferences.getString("LastName", "").equals(jsonLastName)) {
-                        sharedPreferencesEditor.putString("LastName", jsonLastName);
-                        sharedPreferencesEditor.apply();
-                    }
-                    if (!sharedPreferences.getString("Email", "").equals(jsonEmail)) {
-                        sharedPreferencesEditor.putString("Email", jsonEmail);
-                        sharedPreferencesEditor.apply();
-                    }
-                    if (!sharedPreferences.getString("DateofBirth", "").equals(jsonDateofBirth)) {
-                        sharedPreferencesEditor.putString("DateofBirth", jsonDateofBirth);
-                        sharedPreferencesEditor.apply();
-                    }
-                    if (!sharedPreferences.getString("Gender", "").equals(jsonGender)) {
-                        sharedPreferencesEditor.putString("Gender", jsonGender);
-                        sharedPreferencesEditor.apply();
-                    }
-                    sharedPreferencesEditor.putString("UserID", jsonUserID);
-                    sharedPreferencesEditor.apply();
-                } catch (JSONException exception) {
-                    exception.printStackTrace();
-                }
-                */
-
 
             }
         }, new Response.ErrorListener() {
@@ -337,25 +301,27 @@ public class createprofile extends AppCompatActivity {
     private void PostJSON() {
 
         try {
-            String URL = "http://10.0.2.2:3000/Users";
-            JSONObject jsonBody = new JSONObject();
+            String URL = "20.43.19.13:3000/Users";
+            JSONObject userJSON = new JSONObject();
 
-            jsonBody.put("email", "abc@abc.com");
-            jsonBody.put("password", "");
-            jsonBody.put("user_type", "");
-            jsonBody.put("company_id", "");
-            jsonBody.put("status", "");
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
 
-            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
 
-                    Toast.makeText(getApplicationContext(), "Response:  " + response.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "xddddd", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
                     onBackPressed();
 
                 }
@@ -363,7 +329,7 @@ public class createprofile extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     final Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "Basic " + "c2FnYXJAa2FydHBheS5jb206cnMwM2UxQUp5RnQzNkQ5NDBxbjNmUDgzNVE3STAyNzI=");//put your token here
+                    headers.put("Content-Type", "application/json");
                     return headers;
                 }
             };
@@ -373,16 +339,13 @@ public class createprofile extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_LONG).show();
-
 
     }
-
 
     public void PutJSON() {
         RequestQueue queue = Volley.newRequestQueue(createprofile.this);
         try {
-            String url = "http://10.0.2.2:3000/Users";
+            String url = "20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
@@ -391,6 +354,7 @@ public class createprofile extends AppCompatActivity {
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
 
 
 
@@ -408,12 +372,7 @@ public class createprofile extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     final Map<String, String> headers = new HashMap<>();
-                    headers.put("FirstName", sharedPreferences.getString("FirstName", ""));
-                    headers.put("LastName", sharedPreferences.getString("LastName", ""));
-                    headers.put("Email", sharedPreferences.getString("Email", ""));
-                    headers.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-                    headers.put("Gender", sharedPreferences.getString("Gender", ""));
-                    headers.put("UserID", sharedPreferences.getString("UserID", ""));
+                    headers.put("Content-Type", "application/json");
                     return headers;
                 }
             };

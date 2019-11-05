@@ -31,21 +31,16 @@ import com.google.android.gms.tasks.Task;
 public class Login extends AppCompatActivity {
 
     private final String TAG = "Homepage";
+    private CallbackManager callbackManager;
+    GoogleSignInClient googleSignInClient;
+    private SignInButton googlesigninbutton;
+
+    private Button btnLogin;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
         finish();
     }
-
-    private CallbackManager callbackManager;
-
-    GoogleSignInClient googleSignInClient;
-    private SignInButton googlesigninbutton;
-
-    private Button btnLogin;
-    private Button btnRegistration;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +85,7 @@ public class Login extends AppCompatActivity {
 
 
         btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button
-        btnRegistration = (Button) findViewById(R.id.btnRegisternow);   //Registration button
+        Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);   //Registration button
         btnRegistration.setOnClickListener(new View.OnClickListener() {  //Sends you to registration page
             @Override
             public void onClick(View v) {
