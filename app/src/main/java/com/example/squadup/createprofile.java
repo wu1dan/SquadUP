@@ -101,10 +101,14 @@ public class createprofile extends AppCompatActivity {
                         String smonth = Integer.toString(month);
                         String syear = Integer.toString(year);
 
-                        if (currentYear - year <= 18) {
+                        if (currentYear - year <= 18){
+                            Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (currentYear - year == 18) {
                             if (currentMonth - month == 0) {
                                 if (currentDay - day < 0) {
-                                    Toast.makeText(createprofile.this, "You must be 18 to use squadUP. :(", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(createprofile.this, "You must be 18 to use squadUP.", Toast.LENGTH_SHORT).show();
                                     return;
                                 } else if (currentDay - day >= 0) {
                                     Date = (smonth + "/" + sday + "/" + syear);
