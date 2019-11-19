@@ -5,6 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +33,12 @@ import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -145,8 +158,56 @@ public class MainActivity extends AppCompatActivity {
 
         if (!sharedPreferences.contains("DateofBirth")){
             Intent intent = new Intent(MainActivity.this, CreateProfile.class);
+            postJSON();
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
+    }
+
+    private void postJSON() {
+
+        try {
+            String URL = "http://20.43.19.13:3000/Users";
+            JSONObject userJSON = new JSONObject();
+
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", "tempID");
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+
+
+            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    Toast.makeText(getApplicationContext(), "Welcome to SquadUP!", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            requestQueue.add(postRequest);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 }
