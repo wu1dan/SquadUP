@@ -44,7 +44,7 @@ public class Interests extends AppCompatActivity {
         sharedPreferencesEditor.apply();
 
         super.onBackPressed();
-        this.finish();
+        finish();
     }
 
 

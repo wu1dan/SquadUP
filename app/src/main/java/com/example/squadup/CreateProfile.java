@@ -33,11 +33,14 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+
+import static com.example.squadup.MainActivity.sharedPreferences;
 
 public class CreateProfile extends AppCompatActivity {
 
@@ -56,6 +59,12 @@ public class CreateProfile extends AppCompatActivity {
     private SharedPreferences.Editor sharedPreferencesEditor;
 
     private int Image = 1;
+    @Override
+    public void onBackPressed() {
+        putJSON();
+        Intent intent = new Intent(CreateProfile.this, MainActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +72,25 @@ public class CreateProfile extends AppCompatActivity {
         setContentView(R.layout.activity_createprofile);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Button button = findViewById(R.id.button69);
+        Spinner spinGender = findViewById(R.id.spinnerGender);
+        spinGender.setPrompt("Gender");
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
+                android.R.layout.simple_list_item_1, spinnerGender);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinGender.setAdapter(arrayAdapter);
+        TextView tv69 = findViewById(R.id.textView69);
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        //Button button = findViewById(R.id.button69);
+
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 putJSON();
             }
-        });
+        });*/
+
+
 
         calendar();
 
@@ -79,8 +99,20 @@ public class CreateProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-               saveChanges();
-                postJSON();
+                saveChanges();
+                String Gender = spinGender.getSelectedItem().toString();
+
+                if (!"".equals(Gender)) {
+                    sharedPreferencesEditor.putString("Gender", Gender);
+                    sharedPreferencesEditor.apply();
+                }
+
+                if (!sharedPreferences.contains("Gender")) {
+                    Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //postJSON();
 
                 Intent intent = new Intent(CreateProfile.this, Profile.class);
                 startActivity(intent);
@@ -182,7 +214,7 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", new HashSet<String>()));
             userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
             userJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
 
@@ -270,28 +302,20 @@ public class CreateProfile extends AppCompatActivity {
 
     private void saveChanges(){
 
-        Spinner spinGender = findViewById(R.id.spinnerGender);
-        spinGender.setPrompt("Gender");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
-                android.R.layout.simple_list_item_1, spinnerGender);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinGender.setAdapter(arrayAdapter);
-
         TextView tbFirstName = findViewById(R.id.tbFirstName);
         String firstName = tbFirstName.getText().toString();
         TextView tbLastName = findViewById(R.id.tbLastName);
         String lastName = tbLastName.getText().toString();
         TextView tbEmail = findViewById(R.id.tbEmail);
         String Email = tbEmail.getText().toString();
-        String Gender = spinGender.getSelectedItem().toString();
         sharedPreferencesEditor = sharedPreferences.edit();
 
-        changesCheck(firstName, lastName, Email, Gender);
+        changesCheck(firstName, lastName, Email);
         changesReplace();
 
     }
 
-    public void changesCheck(String firstName, String lastName, String Email, String Gender){
+    public void changesCheck(String firstName, String lastName, String Email){
         if (!"".equals(firstName)) {
             sharedPreferencesEditor.putString("FirstName", firstName);
             sharedPreferencesEditor.apply();
@@ -306,11 +330,6 @@ public class CreateProfile extends AppCompatActivity {
         }
         if (!"69".equals(Date)) {
             sharedPreferencesEditor.putString("DateofBirth", Date);
-            sharedPreferencesEditor.apply();
-        }
-
-        if (!"".equals(Gender)) {
-            sharedPreferencesEditor.putString("Gender", Gender);
             sharedPreferencesEditor.apply();
         }
     }
@@ -332,10 +351,7 @@ public class CreateProfile extends AppCompatActivity {
             Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!sharedPreferences.contains("Gender")) {
-            Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         if (!sharedPreferences.contains("UserID")) {
             sharedPreferencesEditor.putString("UserID", "69");
             sharedPreferencesEditor.apply();
@@ -368,7 +384,7 @@ public class CreateProfile extends AppCompatActivity {
                 }
             }, new Response.ErrorListener() {
                 @Override
-                public void onErrorResponse(VolleyError error) {
+                public void onErrorResponse(VolleyError error)   {
                     Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
 
                 }

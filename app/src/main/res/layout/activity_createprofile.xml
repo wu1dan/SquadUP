@@ -165,7 +165,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:gravity="center" />
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
 
 
         </LinearLayout>
