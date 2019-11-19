@@ -38,6 +38,9 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        String title = "default";
+        String body = "default";
+
         Log.e(TAG, remoteMessage.getData().size() + " is the size of the data");
 
         if (!sharedPreferences.getBoolean("Ghost Mode", false)) { //if ghost mode is off, receive the notification.
@@ -46,10 +49,16 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 eventID = remoteMessage.getData().get(0);
                 sharedPreferencesEditor.putString("Pending Event", eventID);
 
+                //set the title and body from the notification data here, and then it will use that in the notification below
+
+
+
             }
 
-            String title = remoteMessage.getNotification().getTitle();
-            String body = remoteMessage.getNotification().getBody();
+            else {
+                title = remoteMessage.getNotification().getTitle();
+                body = remoteMessage.getNotification().getBody();
+            }
 
             MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
 
