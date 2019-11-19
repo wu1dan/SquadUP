@@ -18,16 +18,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 
 public class CreateProfile extends AppCompatActivity {
 
@@ -58,7 +68,7 @@ public class CreateProfile extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parseJSON();
+                putJSON();
             }
         });
 
@@ -70,8 +80,7 @@ public class CreateProfile extends AppCompatActivity {
             public void onClick(View v) {
 
                saveChanges();
-
-                parseJSON();
+                postJSON();
 
                 Intent intent = new Intent(CreateProfile.this, Profile.class);
                 startActivity(intent);
@@ -104,7 +113,7 @@ public class CreateProfile extends AppCompatActivity {
         }
     }
 
-    /*public void okhttpGetRequest(){
+    public void okhttpGetRequest(){
         TextView tv69 = findViewById(R.id.textView69);
 
         OkHttpClient client = new OkHttpClient();
@@ -136,76 +145,35 @@ public class CreateProfile extends AppCompatActivity {
             }
         });
 
-    }*/
-
-    public void parseJSON() {
-        RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
-        final String url = "20.43.19.13:3000/Users";
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-            //Empty
-        });
-
-        queue.add(getRequest);
     }
 
-    /*private void postJSON() {
+    public void getJSON() {
+            RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
+            final String url = "http://20.43.19.13:3000/Users";
+            JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-        try {
-            String URL = "20.43.19.13:3000/Users";
-            JSONObject userJSON = new JSONObject();
-
-            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            userJSON.put("Email", sharedPreferences.getString("Email", ""));
-            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
-            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-
-            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                        TextView textView69 = findViewById(R.id.textView69);
+                        textView69.setText(response.toString());
+                        Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(getApplicationContext(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-
+                    error.printStackTrace();
                 }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(CreateProfile.this);
-            requestQueue.add(jsonOblect);
+                //Empty
+            });
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            queue.add(getRequest);
+    }
 
-    }*/
-
-    /*public void putJSON() {
+        public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
-            String url = "20.43.19.13:3000/Users";
+            String url = "http://20.43.19.13:3000/Users";
             JSONObject userJSON = new JSONObject();
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
@@ -215,6 +183,8 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
             userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+            userJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
 
 
 
@@ -242,7 +212,7 @@ public class CreateProfile extends AppCompatActivity {
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
-    }*/
+    }
 
     private void calendar(){
         Button btnDateofBirth = findViewById(R.id.btnDateofBirth);
@@ -370,5 +340,48 @@ public class CreateProfile extends AppCompatActivity {
             sharedPreferencesEditor.putString("UserID", "69");
             sharedPreferencesEditor.apply();
         }
+    }
+    private void postJSON() {
+        String URL = "http://20.43.19.13:3000/Users";
+        JSONObject userJSON = new JSONObject();
+
+        try {
+            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
+            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            userJSON.put("Email", sharedPreferences.getString("Email", ""));
+            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            userJSON.put("UserID", "tempID");
+            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    Toast.makeText(getApplicationContext(), "Welcome to SquadUP!", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(CreateProfile.this);
+            requestQueue.add(postRequest);
+
     }
 }
