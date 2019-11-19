@@ -41,7 +41,6 @@ import static org.hamcrest.Matchers.is;
 public class CreateEventTest {
 
 
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -51,16 +50,9 @@ public class CreateEventTest {
         MainActivity.editor.putString("DateofBirth", "0");
         MainActivity.editor.apply();
 
-
-        ViewInteraction appCompatButton77 = onView(
-                allOf(withId(R.id.btnCreateEvent), withText("Create Event"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("androidx.coordinatorlayout.widget.CoordinatorLayout")),
-                                        3),
-                                0),
-                        isDisplayed()));
-        appCompatButton77.perform(click());
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withText("Create Event"), withId(R.id.btnCreateEvent)));
+        appCompatButton4.perform(click());
 
         ViewInteraction textInputEditText = onView(
                 allOf(withId(R.id.tiEventName),
@@ -70,7 +62,7 @@ public class CreateEventTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("Dummy Event"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("Dummy Name"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.tiCategories),
@@ -80,9 +72,19 @@ public class CreateEventTest {
                                         0),
                                 3),
                         isDisplayed()));
-        textInputEditText2.perform(replaceText("Categories"), closeSoftKeyboard());
+        textInputEditText2.perform(click());
 
         ViewInteraction textInputEditText3 = onView(
+                allOf(withId(R.id.tiCategories),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                3),
+                        isDisplayed()));
+        textInputEditText3.perform(replaceText("b"), closeSoftKeyboard());
+
+        ViewInteraction textInputEditText4 = onView(
                 allOf(withId(R.id.tiDescription),
                         childAtPosition(
                                 childAtPosition(
@@ -90,9 +92,9 @@ public class CreateEventTest {
                                         0),
                                 4),
                         isDisplayed()));
-        textInputEditText3.perform(replaceText("Description"), closeSoftKeyboard());
+        textInputEditText4.perform(replaceText("c"), closeSoftKeyboard());
 
-        ViewInteraction textInputEditText4 = onView(
+        ViewInteraction textInputEditText5 = onView(
                 allOf(withId(R.id.tiTime),
                         childAtPosition(
                                 childAtPosition(
@@ -100,17 +102,7 @@ public class CreateEventTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textInputEditText4.perform(replaceText("12:30"), closeSoftKeyboard());
-
-        ViewInteraction textInputEditText5 = onView(
-                allOf(withId(R.id.tiSpotsTotal),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textInputEditText5.perform(click());
+        textInputEditText5.perform(replaceText("d"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText6 = onView(
                 allOf(withId(R.id.tiSpotsTotal),
@@ -120,37 +112,7 @@ public class CreateEventTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textInputEditText6.perform(replaceText("6"), closeSoftKeyboard());
-
-        ViewInteraction textInputEditText7 = onView(
-                allOf(withId(R.id.tiSpotsTotal), withText("6"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textInputEditText7.perform(click());
-
-        ViewInteraction textInputEditText8 = onView(
-                allOf(withId(R.id.tiSpotsTotal), withText("6"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textInputEditText8.perform(replaceText("6"));
-
-        ViewInteraction textInputEditText9 = onView(
-                allOf(withId(R.id.tiSpotsTotal), withText("6"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textInputEditText9.perform(closeSoftKeyboard());
+        textInputEditText6.perform(replaceText("5"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.tiLocation),
@@ -160,37 +122,7 @@ public class CreateEventTest {
                                         0),
                                 7),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("Location"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText5 = onView(
-                allOf(withId(R.id.tiLocation), withText("Location"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatEditText5.perform(click());
-
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.tiLocation), withText("Location"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatEditText6.perform(replaceText("Location"));
-
-        ViewInteraction appCompatEditText7 = onView(
-                allOf(withId(R.id.tiLocation), withText("Location"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatEditText7.perform(closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("e"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.btnPickDate), withText("Pick Date"),
@@ -223,14 +155,14 @@ public class CreateEventTest {
         appCompatButton7.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tvCName), withText("Dummy Event"),
+                allOf(withId(R.id.tvCName), withText("Dummy Name"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Dummy Event")));
+        textView.check(matches(withText("Dummy Name")));
     }
 
     private static Matcher<View> childAtPosition(
