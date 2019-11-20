@@ -61,7 +61,7 @@ public class PendingEvent extends AppCompatActivity {
         tvPLocation.setText("");
         tvPTotalSpots.setText("");
 
-        String defValue = "defValue";
+        String defValue = "";
 
         if (!MainActivity.sharedPreferences.getString("tempID", defValue).equals(defValue)) { //they have a pending event
 
