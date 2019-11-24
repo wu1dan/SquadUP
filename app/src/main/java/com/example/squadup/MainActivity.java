@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
+    private boolean paused = false;
     private final String TAG = "MainActivity";
 
 
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.optionsmenu, menu);
         return true;
     }
-
 
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
         switch(item.getItemId()){
@@ -73,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
+
+        String defValue = "defValue";
 
         if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { //only need to create a channel on android oreo and above
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -99,8 +104,18 @@ public class MainActivity extends AppCompatActivity {
         btnCurrentEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, CurrentEvent.class);
-                startActivity(intent);
+
+                if(!sharedPreferences.getString("tempID", defValue).equals(defValue)){ //if they have a pending event
+
+                    Intent intent = new Intent(MainActivity.this, PendingEvent.class);
+                    startActivity(intent);
+
+                }else { //the only other option when this button is clicked is if they have a current event
+
+                    Intent intent = new Intent(MainActivity.this, CurrentEvent.class);
+                    startActivity(intent);
+
+                }
             }
         });
 
@@ -112,6 +127,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if(!sharedPreferences.getString("EventName", defValue).equals(defValue)){ //if they are already in an event, "EventName" will not be the default
+            btnCreateEvent.setEnabled(false);
+            btnCurrentEvent.setText("Current Event");
+            Toast.makeText(MainActivity.this,"create" + sharedPreferences.getString("EventName", defValue), Toast.LENGTH_SHORT).show();
+        }else if(!sharedPreferences.getString("tempID", defValue).equals(defValue)){ //this means that they do have a pending event
+            btnCreateEvent.setEnabled(false);
+            btnCurrentEvent.setText("Pending Event");
+        }else{ //if they don't have a current or pending event
+            btnCreateEvent.setEnabled(true);
+            btnCurrentEvent.setText("No Current or Pending Events!");
+            btnCurrentEvent.setEnabled(false);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -130,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharedPreferences.edit();
 
         //retrieve firebase token
         FirebaseInstanceId.getInstance().getInstanceId()

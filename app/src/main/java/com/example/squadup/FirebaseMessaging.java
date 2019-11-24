@@ -24,6 +24,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
     private static final String TAG = "FirebaseMessaging";
     public static String eventID;
+    public static String notificationTitle = "";
 
     @Override
     public void onNewToken(String s) {
@@ -58,6 +59,8 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             else {
                 title = remoteMessage.getNotification().getTitle();
                 body = remoteMessage.getNotification().getBody();
+
+                notificationTitle = remoteMessage.getNotification().getTitle();
             }
 
             MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);

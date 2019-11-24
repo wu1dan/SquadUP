@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,8 @@ public class PendingEvent extends AppCompatActivity {
     private String tempDate;
     private String tempLocation;
     private String tempTotalSpots;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor sharedPreferencesEditor;
 
     //tv stands for TextView, P distinguishes they are for the Pending Event (Current event will use very similar names)
 
@@ -36,8 +39,8 @@ public class PendingEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pending_event);
 
-        MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        MainActivity.editor = MainActivity.sharedPreferences.edit();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferencesEditor = sharedPreferences.edit();
 
         Button btnYes = (Button) findViewById(R.id.btnYes);
         Button btnNo = (Button) findViewById(R.id.btnNo);
@@ -53,7 +56,7 @@ public class PendingEvent extends AppCompatActivity {
         TextView tvPLocation = (TextView) findViewById(R.id.tvPLocation);
         TextView tvPTotalSpots = (TextView) findViewById(R.id.tvPTotalSpots);
 
-        tvPName.setText("");
+        tvPName.setText(FirebaseMessaging.notificationTitle);
         tvPCategories.setText("");
         tvPDescription.setText("");
         tvPTime.setText("");
@@ -63,7 +66,7 @@ public class PendingEvent extends AppCompatActivity {
 
         String defValue = "";
 
-        if (!MainActivity.sharedPreferences.getString("tempID", defValue).equals(defValue)) { //they have a pending event
+        if (sharedPreferences.getString("tempID", defValue).equals(defValue)) { //they have a pending event
 
             btnYes.setEnabled(true);
             btnNo.setEnabled(true);
@@ -122,42 +125,42 @@ public class PendingEvent extends AppCompatActivity {
     private void pendingToCurrent() {
 
         Toast.makeText(PendingEvent.this, "Successfully joined the event!", Toast.LENGTH_SHORT).show();
-        MainActivity.editor.putString("Event ID", tempID); //put in the event id that was used to fetch the json
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Name", tempName);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Categories", tempCategories);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Description", tempDescription);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Time", tempTime);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Date", tempDate);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Event Location", tempLocation);
-        MainActivity.editor.apply();
-        MainActivity.editor.putString("Total Spots", tempTotalSpots);
-        MainActivity.editor.apply();
+        sharedPreferencesEditor.putString("EventID", tempID); //put in the event id that was used to fetch the json
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventName", tempName);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventCategories", tempCategories);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventDescription", tempDescription);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventTime", tempTime);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventDate", tempDate);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("EventLocation", tempLocation);
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.putString("TotalSpots", tempTotalSpots);
+        sharedPreferencesEditor.apply();
 
         deleteTempPrefs();
     }
 
     private void deleteTempPrefs(){
-        MainActivity.editor.remove("tempID");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempName");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempCategories");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempDescription");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempTime");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempDate");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempLocation");
-        MainActivity.editor.apply();
-        MainActivity.editor.remove("tempTotalSpots");
-        MainActivity.editor.apply();
+        sharedPreferencesEditor.remove("tempID");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempName");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempCategories");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempDescription");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempTime");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempDate");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempLocation");
+        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.remove("tempTotalSpots");
+        sharedPreferencesEditor.apply();
     }
 }

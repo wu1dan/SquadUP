@@ -16,7 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.*;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateEvent extends AppCompatActivity{
 
@@ -62,7 +75,7 @@ public class CreateEvent extends AppCompatActivity{
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString("Event ID", "0");
+        sharedPreferencesEditor.putString("EventID", "0");
         sharedPreferencesEditor.apply();
 
         sName = eventName.getText().toString();
@@ -79,13 +92,15 @@ public class CreateEvent extends AppCompatActivity{
       //  aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
 
         String defValue = "defValue";
-        if(!sharedPreferences.getString("Event Name", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
+        if(!sharedPreferences.getString("EventName", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
             Toast.makeText(CreateEvent.this, "You are already in an event and may not create one!", Toast.LENGTH_SHORT).show();
             intent = new Intent(CreateEvent.this, MainActivity.class);
+            startActivity(intent);
 
-        }else if(!sharedPreferences.getString("Pending Event", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
+        }else if(!sharedPreferences.getString("PendingEvent", defValue).equals(defValue)) { //if it doesn't equal defValue that means they DO have a pending event
             Toast.makeText(CreateEvent.this, "Please reject your current pending event before creating a new one.", Toast.LENGTH_SHORT).show();
             intent = new Intent(CreateEvent.this, PendingEvent.class);
+            startActivity(intent);
 
         }else{
             areParamsFilled = checkAllInputs();
@@ -212,22 +227,21 @@ public class CreateEvent extends AppCompatActivity{
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString("Event ID", "0");
+        sharedPreferencesEditor.putString("EventID", "0");
         sharedPreferencesEditor.apply();
-
-        sharedPreferencesEditor.putString("Event Name", sName);
+        sharedPreferencesEditor.putString("EventName", sName);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Categories", sCategories);
+        sharedPreferencesEditor.putString("EventCategories", sCategories);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Description", sDescription);
+        sharedPreferencesEditor.putString("EventDescription", sDescription);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Time", sTime);
+        sharedPreferencesEditor.putString("EventTime", sTime);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Date", sDate);
+        sharedPreferencesEditor.putString("EventDate", sDate);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Event Location", sLocation);
+        sharedPreferencesEditor.putString("EventLocation", sLocation);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("Total Spots", sSpotsTotal);
+        sharedPreferencesEditor.putString("TotalSpots", sSpotsTotal);
         sharedPreferencesEditor.apply();
 
     }
@@ -290,5 +304,130 @@ public class CreateEvent extends AppCompatActivity{
 
         }); //end of CreateEvent button
     }
+    /*
 
+        JSON Schema:
+
+        {"EventName":"string"}
+        {"Categories":"Array"}
+        {"Description":"string"}
+        {"Time":"string"}
+        {"Date":"string"}
+        {"Lat":"int"}
+        {"Long":"int"}
+        {"TotalSpots":"int"}
+        {"Users":"Array"}
+     */
+
+    //retrieve event data
+    public void getJSON() {
+        RequestQueue queue = Volley.newRequestQueue(CreateEvent.this);
+        final String url = "http://20.43.19.13:3000/Events";
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                TextView textView69 = findViewById(R.id.textView69);
+                textView69.setText(response.toString());
+                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+            //Empty
+        });
+
+        queue.add(getRequest);
+    }
+
+    //update an event -- add users by ID
+    public void putJSON() {
+        RequestQueue queue = Volley.newRequestQueue(CreateEvent.this);
+        try {
+            String url = "http://20.43.19.13:3000/Events";
+            JSONObject eventJSON = new JSONObject();
+            eventJSON.put("EventName", sharedPreferences.getString("EventName", ""));
+            eventJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            eventJSON.put("Email", sharedPreferences.getString("Email", ""));
+            eventJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            eventJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            eventJSON.put("UserID", sharedPreferences.getString("UserID", ""));
+            eventJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            eventJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            eventJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+            eventJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+
+            JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, eventJSON, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Toast.makeText(CreateEvent.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //yeet
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+            queue.add(putRequest);
+
+
+        } catch (JSONException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    //create an event
+    private void postJSON() {
+        String URL = "http://20.43.19.13:3000/Events";
+        JSONObject eventJSON = new JSONObject();
+
+        try {
+            eventJSON.put("EventName", sharedPreferences.getString("EventName", ""));
+            eventJSON.put("LastName", sharedPreferences.getString("LastName", ""));
+            eventJSON.put("Email", sharedPreferences.getString("Email", ""));
+            eventJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
+            eventJSON.put("Gender", sharedPreferences.getString("Gender", ""));
+            eventJSON.put("UserID", "tempID");
+            eventJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            eventJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
+            eventJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, eventJSON, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Toast.makeText(getApplicationContext(), "Event created successfully.", Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
+
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(CreateEvent.this);
+        requestQueue.add(postRequest);
+
+    }
 }
