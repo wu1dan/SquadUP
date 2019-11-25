@@ -42,6 +42,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     public static String notificationTitle = "";
     private String title = "default";
     private String body = "default";
+    public static String url = "";
 
     @Override
     public void onNewToken(String s) {
@@ -69,7 +70,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 Log.e(TAG, "Message Data: " + remoteMessage.getData().toString());
                 Log.e(TAG, "eventID: " + eventID);
 
-                sharedPreferencesEditor.putString("Pending Event", eventID);
+                sharedPreferencesEditor.putString("tempID", eventID);
 
                 //set the title and body from the notification data here, and then it will use that in the notification below
 
@@ -94,7 +95,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         RequestQueue requestQueue = Volley.newRequestQueue(FirebaseMessaging.this);
         String databaseURL = "http://20.43.19.13:3000/Events/";
         StringBuilder sb = new StringBuilder(databaseURL);
-        String url = sb.append(eventID).toString(); //adds the event ID, which was received from the notification, to the end of the URL
+        url = sb.append(eventID).toString(); //adds the event ID, which was received from the notification, to the end of the URL
 
         // Initialize a new JsonArrayRequest instance
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(

@@ -270,8 +270,14 @@ public class CreateEvent extends AppCompatActivity{
     }
 
     protected Boolean checkSpots(){
-        if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) == null || Integer.valueOf(sSpotsTotal) < 2) { //the null thing doesn't actually work, need to catch NumberFormatException
-            Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
+
+        try {
+            if (sSpotsTotal.length() == 0 || Integer.valueOf(sSpotsTotal) < 2) { //the null thing doesn't actually work, need to catch NumberFormatException
+                Toast.makeText(CreateEvent.this, "Please allow at least 2 total spots", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }catch (NumberFormatException e) {
+            Toast.makeText(CreateEvent.this, "Please enter a valid number.", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -338,7 +344,7 @@ public class CreateEvent extends AppCompatActivity{
                 int pMonth = pickerMonth + 1; //january is 0
                 String eventDate = pMonth + "/" + dayOfMonth + "/" + year;
                 date = (TextView)findViewById(R.id.tvDate);
-                date.setText(eventDate);
+                date.setText("Your date: " + eventDate);
             }
         };
 
@@ -425,6 +431,7 @@ public class CreateEvent extends AppCompatActivity{
             eventJSON.put("Description", sDescription);
             eventJSON.put("Time", sTime);
             eventJSON.put("Date", sDate);
+            eventJSON.put("Location", sLocation);
             eventJSON.put("Lat", lat);
             eventJSON.put("Long", longitude);
             eventJSON.put("TotalSpots", totalSpots);

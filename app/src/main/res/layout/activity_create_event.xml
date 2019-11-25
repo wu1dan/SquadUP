@@ -83,32 +83,36 @@
         android:id="@+id/tiLocation"
         android:layout_width="154dp"
         android:layout_height="52dp"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="110dp"
         android:hint="Your location"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/btnCreateEvent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tiSpotsTotal" />
 
     <Button
         android:id="@+id/btnPickDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="73dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="65dp"
         android:layout_marginBottom="10dp"
         android:text="Pick Date"
         app:layout_constraintBottom_toTopOf="@+id/btnCreateEvent"
         app:layout_constraintEnd_toStartOf="@+id/tvDate"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tiLocation" />
 
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="113dp"
-        android:layout_height="39dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="65dp"
-        android:layout_marginEnd="130dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginBottom="74dp"
         android:text="Your Date:"
         android:textSize="18sp"
