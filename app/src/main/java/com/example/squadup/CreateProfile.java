@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,25 +24,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-
-import static com.example.squadup.MainActivity.sharedPreferences;
+import java.util.Set;
 
 public class CreateProfile extends AppCompatActivity {
 
@@ -55,16 +46,23 @@ public class CreateProfile extends AppCompatActivity {
     private int currentYear = currentDate.getYear();
     private int currentMonth = currentDate.getMonthValue();
     private int currentDay = currentDate.getDayOfMonth();
-    private Uri uriImage;
-
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
 
-    private int Image = 1;
     @Override
     public void onBackPressed() {
-        putJSON();
+        if(sharedPreferences.contains("Interests")) {
+            if (sharedPreferences.contains("id")) {
+                putJSON();
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
+                startActivity(intent);
+            } else {
+                postJSON();
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
+                startActivity(intent);
+            }
+        }
         Intent intent = new Intent(CreateProfile.this, MainActivity.class);
         startActivity(intent);
     }
@@ -75,23 +73,22 @@ public class CreateProfile extends AppCompatActivity {
         setContentView(R.layout.activity_createprofile);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+
         Spinner spinGender = findViewById(R.id.spinnerGender);
         spinGender.setPrompt("Gender");
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(CreateProfile.this,
                 android.R.layout.simple_list_item_1, spinnerGender);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinGender.setAdapter(arrayAdapter);
-        TextView tv69 = findViewById(R.id.textView69);
 
+        ImageView imgProfilePicture = findViewById(R.id.imgProfilePicture);
+        String profilePictureURL = sharedPreferences.getString("ProfilePicture", "");
+        Uri pfp = Uri.parse(profilePictureURL);
 
-        Button button = findViewById(R.id.button69);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postJSON();
-            }
-        });
+        Glide
+                .with(CreateProfile.this)
+                .load(pfp)
+                .into(imgProfilePicture);
 
 
 
@@ -114,35 +111,42 @@ public class CreateProfile extends AppCompatActivity {
                     Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (sharedPreferences.contains("id")){
-                    putJSON();
+                if(sharedPreferences.contains("Interests")) {
+                    if (sharedPreferences.contains("id")) {
+                        putJSON();
+                        Intent intent = new Intent(CreateProfile.this, Profile.class);
+                        startActivity(intent);
+                    } else {
+                        postJSON();
+                        Intent intent = new Intent(CreateProfile.this, Profile.class);
+                        startActivity(intent);
+                    }
                 }
                 else{
-                    postJSON();
+                    Toast.makeText(CreateProfile.this, "Please choose some interests to get started!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateProfile.this, Interests.class);
+                    startActivity(intent);
+                    finish();
                 }
-
-                Intent intent = new Intent(CreateProfile.this, Profile.class);
-                startActivity(intent);
             }
         });
 
-        Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
+        /*Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
         btnEditProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
-        });
+        });*/
 
     }
 
-    private void openGallery() {
+    /*private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, Image);
-    }
+    }*/
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 69 && requestCode == Image) {
             uriImage = data.getData();
@@ -151,10 +155,9 @@ public class CreateProfile extends AppCompatActivity {
             sharedPreferencesEditor.putString("ProfilePicture", uriImage.toString());
             sharedPreferencesEditor.apply();
         }
-    }
+    }*/
 
-    public void okhttpGetRequest(){
-        TextView tv69 = findViewById(R.id.textView69);
+    /*public void okhttpGetRequest(){
 
         OkHttpClient client = new OkHttpClient();
 
@@ -178,16 +181,15 @@ public class CreateProfile extends AppCompatActivity {
                     CreateProfile.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv69.setText(sresponse);
                         }
                     });
                 }
             }
         });
 
-    }
+    }*/
 
-    public void getJSON() {
+    /*public void getJSON() {
             RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
             final String url = "http://20.43.19.13:3000/Users";
             JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -222,13 +224,12 @@ public class CreateProfile extends AppCompatActivity {
             });
 
             queue.add(getRequest);
-    }
+    }*/
 
         public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
-            String id = sharedPreferences.getString("id", "");
-            String url = "http://20.43.19.13:3000/Users" + "/" + "id";
+            String url = "http://20.43.19.13:3000/Users/5ddb734416976566b576b2d8";
             JSONObject userJSON = new JSONObject();
             userJSON.put("id", sharedPreferences.getString("id", ""));
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
@@ -237,10 +238,12 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", new HashSet<String>()));
-            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-            userJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-
+            Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
+            JSONArray interests = new JSONArray();
+            for (String interest : setInterests){
+                interests.put(interest);
+            }
+            userJSON.put("Interests", interests);
 
 
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
@@ -383,6 +386,8 @@ public class CreateProfile extends AppCompatActivity {
     private void postJSON() {
         String URL = "http://20.43.19.13:3000/Users";
         JSONObject userJSON = new JSONObject();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor spEditor = sp.edit();
 
         try {
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
@@ -391,11 +396,12 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
-            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-            userJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-
-
+            Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
+            JSONArray interests = new JSONArray();
+            for (String interest : setInterests){
+                interests.put(interest);
+            }
+            userJSON.put("Interests", interests);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -404,8 +410,10 @@ public class CreateProfile extends AppCompatActivity {
             JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    String UserID = response.toString();
-                    sharedPreferencesEditor.putString("id", UserID);
+                        String userID = response.toString();
+                        spEditor.putString("id", userID);
+                        spEditor.apply();
+
                 }
             }, new Response.ErrorListener() {
                 @Override

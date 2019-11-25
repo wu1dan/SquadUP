@@ -5,11 +5,9 @@ import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -33,6 +31,7 @@ public class Login extends AppCompatActivity {
     private final String TAG = "Homepage";
     private CallbackManager callbackManager;
     private GoogleSignInClient googleSignInClient;
+    private String personPhoto;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
@@ -49,8 +48,16 @@ public class Login extends AppCompatActivity {
         btnfb = findViewById(R.id.btnfb);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
+            String fbid = accessToken.getCurrentAccessToken().getUserId();
+            SharedPreferences sharedPreferences;
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putString("fbid", fbid);
+            sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
+            sharedPreferencesEditor.apply();
             Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
             startActivity(intent);
             finish();
@@ -60,6 +67,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "User has successfully logged in");
+                String fbid = accessToken.getCurrentAccessToken().getUserId();
+                SharedPreferences sharedPreferences;
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                sharedPreferencesEditor.putString("fbid", fbid);
+                sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
+                sharedPreferencesEditor.apply();
                 Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
                 startActivity(intent);
                 finish();
@@ -78,7 +92,7 @@ public class Login extends AppCompatActivity {
 
 
         //Button btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button, might be deleting self registration later
-        Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);
+        /*Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);
         btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +100,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)  //request user data
@@ -158,7 +172,12 @@ public class Login extends AppCompatActivity {
         String googleFirstName = googleAcct.getGivenName();       //self explanatory
         String googleLastName = googleAcct.getFamilyName();     //self explanatory
         String googleEmail = googleAcct.getEmail();       //self explanatory
-        Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
+        if (googleAcct.getPhotoUrl().toString() != null) {
+            personPhoto = googleAcct.getPhotoUrl().toString();       //self explanatory
+        }
+        else {
+            personPhoto = "0";
+        }
 
         if (!sharedPreferences.contains("FirstName")) {
             sharedPreferencesEditor.putString("FirstName", googleFirstName);
@@ -172,8 +191,8 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.putString("Email", googleEmail);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("ProfilePicture") && personPhoto != null) {
-            sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
+        if (!sharedPreferences.contains("ProfilePicture") && !"0".equals(personPhoto)) {
+            sharedPreferencesEditor.putString("ProfilePicture", personPhoto);
             sharedPreferencesEditor.apply();
         }
     }

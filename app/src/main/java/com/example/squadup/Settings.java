@@ -65,7 +65,7 @@ public class Settings extends AppCompatActivity {
         MainActivity.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         MainActivity.editor = MainActivity.sharedPreferences.edit();
 
-        Button btnsignout = (Button) findViewById(R.id.btnSignOut);                                     //PROFILE
+        Button btnsignout = (Button) findViewById(R.id.btnSettingsSignOut);                                     //PROFILE
         btnsignout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
