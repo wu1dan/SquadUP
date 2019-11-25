@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.apply();
                     Toast.makeText(MainActivity.this, "Ghost Mode is ON", Toast.LENGTH_SHORT).show();
                 }
+                return true;
             case R.id.btnSettings:
                 Intent intentSettings = new Intent(this, Settings.class);
                 this.startActivity(intentSettings);
