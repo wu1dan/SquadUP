@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        Button btnFriendsList = (Button) findViewById(R.id.btnfriendslist);
-        btnFriendsList.setEnabled(false);
-
         Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             @Override
