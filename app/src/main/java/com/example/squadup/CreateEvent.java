@@ -6,8 +6,22 @@ import androidx.preference.PreferenceManager;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApiRequest;
+import com.google.maps.errors.ApiException;
+import com.google.maps.internal.ApiResponse;
+import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.LatLng;
+
+
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,12 +37,19 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.maps.GeocodingApiRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class CreateEvent extends AppCompatActivity{
@@ -49,7 +70,11 @@ public class CreateEvent extends AppCompatActivity{
     private String sLocation;
     private String sSpotsTotal;
     private String sDate;
-   // private String[] aCategories;
+    private String aCategories[];
+    private ArrayList<String> lCategories = new ArrayList<String>();
+    private double lat = 0;
+    private double longitude= 0;
+    private ArrayList<String> users = new ArrayList<String>();
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
@@ -57,6 +82,8 @@ public class CreateEvent extends AppCompatActivity{
     private Intent intent;
 
     private String tempDate = "Your Date:";
+
+    public static String latLng = "";
 
     /*
     ti prefix means "Text Input"
@@ -88,8 +115,10 @@ public class CreateEvent extends AppCompatActivity{
 
         Boolean areParamsFilled;
 
-
-      //  aCategories = sCategories.split("\\W"); //turns the string of categories into an array that splits categories by non-words (ie spaces, commas, etc)
+        aCategories = sCategories.split("\\W+");
+        for(String s : aCategories){
+            lCategories.add(s);
+        }
 
         String defValue = "defValue";
         if(!sharedPreferences.getString("EventName", defValue).equals(defValue)){ //if it doesn't equal defValue that means they're already in an actual event
@@ -108,10 +137,16 @@ public class CreateEvent extends AppCompatActivity{
             if(!areParamsFilled)
                 return;
 
-            Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
+            //Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
 
-            //use this space to assign event with all its above parameters into the database
+            //Converts address into Lat/Long coords
 
+
+            Toast.makeText(CreateEvent.this, "Coordinates: " + latLng, Toast.LENGTH_LONG).show();
+
+            //Create the event on the database
+
+            //postJSON();
 
             //Updating shared preferences so that this event they just made is put into their current event
             //Event ID will be generated, hardcoded 0 is just a placeholder
@@ -199,6 +234,38 @@ public class CreateEvent extends AppCompatActivity{
     protected Boolean checkLocation(){
         if (sLocation.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        GeoApiContext context = new GeoApiContext.Builder()
+                .apiKey("AIzaSyCqeDrgugKAdMEn6HlEBYSkqlV-UsI9Q4o")
+                .build();
+        GeocodingResult[] results = new GeocodingResult[0];
+        try {
+            results = GeocodingApi.geocode(context,
+                    sLocation).await();
+        } catch (ApiException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(results[0].addressComponents));
+
+        try {
+            JSONObject root = new JSONObject(gson.toJson(results[0].addressComponents));
+            JSONArray resultsArray = root.getJSONArray("results");
+            JSONObject geometry = resultsArray.getJSONObject(2);
+            JSONArray locationArray = geometry.getJSONArray("location");
+            lat = locationArray.getDouble(0);
+            longitude = locationArray.getDouble(1);
+
+            Toast.makeText(CreateEvent.this, "lat: " + lat + " long: " + longitude, Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(CreateEvent.this, "Error creating location data, please try again", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -349,16 +416,13 @@ public class CreateEvent extends AppCompatActivity{
         try {
             String url = "http://20.43.19.13:3000/Events";
             JSONObject eventJSON = new JSONObject();
-            eventJSON.put("EventName", sharedPreferences.getString("EventName", ""));
-            eventJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            eventJSON.put("Email", sharedPreferences.getString("Email", ""));
-            eventJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            eventJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            eventJSON.put("UserID", sharedPreferences.getString("UserID", ""));
-            eventJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            eventJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
-            eventJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-            eventJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+            eventJSON.put("EventName", eventName);
+            eventJSON.put("Categories", aCategories);
+            eventJSON.put("Description", description);
+            eventJSON.put("Time", sharedPreferences.getString("EventTime", ""));
+            eventJSON.put("Date", sharedPreferences.getString("EventDate", ""));
+            eventJSON.put("Location", sharedPreferences.getString("EventLocation", ""));
+            eventJSON.put("TotalSpots", sharedPreferences.getString("TotalSpots", ""));
 
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, eventJSON, new Response.Listener<JSONObject>() {
                 @Override
@@ -390,17 +454,20 @@ public class CreateEvent extends AppCompatActivity{
     private void postJSON() {
         String URL = "http://20.43.19.13:3000/Events";
         JSONObject eventJSON = new JSONObject();
+        int totalSpots = Integer.valueOf(sSpotsTotal);
+        users.add(sharedPreferences.getString("UserID", ""));
+        String[] testArray = {"Basketball", "Soccer", "Baseball"};
 
         try {
-            eventJSON.put("EventName", sharedPreferences.getString("EventName", ""));
-            eventJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            eventJSON.put("Email", sharedPreferences.getString("Email", ""));
-            eventJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            eventJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            eventJSON.put("UserID", "tempID");
-            eventJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            eventJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
-            eventJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+            eventJSON.put("EventName", sName);
+            eventJSON.put("Interests", lCategories);
+            eventJSON.put("Description", sDescription);
+            eventJSON.put("Time", sTime);
+            eventJSON.put("Date", sDate);
+            eventJSON.put("Lat", lat);
+            eventJSON.put("Long", longitude);
+            eventJSON.put("TotalSpots", totalSpots);
+            eventJSON.put("Users", users);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -431,3 +498,5 @@ public class CreateEvent extends AppCompatActivity{
 
     }
 }
+
+

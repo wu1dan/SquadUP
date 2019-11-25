@@ -130,13 +130,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(!sharedPreferences.getString("EventName", defValue).equals(defValue)){ //if they are already in an event, "EventName" will not be the default
             btnCreateEvent.setEnabled(false);
+            btnCreateEvent.setText("Cannot create an event when in an event!");
             btnCurrentEvent.setText("Current Event");
             Toast.makeText(MainActivity.this,"create" + sharedPreferences.getString("EventName", defValue), Toast.LENGTH_SHORT).show();
         }else if(!sharedPreferences.getString("tempID", defValue).equals(defValue)){ //this means that they do have a pending event
             btnCreateEvent.setEnabled(false);
+            btnCreateEvent.setText("Cannot create an event when in an event!");
             btnCurrentEvent.setText("Pending Event");
         }else{ //if they don't have a current or pending event
             btnCreateEvent.setEnabled(true);
+            btnCreateEvent.setText("Create Event");
             btnCurrentEvent.setText("No Current or Pending Events!");
             btnCurrentEvent.setEnabled(false);
         }

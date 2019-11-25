@@ -10,23 +10,22 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiSelector;
+import androidx.test.uiautomator.UiObject2;
+import androidx.test.uiautomator.Until;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -37,28 +36,36 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LoginTest {
+public class NotificationTest {
 
     @Rule
-    public ActivityTestRule<Login> mActivityTestRule = new ActivityTestRule<>(Login.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
 
     @Test
-    public void fullTest() {
-        ViewInteraction hz = onView(
-                allOf(withText("Sign in"),
+    public void notificationTest() {
+
+        MainActivity.editor.putString("DateofBirth", "0");
+        MainActivity.editor.apply();
+
+        UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+        device.openNotification();
+        device.wait(Until.hasObject(By.textContains(" ")),  300000);
+
+        UiObject2 notification = device.findObject(By.text(FirebaseMessaging.notificationTitle));
+        notification.click();
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.tvPName),
                         childAtPosition(
-                                allOf(withId(R.id.btngsi),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                3)),
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
                                 0),
                         isDisplayed()));
-        hz.perform(click());
-
-        //UiObject googleProfile = device.findObject(new UiSelector()).
+        textView.check(matches(withText(FirebaseMessaging.notificationTitle)));
 
 
-        assert(MainActivity.sharedPreferences.contains("DateofBirth"));
     }
 
     private static Matcher<View> childAtPosition(
@@ -80,3 +87,5 @@ public class LoginTest {
         };
     }
 }
+
+
