@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPreferences.edit();
 
@@ -94,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(mChannel);
 
         }
+
+        Button btnFriendsList = (Button) findViewById(R.id.btnfriendslist);
+        btnFriendsList.setEnabled(false);
 
         Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);                                     //CREATE EVENT
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {

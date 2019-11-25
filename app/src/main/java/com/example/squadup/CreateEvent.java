@@ -98,7 +98,7 @@ public class CreateEvent extends AppCompatActivity{
         startActivity(intent);
     }
 
-    private void createEvent(){
+    private void createEvent() throws JSONException {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferencesEditor = sharedPreferences.edit();
@@ -137,16 +137,11 @@ public class CreateEvent extends AppCompatActivity{
             if(!areParamsFilled)
                 return;
 
-            //Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
-
-            //Converts address into Lat/Long coords
-
-
-            Toast.makeText(CreateEvent.this, "Coordinates: " + latLng, Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateEvent.this, "Event created successfully!", Toast.LENGTH_LONG).show();
 
             //Create the event on the database
 
-            //postJSON();
+            postJSON();
 
             //Updating shared preferences so that this event they just made is put into their current event
             //Event ID will be generated, hardcoded 0 is just a placeholder
@@ -159,7 +154,7 @@ public class CreateEvent extends AppCompatActivity{
         //leave this empty
     }
 
-    protected Boolean checkAllInputs(){
+    protected Boolean checkAllInputs() throws JSONException {
         Boolean params = true;
 
         params = checkName();
@@ -231,7 +226,7 @@ public class CreateEvent extends AppCompatActivity{
         return true;
     }
 
-    protected Boolean checkLocation(){
+    protected Boolean checkLocation() throws JSONException {
         if (sLocation.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
             return false;
@@ -252,22 +247,15 @@ public class CreateEvent extends AppCompatActivity{
             e.printStackTrace();
         }
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(results[0].addressComponents));
+        String jsonString = gson.toJson(results[0].geometry);
 
-        try {
-            JSONObject root = new JSONObject(gson.toJson(results[0].addressComponents));
-            JSONArray resultsArray = root.getJSONArray("results");
-            JSONObject geometry = resultsArray.getJSONObject(2);
-            JSONArray locationArray = geometry.getJSONArray("location");
-            lat = locationArray.getDouble(0);
-            longitude = locationArray.getDouble(1);
+        //JSONArray root = new JSONArray(gson.toJson(results[0].geometry));
+        JSONObject geometryObj = new JSONObject(jsonString);
+        JSONObject locationObj = geometryObj.getJSONObject("location");
+        lat = locationObj.getDouble("lat");
+        longitude = locationObj.getDouble("lng");
 
-            Toast.makeText(CreateEvent.this, "lat: " + lat + " long: " + longitude, Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(CreateEvent.this, "Error creating location data, please try again", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+        //Toast.makeText(CreateEvent.this, "lat: " + lat + " long: " + longitude, Toast.LENGTH_SHORT).show();
 
         return true;
     }
@@ -319,8 +307,6 @@ public class CreateEvent extends AppCompatActivity{
         setContentView(R.layout.activity_create_event);
 
         Button btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);            //Create Event Button
-        Button btnLocation = (Button) findViewById(R.id.btnLocation);                  //Pick Location Button
-        btnLocation.setEnabled(false);
         Button btnPickDate = (Button) findViewById(R.id.btnPickDate);                  //Pick Data Button
         eventName = (EditText) findViewById(R.id.tiEventName);                         //Event Name Text Input
         categories = (EditText) findViewById(R.id.tiCategories);                       //Event Categories Text Input
@@ -331,11 +317,6 @@ public class CreateEvent extends AppCompatActivity{
         spotsTotal = (EditText) findViewById(R.id.tiSpotsTotal);                       //Total Spots Text Input
         date = (TextView)findViewById(R.id.tvDate);                                    //Date Text View
         date.setText(tempDate);                                                        //for if condition later
-
-        btnLocation.setOnClickListener(v -> {
-            intent = new Intent(CreateEvent.this, LocationPickerMap.class);
-            startActivity(intent);
-        });
 
         btnPickDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,7 +346,11 @@ public class CreateEvent extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                createEvent();
+                try {
+                    createEvent();
+                } catch (JSONException e) {
+                    System.out.println(e);
+                }
 
             }
 
@@ -376,42 +361,18 @@ public class CreateEvent extends AppCompatActivity{
         JSON Schema:
 
         {"EventName":"string"}
-        {"Categories":"Array"}
+        {"Categories":"ArrayList"}
         {"Description":"string"}
         {"Time":"string"}
         {"Date":"string"}
-        {"Lat":"int"}
-        {"Long":"int"}
+        {"Lat":"double"}
+        {"Long":"double"}
         {"TotalSpots":"int"}
-        {"Users":"Array"}
+        {"Users":"ArrayList"}
      */
 
-    //retrieve event data
-    public void getJSON() {
-        RequestQueue queue = Volley.newRequestQueue(CreateEvent.this);
-        final String url = "http://20.43.19.13:3000/Events";
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                TextView textView69 = findViewById(R.id.textView69);
-                textView69.setText(response.toString());
-                Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-            //Empty
-        });
-
-        queue.add(getRequest);
-    }
-
     //update an event -- add users by ID
-    public void putJSON() {
+    /* public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateEvent.this);
         try {
             String url = "http://20.43.19.13:3000/Events";
@@ -448,7 +409,7 @@ public class CreateEvent extends AppCompatActivity{
         } catch (JSONException exception) {
             exception.printStackTrace();
         }
-    }
+    } */
 
     //create an event
     private void postJSON() {
