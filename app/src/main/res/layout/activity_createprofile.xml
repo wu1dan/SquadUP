@@ -191,15 +191,15 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgProfilePicture"
-        android:layout_width="210dp"
-        android:layout_height="181dp"
+        android:layout_width="248dp"
+        android:layout_height="215dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="101dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="101dp"
         android:foregroundGravity="center"
         app:civ_border_color="#FF000000"

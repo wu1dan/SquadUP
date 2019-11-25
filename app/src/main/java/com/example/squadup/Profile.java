@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,7 +26,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -111,16 +108,11 @@ public class Profile extends AppCompatActivity {
         tvGender.setPaintFlags(tvGender.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvGender.setText((sharedPreferences.getString("Gender","")));
 
-        TextView tvtest = findViewById(R.id.testest);
-        Set<String> settt =((sharedPreferences.getStringSet("Interests", new HashSet<String>())));
-        tvtest.setText(settt.toString());
-
     }
 
     public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(Profile.this);
         try {
-            String id = sharedPreferences.getString("id", "");
             String url = "http://20.43.19.13:3000/Users/5ddb734416976566b576b2d8";
             JSONObject userJSON = new JSONObject();
             userJSON.put("id", sharedPreferences.getString("id", ""));
@@ -141,11 +133,11 @@ public class Profile extends AppCompatActivity {
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    //Silent for back button
                 }
             }, new Response.ErrorListener() {
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    //yeet
+                public void onErrorResponse(VolleyError error) { //
                 }
             }) {
                 @Override

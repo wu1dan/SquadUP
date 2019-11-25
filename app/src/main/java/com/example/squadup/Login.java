@@ -33,6 +33,7 @@ public class Login extends AppCompatActivity {
     private final String TAG = "Homepage";
     private CallbackManager callbackManager;
     private GoogleSignInClient googleSignInClient;
+    private String personPhoto;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {
@@ -68,6 +69,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "User has successfully logged in");
+                String fbid = accessToken.getCurrentAccessToken().getUserId();
+                SharedPreferences sharedPreferences;
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
+                SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                sharedPreferencesEditor.putString("fbid", fbid);
+                sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
+                sharedPreferencesEditor.apply();
                 Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
                 startActivity(intent);
                 finish();
@@ -159,7 +167,6 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    String personPhoto;
     private void saveGoogleInfo(GoogleSignInAccount googleAcct) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -186,7 +193,7 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.putString("Email", googleEmail);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("ProfilePicture") && !personPhoto.equals("0")) {
+        if (!sharedPreferences.contains("ProfilePicture") && !"0".equals(personPhoto)) {
             sharedPreferencesEditor.putString("ProfilePicture", personPhoto);
             sharedPreferencesEditor.apply();
         }

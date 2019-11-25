@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,28 +25,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-
-import static com.example.squadup.MainActivity.sharedPreferences;
 
 public class CreateProfile extends AppCompatActivity {
 
@@ -59,8 +46,6 @@ public class CreateProfile extends AppCompatActivity {
     private int currentYear = currentDate.getYear();
     private int currentMonth = currentDate.getMonthValue();
     private int currentDay = currentDate.getDayOfMonth();
-    private Uri uriImage;
-
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
@@ -245,7 +230,6 @@ public class CreateProfile extends AppCompatActivity {
         public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
-            String id = sharedPreferences.getString("id", "");
             String url = "http://20.43.19.13:3000/Users/5ddb734416976566b576b2d8";
             JSONObject userJSON = new JSONObject();
             userJSON.put("id", sharedPreferences.getString("id", ""));
