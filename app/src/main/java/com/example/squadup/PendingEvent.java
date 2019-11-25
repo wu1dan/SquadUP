@@ -7,10 +7,22 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PendingEvent extends AppCompatActivity {
 
@@ -45,9 +57,6 @@ public class PendingEvent extends AppCompatActivity {
         Button btnYes = (Button) findViewById(R.id.btnYes);
         Button btnNo = (Button) findViewById(R.id.btnNo);
 
-        btnYes.setEnabled(false);
-        btnNo.setEnabled(false);
-
         TextView tvPName = (TextView) findViewById(R.id.tvPName);
         TextView tvPCategories = (TextView) findViewById(R.id.tvPCategories);
         TextView tvPDescription = (TextView) findViewById(R.id.tvPDescription);
@@ -64,9 +73,19 @@ public class PendingEvent extends AppCompatActivity {
         tvPLocation.setText("");
         tvPTotalSpots.setText("");
 
-        String defValue = "";
+        String defValue = " ";
 
-        if (sharedPreferences.getString("tempID", defValue).equals(defValue)) { //they have a pending event
+        getJSON();
+
+        tvPName.setText(tempName);
+        tvPCategories.setText(tempCategories);
+        tvPDescription.setText(tempDescription);
+        tvPTime.setText(tempTime);
+        tvPDate.setText(tempDate);
+        tvPLocation.setText(tempLocation);
+        tvPTotalSpots.setText(tempTotalSpots);
+
+        if (sharedPreferences.getString("tempID", defValue).equals(FirebaseMessaging.eventID)) { //If they have a pending event, the "tempID" value should be equal to the eventID from the notification
 
             btnYes.setEnabled(true);
             btnNo.setEnabled(true);
@@ -74,14 +93,7 @@ public class PendingEvent extends AppCompatActivity {
             //Have code here for using the event id to extract all the event information out of the json
             //Here's some placeholder for now:
 
-            tempID = "96";
-            tempName = "Pick-up Basketball";
-            tempCategories = "Sports, Basketball";
-            tempDescription = "Just some classic court-side comraderie with the lads (boys only!!!!!!!)";
-            tempTime = "3:00 pm";
-            tempDate = "October 23rd 2019";
-            tempLocation = "SRC";
-            tempTotalSpots = "6 (5 left!)";
+            getJSON(); //this turns all the text boxes into the relevant information
 
             tvPName.setText(tempName);
             tvPCategories.setText(tempCategories);
@@ -162,5 +174,58 @@ public class PendingEvent extends AppCompatActivity {
         sharedPreferencesEditor.apply();
         sharedPreferencesEditor.remove("tempTotalSpots");
         sharedPreferencesEditor.apply();
+    }
+
+    //retrieve event data
+    public void getJSON() {
+        RequestQueue requestQueue = Volley.newRequestQueue(PendingEvent.this);
+
+        // Initialize a new JsonArrayRequest instance
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+                Request.Method.GET,
+                "http://20.43.19.13:3000/Events/5ddb650c16976566b576b295/",
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        // Process the JSON
+
+                        try {
+                            JSONObject eventObj = response.getJSONObject(0);
+                            tempID = eventObj.getString("_id");
+                            tempName = eventObj.getString("EventName");
+                            JSONArray jsonCategories = eventObj.getJSONArray("Interests");
+
+                            String[] categoriesArray = new String[jsonCategories.length()];
+                            for (int x = 0; x < jsonCategories.length(); x++){
+                                categoriesArray[x] = jsonCategories.getString(x);
+                            }
+
+                            tempCategories = categoriesArray.toString();
+                            tempDescription = eventObj.getString("Description");
+                            tempTime = eventObj.getString("Time");
+                            tempDate = eventObj.getString("Date");
+                            tempLocation = eventObj.getString("Location");
+                            tempTotalSpots = eventObj.getString("TotalSpots");
+
+
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        // Do something when error occurred
+                        Log.d("VolleyError", error.toString());
+                    }
+                }
+        );
+
+        // Add JsonArrayRequest to the RequestQueue
+        requestQueue.add(jsonArrayRequest);
+
     }
 }

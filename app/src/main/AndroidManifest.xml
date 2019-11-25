@@ -37,9 +37,6 @@
             android:value="AIzaSyB2QJ7cSMQMcGSXTCYaA4ZirrInEJXekdo" />
 
         <activity
-            android:name=".LocationPickerMap"
-            android:label="Map" />
-        <activity
             android:name=".CurrentEvent"
             android:label="@string/title_activity_current_event"
             android:theme="@style/AppTheme.NoActionBar" />
