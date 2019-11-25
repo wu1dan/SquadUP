@@ -51,7 +51,7 @@ public class Login extends AppCompatActivity {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
-            Intent intent = new Intent(Login.this, Facebook.class); //next step is homepage
+            Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
             startActivity(intent);
             finish();
         }

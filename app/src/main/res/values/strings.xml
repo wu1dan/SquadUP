@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SquadUP</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="facebook_app_id">828423040888563</string>
+    <string name="facebook_app_id">412223822768519</string>
     <string name="fb_login_protocol_scheme">fb828423040888563</string>
 
     <!-- Firebase Notification Channel -->

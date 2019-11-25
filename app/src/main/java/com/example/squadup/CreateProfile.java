@@ -25,7 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,14 +84,14 @@ public class CreateProfile extends AppCompatActivity {
         TextView tv69 = findViewById(R.id.textView69);
 
 
-        //Button button = findViewById(R.id.button69);
+        Button button = findViewById(R.id.button69);
 
-        /*button.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                putJSON();
+                postJSON();
             }
-        });*/
+        });
 
 
 
@@ -112,7 +115,12 @@ public class CreateProfile extends AppCompatActivity {
                     return;
                 }
 
-                //postJSON();
+                if (sharedPreferences.contains("id")){
+                    putJSON();
+                }
+                else{
+                    postJSON();
+                }
 
                 Intent intent = new Intent(CreateProfile.this, Profile.class);
                 startActivity(intent);
@@ -187,8 +195,22 @@ public class CreateProfile extends AppCompatActivity {
                 @Override
                 public void onResponse(JSONObject response) {
                         TextView textView69 = findViewById(R.id.textView69);
-                        textView69.setText(response.toString());
                         Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray Users = response.getJSONArray("Users");
+                            for (int i = 0; i < Users.length(); i++){
+
+                                org.json.JSONObject user = Users.getJSONObject(i);
+                                String fName = user.getString("FirstName)");
+                                String lName = user.getString("LastName");
+                                String email = user.getString("Email");
+
+                                textView69.append(fName + "," + lName + "," + email + "\n");
+
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
 
                 }
             }, new Response.ErrorListener() {
@@ -205,14 +227,15 @@ public class CreateProfile extends AppCompatActivity {
         public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
         try {
-            String url = "http://20.43.19.13:3000/Users";
+            String id = sharedPreferences.getString("id", "");
+            String url = "http://20.43.19.13:3000/Users" + "/" + "id";
             JSONObject userJSON = new JSONObject();
+            userJSON.put("id", sharedPreferences.getString("id", ""));
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
             userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
             userJSON.put("Email", sharedPreferences.getString("Email", ""));
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", sharedPreferences.getString("UserID", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
             userJSON.put("Interests", sharedPreferences.getStringSet("Interests", new HashSet<String>()));
             userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
@@ -367,10 +390,12 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("Email", sharedPreferences.getString("Email", ""));
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", "tempID");
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
             userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
             userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+            userJSON.put("FaceBookIDToken", sharedPreferences.getString("GoogleIDToken", ""));
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -379,8 +404,8 @@ public class CreateProfile extends AppCompatActivity {
             JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-
-                    Toast.makeText(getApplicationContext(), "Welcome to SquadUP!", Toast.LENGTH_SHORT).show();
+                    String UserID = response.toString();
+                    sharedPreferencesEditor.putString("id", UserID);
                 }
             }, new Response.ErrorListener() {
                 @Override

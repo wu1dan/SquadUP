@@ -59,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){            //add cases depending on buttons
         switch(item.getItemId()){
             case R.id.btnSettings:
-                Intent intent = new Intent(this, Settings.class);
-                this.startActivity(intent);
+                Intent intentSettings = new Intent(this, Settings.class);
+                this.startActivity(intentSettings);
+                return true;
+            case R.id.btnHelp:
+                Intent intentHelp = new Intent(this, Help.class);
+                this.startActivity(intentHelp);
                 return true;
             default:
                 Toast.makeText(MainActivity.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();

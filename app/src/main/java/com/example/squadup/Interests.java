@@ -32,6 +32,8 @@ public class Interests extends AppCompatActivity {
     private int listImages[]= {R.drawable.badminton, R.drawable.basketball, R.drawable.beachvolleyball, R.drawable.beer, R.drawable.bicycling, R.drawable.billiards, R.drawable.boardgames, R.drawable.bouldering, R.drawable.bowling, R.drawable.chess, R.drawable.chilling, R.drawable.clubbing, R.drawable.coffee, R.drawable.concert, R.drawable.cooking, R.drawable.dancing, R.drawable.drawing, R.drawable.fastfood, R.drawable.fishing, R.drawable.foodie, R.drawable.golf, R.drawable.guitar, R.drawable.gym, R.drawable.hiking, R.drawable.jamsession, R.drawable.knitting, R.drawable.movie, R.drawable.partying, R.drawable.petplaydate, R.drawable.photography, R.drawable.piano, R.drawable.picnic, R.drawable.potluck, R.drawable.raving, R.drawable.reading, R.drawable.roadtrip, R.drawable.rockclimbing, R.drawable.running, R.drawable.shopping, R.drawable.singing, R.drawable.skateboarding, R.drawable.skating, R.drawable.skiing, R.drawable.snowboarding, R.drawable.soccer, R.drawable.spikeball, R.drawable.studying, R.drawable.swimming, R.drawable.tennis, R.drawable.theatre, R.drawable.thrifting, R.drawable.videogames};
     private Context context = Interests.this;
 
+    Set<String> userInterests = new HashSet<>();
+
     @Override
     public void onBackPressed() {
 
@@ -52,11 +54,22 @@ public class Interests extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interests);
+        final SharedPreferences.Editor sharedPreferencesEditor;
+        sharedPreferencesEditor = sharedPreferences.edit();
 
         final ListView listInterests;
         final EditText txtSearchInterests;
         final ListAdapter listAdapter = new ListAdapter();
         listInterests = findViewById(R.id.listInterests);
+
+        if (sharedPreferences.contains("Interests")) {
+            userInterests.addAll(sharedPreferences.getStringSet("Interests", null));
+        }
+        else {
+            Set<String> emptySet = new HashSet<>();
+            sharedPreferencesEditor.putStringSet("Interests", emptySet);
+            sharedPreferencesEditor.apply();
+        }
 
         txtSearchInterests = findViewById(R.id.txtSearchInterests);
         txtSearchInterests.addTextChangedListener(new TextWatcher() {
@@ -129,19 +142,8 @@ public class Interests extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             View view = getLayoutInflater().inflate(R.layout.list_interests,null);
 
-            final SharedPreferences.Editor sharedPreferencesEditor;
+            SharedPreferences.Editor sharedPreferencesEditor;
             sharedPreferencesEditor = sharedPreferences.edit();
-
-            final Set<String> userInterests = new HashSet<>();
-
-            if (sharedPreferences.contains("Interests")) {
-                userInterests.addAll(sharedPreferences.getStringSet("Interests", null));
-            }
-            else {
-                Set<String> emptySet = new HashSet<>();
-                sharedPreferencesEditor.putStringSet("Interests", emptySet);
-                sharedPreferencesEditor.apply();
-            }
 
             final Switch interestSwitch = view.findViewById(R.id.switchInterest);
             if (userInterests.contains(listTitles[position])) {

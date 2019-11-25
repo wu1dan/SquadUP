@@ -23,11 +23,6 @@
          app:showAsAction="never"/>
 
      <item
-          android:id="@+id/btnAbout"
-          android:title="About"
-          app:showAsAction="never"/>
-
-     <item
           android:id="@+id/btnHelp"
           android:title="Help"
           app:showAsAction="never"/>
