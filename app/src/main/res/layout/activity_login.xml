@@ -16,9 +16,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="99dp"
-        android:layout_marginLeft="99dp"
-        android:layout_marginEnd="98dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginEnd="100dp"
         android:layout_marginRight="98dp"
         android:layout_marginBottom="233dp" />
 
@@ -32,7 +32,7 @@
         android:layout_gravity="center|center_horizontal"
         android:layout_marginLeft="110dp"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="113dp"
+        android:layout_marginRight="110dp"
         android:layout_marginBottom="140dp" />
 
     <TextView
@@ -42,9 +42,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="193dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="190dp"
         android:gravity="center"
-        android:text="Or Continue With"
+        android:text="Or"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <ImageView
@@ -58,7 +60,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="13dp"
-        android:layout_marginLeft="13dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginEnd="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginBottom="348dp"

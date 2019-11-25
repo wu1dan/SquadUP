@@ -111,6 +111,10 @@ public class CreateProfile extends AppCompatActivity {
                     Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (!sharedPreferences.contains("DateofBirth")) {
+                    Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(sharedPreferences.contains("Interests")) {
                     if (sharedPreferences.contains("id")) {
                         putJSON();
@@ -373,15 +377,7 @@ public class CreateProfile extends AppCompatActivity {
             Toast.makeText(CreateProfile.this, "Please fill in a valid Email address", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!sharedPreferences.contains("DateofBirth")) {
-            Toast.makeText(CreateProfile.this, "Please fill in a valid Date of Birth .", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (!sharedPreferences.contains("UserID")) {
-            sharedPreferencesEditor.putString("UserID", "69");
-            sharedPreferencesEditor.apply();
-        }
     }
     private void postJSON() {
         String URL = "http://20.43.19.13:3000/Users";

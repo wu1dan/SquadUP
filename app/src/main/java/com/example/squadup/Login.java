@@ -172,11 +172,12 @@ public class Login extends AppCompatActivity {
         String googleFirstName = googleAcct.getGivenName();       //self explanatory
         String googleLastName = googleAcct.getFamilyName();     //self explanatory
         String googleEmail = googleAcct.getEmail();       //self explanatory
-        if (googleAcct.getPhotoUrl().toString() != null) {
+
+        if (googleAcct.getPhotoUrl() != null) {
             personPhoto = googleAcct.getPhotoUrl().toString();       //self explanatory
         }
         else {
-            personPhoto = "0";
+            personPhoto = "https://i-love-png.com/images/img_191958_11550.png";
         }
 
         if (!sharedPreferences.contains("FirstName")) {
@@ -191,10 +192,8 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.putString("Email", googleEmail);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("ProfilePicture") && !"0".equals(personPhoto)) {
-            sharedPreferencesEditor.putString("ProfilePicture", personPhoto);
-            sharedPreferencesEditor.apply();
-        }
+        sharedPreferencesEditor.putString("ProfilePicture", personPhoto);
+        sharedPreferencesEditor.apply();
     }
 
     private void getUserID(GoogleSignInAccount googleAcct){

@@ -62,6 +62,26 @@
             android:layout_marginEnd="30dp"
             android:text="A: Please ensure a proper wifi connection is available before attempting to find an event. Please also note that in an attempt to find the right event for you, it may take longer to be matched into an event."
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:text="Q: Why do I not have a profile picture?"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:text="A: To upload a profile picture, please change the profile picture of either your Facebook or Google account, depending on which you utilized to login."
+            android:textSize="18sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
