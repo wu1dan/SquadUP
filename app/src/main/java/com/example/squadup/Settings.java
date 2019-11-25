@@ -80,10 +80,10 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                getJSON();
+                //getJSON();
 
-                //Intent intent = new Intent(Settings.this, FirebaseToken.class);
-                //startActivity(intent);
+                Intent intent = new Intent(Settings.this, FirebaseToken.class);
+                startActivity(intent);
             }
         });
 

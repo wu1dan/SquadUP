@@ -85,6 +85,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
             }
 
+            notificationTitle = title;
             MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
 
         }
