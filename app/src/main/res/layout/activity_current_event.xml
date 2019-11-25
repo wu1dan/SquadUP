@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/tvCName"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="359dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="24dp"
         android:text="Name"
         app:layout_constraintBottom_toTopOf="@+id/tvCCategories"
@@ -23,11 +23,11 @@
 
     <TextView
         android:id="@+id/tvCCategories"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="23dp"
-        android:layout_marginEnd="328dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="34dp"
         android:text="Categories"
         app:layout_constraintBottom_toTopOf="@+id/tvCDescription"
@@ -37,11 +37,11 @@
 
     <TextView
         android:id="@+id/tvCDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="34dp"
-        android:layout_marginEnd="324dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="47dp"
         android:text="Description"
         app:layout_constraintBottom_toTopOf="@+id/tvCTime"
@@ -51,11 +51,11 @@
 
     <TextView
         android:id="@+id/tvCTime"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="46dp"
-        android:layout_marginEnd="368dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="42dp"
         android:text="Time"
         app:layout_constraintBottom_toTopOf="@+id/tvCDate"
@@ -65,11 +65,11 @@
 
     <TextView
         android:id="@+id/tvCDate"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="42dp"
-        android:layout_marginEnd="371dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="20dp"
         android:text="Date"
         app:layout_constraintBottom_toTopOf="@+id/tvCLocation"
@@ -79,11 +79,11 @@
 
     <TextView
         android:id="@+id/tvCLocation"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="42dp"
-        android:layout_marginEnd="347dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="3dp"
         android:text="Location"
         app:layout_constraintBottom_toTopOf="@+id/tvCTotalSpots"
@@ -93,11 +93,11 @@
 
     <TextView
         android:id="@+id/tvCTotalSpots"
-        android:layout_width="wrap_content"
+        android:layout_width="200"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="327dp"
+        android:layout_marginEnd="200dp"
         android:layout_marginBottom="254dp"
         android:text="Total Spots"
         app:layout_constraintBottom_toBottomOf="parent"
