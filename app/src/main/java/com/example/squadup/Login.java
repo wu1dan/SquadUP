@@ -49,6 +49,14 @@ public class Login extends AppCompatActivity {
         btnfb = findViewById(R.id.btnfb);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        String fbid = accessToken.getCurrentAccessToken().getUserId();
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putString("fbid", fbid);
+        sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
+        sharedPreferencesEditor.apply();
+
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
             Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage

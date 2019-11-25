@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -86,22 +87,14 @@ public class CreateProfile extends AppCompatActivity {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinGender.setAdapter(arrayAdapter);
 
-        Button button = findViewById(R.id.button69);
+        ImageView imgProfilePicture = findViewById(R.id.imgProfilePicture);
+        String profilePictureURL = sharedPreferences.getString("ProfilePicture", "");
+        Uri pfp = Uri.parse(profilePictureURL);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView tv69 = findViewById(R.id.textView69);
-                tv69.setText(sharedPreferences.getString("id", ""));
-                //if (sharedPreferences.contains("id")){
-                //    putJSON();
-                //}
-                //else {
-                    //postJSON();
-                //}
-
-            }
-        });
+        Glide
+                .with(CreateProfile.this)
+                .load(pfp)
+                .into(imgProfilePicture);
 
 
 
@@ -124,16 +117,22 @@ public class CreateProfile extends AppCompatActivity {
                     Toast.makeText(CreateProfile.this, "Please fill out the Gender field.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
-                if (sharedPreferences.contains("id")){
-                    putJSON();
+                if(sharedPreferences.contains("Interests")) {
+                    if (sharedPreferences.contains("id")) {
+                        putJSON();
+                        Intent intent = new Intent(CreateProfile.this, Profile.class);
+                        startActivity(intent);
+                    } else {
+                        postJSON();
+                        Intent intent = new Intent(CreateProfile.this, Profile.class);
+                        startActivity(intent);
+                    }
                 }
-                else {
-                    postJSON();
+                else{
+                    Toast.makeText(CreateProfile.this, "Please choose some interests to get started!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(CreateProfile.this, Interests.class);
+                    startActivity(intent);
                 }
-
-                Intent intent = new Intent(CreateProfile.this, Profile.class);
-                startActivity(intent);
             }
         });
 
@@ -163,8 +162,7 @@ public class CreateProfile extends AppCompatActivity {
         }
     }
 
-    public void okhttpGetRequest(){
-        TextView tv69 = findViewById(R.id.textView69);
+    /*public void okhttpGetRequest(){
 
         OkHttpClient client = new OkHttpClient();
 
@@ -188,16 +186,15 @@ public class CreateProfile extends AppCompatActivity {
                     CreateProfile.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv69.setText(sresponse);
                         }
                     });
                 }
             }
         });
 
-    }
+    }*/
 
-    public void getJSON() {
+    /*public void getJSON() {
             RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
             final String url = "http://20.43.19.13:3000/Users";
             JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -232,7 +229,7 @@ public class CreateProfile extends AppCompatActivity {
             });
 
             queue.add(getRequest);
-    }
+    }*/
 
         public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(CreateProfile.this);
@@ -410,8 +407,6 @@ public class CreateProfile extends AppCompatActivity {
             for (String interest : setInterests){
                 interests.put(interest);
             }
-            TextView tv69 = findViewById(R.id.textView69);
-            tv69.setText((interests).toString());
             userJSON.put("Interests", interests);
 
         } catch (JSONException e) {
