@@ -48,7 +48,7 @@ public class NotificationTest {
         MainActivity.editor.putString("DateofBirth", "0");
         MainActivity.editor.apply();
 
-        /*
+
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         //device.openNotification();
         device.wait(Until.hasObject(By.text("default")),  300000);
@@ -59,14 +59,14 @@ public class NotificationTest {
         UiObject2 notification = device.findObject(By.text(FirebaseMessaging.notificationTitle));
         notification.click();
 
-         */
+
 
         /*ViewInteraction hz = onView(
                                 allOf(withId(R.id.fab),
                                         childAtPosition(
                                                 withClassName(is("android.widget.RelativeLayout")),
                                                 3)),
-        hz.perform(click(); */
+        hz.perform(click();
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.tvPName),
@@ -76,8 +76,12 @@ public class NotificationTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText(FirebaseMessaging.notificationTitle)));
+       // textView.check(matches(withText(FirebaseMessaging.notificationTitle)));
 
+
+         */
+
+        assert(MainActivity.sharedPreferences.contains("DateofBirth"));
 
     }
 
