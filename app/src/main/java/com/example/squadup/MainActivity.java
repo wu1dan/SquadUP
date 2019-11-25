@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
 
-    private boolean paused = false;
     private final String TAG = "MainActivity";
 
 
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(this, Login.class);
                 startActivity(intent);
+                return true;
             default:
                 Toast.makeText(MainActivity.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
                 break;

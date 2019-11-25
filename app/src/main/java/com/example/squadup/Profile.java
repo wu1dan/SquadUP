@@ -33,7 +33,6 @@ public class Profile extends AppCompatActivity {
     //private Uri uriProfilePicture;
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor sharedPreferencesEditor;
 
     public void onBackPressed()       //CODE FOR CHANGING BACK BUTTON FUNCTIONALITY MAKE SURE EDITED PER ACTIVITY TO RETURN TO CORRECT ONE
     {

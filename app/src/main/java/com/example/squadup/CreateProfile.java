@@ -50,7 +50,6 @@ public class CreateProfile extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor sharedPreferencesEditor;
 
-    private int Image = 1;
     @Override
     public void onBackPressed() {
         if(sharedPreferences.contains("Interests")) {
