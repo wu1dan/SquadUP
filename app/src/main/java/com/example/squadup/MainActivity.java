@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentHelp = new Intent(this, Help.class);
                 this.startActivity(intentHelp);
                 return true;
+            case R.id.btnSignout:
+                LoginManager.getInstance().logOut();
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
             default:
                 Toast.makeText(MainActivity.this, "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
                 break;
