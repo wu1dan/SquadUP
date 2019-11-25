@@ -109,7 +109,7 @@
         android:id="@+id/btnComplete"
         android:layout_width="150dp"
         android:layout_height="137dp"
-        android:layout_marginStart="226dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="660dp"
