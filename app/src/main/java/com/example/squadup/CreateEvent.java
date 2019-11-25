@@ -12,12 +12,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApiRequest;
-import com.google.maps.errors.ApiException;
-import com.google.maps.internal.ApiResponse;
-import com.google.maps.model.GeocodingResult;
-import com.google.maps.model.LatLng;
+
 
 
 
@@ -37,8 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.maps.GeocodingApiRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -178,7 +171,7 @@ public class CreateEvent extends AppCompatActivity{
         if(!params)
             return params;
 
-        params = checkLocation();
+        //params = checkLocation();
         if(!params)
             return params;
 
@@ -231,7 +224,7 @@ public class CreateEvent extends AppCompatActivity{
         return true;
     }
 
-    protected Boolean checkLocation(){
+    /*protected Boolean checkLocation(){
         if (sLocation.length() == 0) {
             Toast.makeText(CreateEvent.this, "Please enter a valid location", Toast.LENGTH_SHORT).show();
             return false;
@@ -239,8 +232,7 @@ public class CreateEvent extends AppCompatActivity{
 
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyCqeDrgugKAdMEn6HlEBYSkqlV-UsI9Q4o")
-                .build();
-        GeocodingResult[] results = new GeocodingResult[0];
+                .build();GeocodingResult[] results = new GeocodingResult[0];
         try {
             results = GeocodingApi.geocode(context,
                     sLocation).await();
@@ -270,7 +262,7 @@ public class CreateEvent extends AppCompatActivity{
         }
 
         return true;
-    }
+    }*/
 
     protected Boolean checkDate(){
         if(sDate.equals(tempDate)){
@@ -394,8 +386,7 @@ public class CreateEvent extends AppCompatActivity{
 
             @Override
             public void onResponse(JSONObject response) {
-                TextView textView69 = findViewById(R.id.textView69);
-                textView69.setText(response.toString());
+
                 Toast.makeText(getApplication(), "Changes saved successfully", Toast.LENGTH_SHORT).show();
 
             }

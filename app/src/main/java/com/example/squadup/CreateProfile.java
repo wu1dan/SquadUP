@@ -68,7 +68,17 @@ public class CreateProfile extends AppCompatActivity {
     private int Image = 1;
     @Override
     public void onBackPressed() {
-        putJSON();
+        if(sharedPreferences.contains("Interests")) {
+            if (sharedPreferences.contains("id")) {
+                putJSON();
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
+                startActivity(intent);
+            } else {
+                postJSON();
+                Intent intent = new Intent(CreateProfile.this, Profile.class);
+                startActivity(intent);
+            }
+        }
         Intent intent = new Intent(CreateProfile.this, MainActivity.class);
         startActivity(intent);
     }
@@ -132,26 +142,27 @@ public class CreateProfile extends AppCompatActivity {
                     Toast.makeText(CreateProfile.this, "Please choose some interests to get started!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(CreateProfile.this, Interests.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
 
-        Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
+        /*Button btnEditProfilePicture = findViewById(R.id.btnEditProfilePicture);
         btnEditProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openGallery();
             }
-        });
+        });*/
 
     }
 
-    private void openGallery() {
+    /*private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent, Image);
-    }
+    }*/
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 69 && requestCode == Image) {
             uriImage = data.getData();
@@ -160,7 +171,7 @@ public class CreateProfile extends AppCompatActivity {
             sharedPreferencesEditor.putString("ProfilePicture", uriImage.toString());
             sharedPreferencesEditor.apply();
         }
-    }
+    }*/
 
     /*public void okhttpGetRequest(){
 

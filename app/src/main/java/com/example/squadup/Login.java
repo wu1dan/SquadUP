@@ -49,16 +49,16 @@ public class Login extends AppCompatActivity {
         btnfb = findViewById(R.id.btnfb);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        String fbid = accessToken.getCurrentAccessToken().getUserId();
-        SharedPreferences sharedPreferences;
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
-        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        sharedPreferencesEditor.putString("fbid", fbid);
-        sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
-        sharedPreferencesEditor.apply();
 
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
+            String fbid = accessToken.getCurrentAccessToken().getUserId();
+            SharedPreferences sharedPreferences;
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putString("fbid", fbid);
+            sharedPreferencesEditor.putString("ProfilePicture", "https://graph.facebook.com/" + fbid + "/picture?type=large");
+            sharedPreferencesEditor.apply();
             Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
             startActivity(intent);
             finish();
@@ -86,7 +86,7 @@ public class Login extends AppCompatActivity {
 
 
         //Button btnLogin = (Button) findViewById(R.id.btnLogin);  //Signin button, might be deleting self registration later
-        Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);
+        /*Button btnRegistration = (Button) findViewById(R.id.btnRegisternow);
         btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +94,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)  //request user data
@@ -159,6 +159,7 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    String personPhoto;
     private void saveGoogleInfo(GoogleSignInAccount googleAcct) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -166,7 +167,12 @@ public class Login extends AppCompatActivity {
         String googleFirstName = googleAcct.getGivenName();       //self explanatory
         String googleLastName = googleAcct.getFamilyName();     //self explanatory
         String googleEmail = googleAcct.getEmail();       //self explanatory
-        Uri personPhoto = googleAcct.getPhotoUrl();       //self explanatory
+        if (googleAcct.getPhotoUrl().toString() != null) {
+            personPhoto = googleAcct.getPhotoUrl().toString();       //self explanatory
+        }
+        else {
+            personPhoto = "0";
+        }
 
         if (!sharedPreferences.contains("FirstName")) {
             sharedPreferencesEditor.putString("FirstName", googleFirstName);
@@ -180,8 +186,8 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.putString("Email", googleEmail);
             sharedPreferencesEditor.apply();
         }
-        if (!sharedPreferences.contains("ProfilePicture") && personPhoto != null) {
-            sharedPreferencesEditor.putString("ProfilePicture", personPhoto.toString());
+        if (!sharedPreferences.contains("ProfilePicture") && !personPhoto.equals("0")) {
+            sharedPreferencesEditor.putString("ProfilePicture", personPhoto);
             sharedPreferencesEditor.apply();
         }
     }
