@@ -69,10 +69,8 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                JSONParser.sendDataToServer();
-
-                //Intent intent = new Intent(Settings.this, FirebaseToken.class);
-                //startActivity(intent);
+                Intent intent = new Intent(Settings.this, FirebaseToken.class);
+                startActivity(intent);
             }
         });
 
