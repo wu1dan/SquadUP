@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 //import androidx.core.app.NotificationCompat;
-import androidx.test.espresso.ViewInteraction;
+//import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -24,15 +24,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/*
 import static androidx.test.espresso.Espresso.onView;
-//import static androidx.test.espresso.action.ViewActions.click;
-//import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-//import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-//import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-//import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.is;
+ */
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
