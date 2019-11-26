@@ -50,23 +50,14 @@ public class NotificationTest {
 
 
         UiDevice device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        //device.openNotification();
+        device.openNotification();
         device.wait(Until.hasObject(By.text("default")),  300000);
 
         //UiObject2 clearAll = device.findObject(By.textContains("Clear"));
         //clearAll.click();
 
-        UiObject2 notification = device.findObject(By.text(FirebaseMessaging.notificationTitle));
+        UiObject2 notification = device.findObject(By.text("default"));
         notification.click();
-
-
-
-        /*ViewInteraction hz = onView(
-                                allOf(withId(R.id.fab),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                3)),
-        hz.perform(click();
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.tvPName),
@@ -76,12 +67,7 @@ public class NotificationTest {
                                         0),
                                 0),
                         isDisplayed()));
-       // textView.check(matches(withText(FirebaseMessaging.notificationTitle)));
-
-
-         */
-
-        assert(MainActivity.sharedPreferences.contains("DateofBirth"));
+        textView.check(matches(withText("default")));
 
     }
 

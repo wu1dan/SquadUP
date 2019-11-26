@@ -62,10 +62,10 @@ public class CurrentEvent extends AppCompatActivity {
         
         tvCName.setText(currentName);
         tvCCategories.setText(currentCategories);
-        tvCDescription.setText(currentDescription);
-        tvCTime.setText(currentTime);
-        tvCDate.setText(currentDate);
-        tvCLocation.setText(currentLocation);
+        tvCDescription.setText("Event description: " + currentDescription);
+        tvCTime.setText("Time of event (24hr): " + currentTime);
+        tvCDate.setText(("Date of event (m/d/y): " + currentDate).replace("Your date:", ""));
+        tvCLocation.setText("Location: " + currentLocation);
         tvCTotalSpots.setText(currentTotalSpots);
 
         btnComplete.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +73,8 @@ public class CurrentEvent extends AppCompatActivity {
             public void onClick(View v) {
                 //MainActivity.editor.remove("Event ID");
                 //MainActivity.editor.apply();
+                sharedPreferencesEditor.remove("EventID");
+                sharedPreferencesEditor.apply();
                 sharedPreferencesEditor.remove("EventName");
                 sharedPreferencesEditor.apply();
                 sharedPreferencesEditor.remove("EventCategories");

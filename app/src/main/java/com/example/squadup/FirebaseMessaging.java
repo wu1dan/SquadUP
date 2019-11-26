@@ -65,12 +65,12 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 int dataLength = remoteMessage.getData().toString().length();
                 eventID = tempData.substring(0,dataLength - 1).substring(4);
 
-
                 Log.e(TAG, remoteMessage.getData().size() + " is the size of the data");
                 Log.e(TAG, "Message Data: " + remoteMessage.getData().toString());
                 Log.e(TAG, "eventID: " + eventID);
 
                 sharedPreferencesEditor.putString("tempID", eventID);
+                sharedPreferencesEditor.commit();
 
                 //set the title and body from the notification data here, and then it will use that in the notification below
 
@@ -83,10 +83,11 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                 title = remoteMessage.getNotification().getTitle();
                 body = remoteMessage.getNotification().getBody();
 
-            }
+                notificationTitle = title;
+                MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
 
-            notificationTitle = title;
-            MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
+
+            }
 
         }
     }
@@ -111,8 +112,13 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
                         try {
                             JSONObject eventObj = response.getJSONObject(0);
-                            String title = eventObj.getString("EventName");
-                            Log.d("Event Name: ", title);
+                            title = eventObj.getString("EventName");
+                            body = "Click here for more details.";
+                            notificationTitle = title;
+
+                            MyNotificationManager.getInstance(getApplicationContext()).displayNotification(title, body);
+
+
                         } catch (JSONException ex) {
                             ex.printStackTrace();
                         }
