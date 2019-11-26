@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -37,6 +38,8 @@ public class Interests extends AppCompatActivity {
 
 
     private Context context = Interests.this;
+    private Button btnSubmit;
+    private EditText editTextSubmit;
 
     private Set<String> userInterests = new HashSet<>();
 
@@ -65,7 +68,6 @@ public class Interests extends AppCompatActivity {
         sharedPreferencesEditor = sharedPreferences.edit();
 
         final ListView listInterests;
-        final EditText txtSearchInterests;
         final ListAdapter listAdapter = new ListAdapter();
         listInterests = findViewById(R.id.listInterests);
 
@@ -78,25 +80,26 @@ public class Interests extends AppCompatActivity {
             sharedPreferencesEditor.apply();
         }
 
-        txtSearchInterests = findViewById(R.id.txtSearchInterests);
-        txtSearchInterests.addTextChangedListener(new TextWatcher() {
+        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //also nothing to see here! for now at least...
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //if(!s.toString().isEmpty()){
-                    //List<String> filteredInterestTitles = filterInterests(filterInterestTitles,s.toString());
-                //}
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //also nothing to see here! for now at least...
+            public void onClick(View v) {
+                editTextSubmit = findViewById(R.id.etSubmit);
+                if (sharedPreferences.contains("Submission")) {
+                    Set<String> Submission = sharedPreferences.getStringSet("Submission", null);
+                    Submission.add(editTextSubmit.getText().toString());
+                    sharedPreferencesEditor.putStringSet("Submission", Submission);
+                    sharedPreferencesEditor.apply();
+                }
+                else{
+                    Set<String> Submission = new HashSet<String>();
+                    Submission.add(editTextSubmit.getText().toString());
+                    sharedPreferencesEditor.putStringSet("Submission", Submission);
+                    sharedPreferencesEditor.apply();
+                }
             }
         });
+
 
         listInterests.setAdapter(listAdapter);
 

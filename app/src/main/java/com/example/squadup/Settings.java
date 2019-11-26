@@ -75,17 +75,6 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        Button btnFirebase = (Button) findViewById(R.id.btnFirebase);                                     //BROWSE EVENTS
-        btnFirebase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //getJSON();
-
-                Intent intent = new Intent(Settings.this, FirebaseToken.class);
-                startActivity(intent);
-            }
-        });
 
         btnGhostMode = (Button) findViewById(R.id.btnGhostMode);
         btnGhostMode.setOnClickListener(new View.OnClickListener() {

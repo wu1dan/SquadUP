@@ -12,25 +12,26 @@
         android:id="@+id/layoutSearchBar"
         android:layout_width="match_parent"
         android:layout_height="67dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="3dp">
 
-        <ImageView
-            android:id="@+id/imgSearch"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:src="@android:drawable/ic_search_category_default" />
-
         <EditText
-            android:id="@+id/txtSearchInterests"
-            android:layout_width="341dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
+            android:id="@+id/etSubmit"
+            android:layout_width="220dp"
+            android:layout_height="67dp"
+            android:layout_weight="1"
             android:ems="10"
-            android:hint="Search for Interest"
+            android:hint="Interest Submission"
             android:inputType="textPersonName" />
 
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="100dp"
+            android:layout_height="67dp"
+            android:layout_weight="1"
+            android:text="Don't see your interest? Submit a new one!"
+            android:textSize="10sp" />
     </LinearLayout>
 
     <ListView

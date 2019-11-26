@@ -22,8 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".PendingEvent" />
+        <activity android:name=".PendingEvent" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -78,6 +77,7 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Profile" />
+        <activity android:name=".Help" />
         <activity
             android:name=".CreateEvent"
             android:theme="@style/AppTheme.NoActionBar" />

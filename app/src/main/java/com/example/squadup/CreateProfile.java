@@ -243,6 +243,9 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
             Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
+            if (sharedPreferences.contains("Submission")){
+                userJSON.put("Submission", null);
+            }
             JSONArray interests = new JSONArray();
             for (String interest : setInterests){
                 interests.put(interest);
@@ -391,6 +394,9 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            if (sharedPreferences.contains("Submission")){
+                userJSON.put("Submission", null);
+            }
             Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
             JSONArray interests = new JSONArray();
             for (String interest : setInterests){
