@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 //import com.google.maps.GeocodingApiRequest;
 
 //import org.json.JSONArray;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -469,7 +470,13 @@ public class CreateEvent extends AppCompatActivity{
 
         try {
             eventJSON.put("EventName", sName);
-            eventJSON.put("Interests", lCategories);
+
+            JSONArray interests = new JSONArray();
+            for (String interest : lCategories){
+                interests.put(interest);
+            }
+
+            eventJSON.put("Interests", interests);
             eventJSON.put("Description", sDescription);
             eventJSON.put("Time", sTime);
             eventJSON.put("Date", dateToSend);
@@ -481,7 +488,12 @@ public class CreateEvent extends AppCompatActivity{
             eventJSON.put("Lat", lat);
             eventJSON.put("Long", longitude);
             eventJSON.put("TotalSpots", totalSpots);
-            eventJSON.put("Users", users);
+
+            JSONArray usersJSON = new JSONArray();
+            for (String user : users){
+                usersJSON.put(user);
+            }
+            eventJSON.put("Users", usersJSON);
 
         } catch (JSONException e) {
             e.printStackTrace();

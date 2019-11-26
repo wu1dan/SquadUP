@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
@@ -78,10 +80,12 @@ public class Settings extends AppCompatActivity {
                 if (MainActivity.sharedPreferences.getBoolean("Ghost Mode", false)) { //if ghost mode is on
                     MainActivity.editor.putBoolean("Ghost Mode", false); //turn it off
                     MainActivity.editor.apply();
+                    Toast.makeText(Settings.this, "Ghost Mode is OFF", Toast.LENGTH_SHORT).show();
                     btnGhostMode.setText("Ghost Mode: OFF");
                 } else { //if ghost mode is off
                     MainActivity.editor.putBoolean("Ghost Mode", true); //turn it on
                     MainActivity.editor.apply();
+                    Toast.makeText(Settings.this, "Ghost Mode is ON", Toast.LENGTH_SHORT).show();
                     btnGhostMode.setText("Ghost Mode: ON");
                 }
 
