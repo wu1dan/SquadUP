@@ -1,11 +1,17 @@
 package com.example.squadup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +31,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,10 +45,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.example.squadup.PendingEvent.sharedPreferencesEditor;
+
 public class CreateProfile extends AppCompatActivity {
 
     private TextView tvDateofBirth;
-
+    private FusedLocationProviderClient client;
+    private double lat;
+    private float flat;
+    private float flong;
+    private double longitude;
     private String Date = "69";
     private String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
     private LocalDate currentDate = LocalDate.now();
@@ -117,10 +133,12 @@ public class CreateProfile extends AppCompatActivity {
                 }
                 if(sharedPreferences.contains("Interests")) {
                     if (sharedPreferences.contains("id")) {
+                        getLocation();
                         putJSON();
                         Intent intent = new Intent(CreateProfile.this, Profile.class);
                         startActivity(intent);
                     } else {
+                        getLocation();
                         postJSON();
                         Intent intent = new Intent(CreateProfile.this, Profile.class);
                         startActivity(intent);
@@ -242,6 +260,10 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("latdec", lat);
+            userJSON.put("longdec", longitude);
+
+
             Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
             if (sharedPreferences.contains("Submission")){
                 userJSON.put("Submission", null);
@@ -394,6 +416,8 @@ public class CreateProfile extends AppCompatActivity {
             userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
             userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
             userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
+            userJSON.put("latdec", lat);
+            userJSON.put("longdec", longitude);
             if (sharedPreferences.contains("Submission")){
                 userJSON.put("Submission", null);
             }
@@ -434,4 +458,53 @@ public class CreateProfile extends AppCompatActivity {
             requestQueue.add(postRequest);
 
     }
+
+    protected void getLocation(){
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            Toast.makeText(CreateProfile.this, "Please enable Location Services to use SquadUP!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, Login.class);
+            this.startActivity(intent);
+            return;
+        }
+        LocationManager locationManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double dlong = location.getLongitude();
+        double dlat = location.getLatitude();
+        longitude = dlong;
+        lat = dlat;
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+    }
+
+    private final LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            longitude = location.getLongitude();
+            lat = location.getLatitude();
+            flong = (float) longitude;
+            flat = (float) lat;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            //
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            //
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            //
+        }
+    };
+
 }

@@ -1,10 +1,13 @@
 package com.example.squadup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -26,6 +30,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 public class Login extends AppCompatActivity {
 
     private final String TAG = "Homepage";
@@ -37,7 +43,12 @@ public class Login extends AppCompatActivity {
     {
         finish();
     }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        requestPermission();
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +62,18 @@ public class Login extends AppCompatActivity {
 
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         if (isLoggedIn) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                Toast.makeText(Login.this, "Please enable Location Services to use SquadUP!", Toast.LENGTH_SHORT).show();
+                LoginManager.getInstance().logOut();
+               return;
+            }
             String fbid = accessToken.getCurrentAccessToken().getUserId();
             SharedPreferences sharedPreferences;
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Login.this);
@@ -60,12 +83,23 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.apply();
             Intent intent = new Intent(Login.this, MainActivity.class); //next step is homepage
             startActivity(intent);
-            finish();
+            return;
         }
 
         btnfb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    Toast.makeText(Login.this, "Please enable Location Services to use SquadUP!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Log.d(TAG, "User has successfully logged in");
                 String fbid = accessToken.getCurrentAccessToken().getUserId();
                 SharedPreferences sharedPreferences;
@@ -112,7 +146,19 @@ public class Login extends AppCompatActivity {
         SignInButton googlesigninbutton = findViewById(R.id.btngsi);
         googlesigninbutton.setOnClickListener(new View.OnClickListener() {      //when button is pressed
             @Override
-            public void onClick(View v) {           //when google sign in button pressed, start up signIn class
+            public void onClick(View v) {
+                //when google sign in button pressed, start up signIn class
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    Toast.makeText(Login.this, "Please enable Location Services to use SquadUP!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 switch (v.getId()) {
                     case R.id.btngsi:
                         signIn();
@@ -211,6 +257,9 @@ public class Login extends AppCompatActivity {
             sharedPreferencesEditor.apply();
 
         }
+    }
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
 }
 

@@ -462,8 +462,8 @@ public class CreateEvent extends AppCompatActivity{
             eventJSON.put("LocalDateTime", dateTime);
 
             eventJSON.put("Location", sLocation);
-            eventJSON.put("Lat", lat);
-            eventJSON.put("Long", longitude);
+            eventJSON.put("latdec", lat);
+            eventJSON.put("longdec", longitude);
             eventJSON.put("TotalSpots", totalSpots);
             eventJSON.put("Users", users);
 
