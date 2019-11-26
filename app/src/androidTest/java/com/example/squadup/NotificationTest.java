@@ -58,7 +58,7 @@ public class NotificationTest {
         UiObject2 notification = device.findObject(By.text("default"));
         notification.click();
 
-        ViewInteraction textView = onView(
+        /*ViewInteraction textView = onView(
                 allOf(withId(R.id.tvPCategories),
                         childAtPosition(
                                 childAtPosition(
@@ -66,7 +66,7 @@ public class NotificationTest {
                                         0),
                                 1),
                         isDisplayed()));
-        //textView.check(matches(isDisplayed()));
+        textView.check(matches(isDisplayed()));*/
 
 
     }
