@@ -246,57 +246,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (sharedPreferences.contains("id")) {
             putJSON();
-        } else {
-            postJSON();
         }
-    }
-
-    private void postJSON() {
-
-        try {
-            String URL = "http://20.43.19.13:3000/Users";
-            JSONObject userJSON = new JSONObject();
-
-            userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
-            userJSON.put("LastName", sharedPreferences.getString("LastName", ""));
-            userJSON.put("Email", sharedPreferences.getString("Email", ""));
-            userJSON.put("DateofBirth", sharedPreferences.getString("DateofBirth", ""));
-            userJSON.put("Gender", sharedPreferences.getString("Gender", ""));
-            userJSON.put("UserID", "tempID");
-            userJSON.put("FirebaseToken", sharedPreferences.getString("FirebaseToken", ""));
-            userJSON.put("Interests", sharedPreferences.getStringSet("Interests", null));
-            userJSON.put("GoogleIDToken", sharedPreferences.getString("GoogleIDToken", ""));
-            userJSON.put("latdec", sharedPreferences.getFloat("longdec", 0.0f));
-            userJSON.put("longdec", sharedPreferences.getFloat("longdec", 0.0f));
-
-            JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST, URL, userJSON, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    Toast.makeText(getApplicationContext(), "Welcome to SquadUP!", Toast.LENGTH_SHORT).show();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "There was an error. Please try again.", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
-
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-            requestQueue.add(postRequest);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void putJSON() {
