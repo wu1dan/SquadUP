@@ -252,7 +252,6 @@ public class CreateProfile extends AppCompatActivity {
             }
             userJSON.put("Interests", interests);
 
-
             JsonObjectRequest putRequest = new JsonObjectRequest(Request.Method.PUT, url, userJSON, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {

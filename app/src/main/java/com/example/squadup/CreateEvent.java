@@ -44,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -71,6 +72,7 @@ public class CreateEvent extends AppCompatActivity{
     private String sSpotsTotal;
     private String sDate;
     private String aCategories[];
+    private String dateToSend;
     private ArrayList<String> lCategories = new ArrayList<String>();
     private double lat = 0;
     private double longitude= 0;
@@ -81,7 +83,10 @@ public class CreateEvent extends AppCompatActivity{
 
     private Intent intent;
 
+    public static String dateToParse = "";
     private String tempDate = "Your Date:";
+    public static String timeToParse = "";
+    public static LocalDateTime dateTime = LocalDateTime.now();
 
     public static String latLng = "";
 
@@ -109,6 +114,10 @@ public class CreateEvent extends AppCompatActivity{
         sCategories = categories.getText().toString();
         sDescription = description.getText().toString();
         sTime = time.getText().toString();
+
+        StringBuilder sb = new StringBuilder(sTime);
+        timeToParse = sb.append(":00").toString();
+
         sLocation = location.getText().toString();
         sSpotsTotal = spotsTotal.getText().toString();
         sDate = date.getText().toString();
@@ -218,7 +227,7 @@ public class CreateEvent extends AppCompatActivity{
     }
 
     protected Boolean checkTime(){
-        if (sTime.length() == 0) {
+        if (sTime.length() != 5 || sTime.charAt(2) != ':') {
             Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -298,7 +307,7 @@ public class CreateEvent extends AppCompatActivity{
         sharedPreferencesEditor.apply();
         sharedPreferencesEditor.putString("EventTime", sTime);
         sharedPreferencesEditor.apply();
-        sharedPreferencesEditor.putString("EventDate", sDate);
+        sharedPreferencesEditor.putString("EventDate", dateToSend);
         sharedPreferencesEditor.apply();
         sharedPreferencesEditor.putString("EventLocation", sLocation);
         sharedPreferencesEditor.apply();
@@ -345,6 +354,10 @@ public class CreateEvent extends AppCompatActivity{
                 String eventDate = pMonth + "/" + dayOfMonth + "/" + year;
                 date = (TextView)findViewById(R.id.tvDate);
                 date.setText("Your date: " + eventDate);
+
+                dateToSend = eventDate;
+                dateToParse = year + "-" + pMonth + "-" + dayOfMonth;
+
             }
         };
 
@@ -361,6 +374,15 @@ public class CreateEvent extends AppCompatActivity{
             }
 
         }); //end of CreateEvent button
+    }
+
+    public void parseDateTime(){
+
+        String dateTimeToParse = dateToParse + "T" + timeToParse;
+        Log.d("Date Time", dateTimeToParse);
+
+        dateTime = LocalDateTime.parse(dateTimeToParse);
+
     }
     /*
 
@@ -422,15 +444,19 @@ public class CreateEvent extends AppCompatActivity{
         String URL = "http://20.43.19.13:3000/Events";
         JSONObject eventJSON = new JSONObject();
         int totalSpots = Integer.valueOf(sSpotsTotal);
-        users.add(sharedPreferences.getString("UserID", ""));
-        String[] testArray = {"Basketball", "Soccer", "Baseball"};
+        users.add(sharedPreferences.getString("id", ""));
+        //String[] testArray = {"Basketball", "Soccer", "Baseball"};
 
         try {
             eventJSON.put("EventName", sName);
             eventJSON.put("Interests", lCategories);
             eventJSON.put("Description", sDescription);
             eventJSON.put("Time", sTime);
-            eventJSON.put("Date", sDate);
+            eventJSON.put("Date", dateToSend);
+
+            parseDateTime();
+            eventJSON.put("LocalDateTime", dateTime);
+
             eventJSON.put("Location", sLocation);
             eventJSON.put("Lat", lat);
             eventJSON.put("Long", longitude);
