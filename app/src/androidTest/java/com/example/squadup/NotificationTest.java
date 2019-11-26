@@ -1,10 +1,10 @@
 package com.example.squadup;
 
 
-//import android.content.Intent;
+/*import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.ViewParent;*/
 
 //import androidx.core.app.NotificationCompat;
 //import androidx.test.espresso.ViewInteraction;
@@ -17,9 +17,9 @@ import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.Until;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+//import org.hamcrest.Description;
+//import org.hamcrest.Matcher;
+//import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +73,7 @@ public class NotificationTest {
 
     }
 
-    private static Matcher<View> childAtPosition(
+    /*private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
@@ -90,7 +90,7 @@ public class NotificationTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
+    }*/
 }
 
 
