@@ -208,8 +208,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (!sharedPreferences.contains("DateofBirth")){
             Intent intent = new Intent(MainActivity.this, CreateProfile.class);
-            postJSON();
             Toast.makeText(MainActivity.this, "Please create a profile to get started!", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+        }
+        if (sharedPreferences.contains("Interests") && sharedPreferences.getStringSet("Interests", null).size() == 0){
+            Intent intent = new Intent(MainActivity.this, Interests.class);
+            Toast.makeText(MainActivity.this, "Please select some interests before continuing.", Toast.LENGTH_SHORT).show();
             startActivity(intent);
         }
     }
