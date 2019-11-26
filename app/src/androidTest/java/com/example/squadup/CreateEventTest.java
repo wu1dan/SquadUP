@@ -1,14 +1,14 @@
 package com.example.squadup;
 
 
-import android.content.Context;
-import android.content.SharedPreferences;
+//import android.content.Context;
+//import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.preference.PreferenceManager;
-import androidx.test.espresso.DataInteraction;
+//import androidx.preference.PreferenceManager;
+//import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -21,19 +21,19 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.onData;
+//import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
+//import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
+//import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
@@ -62,7 +62,7 @@ public class CreateEventTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("Dummy Name"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("name"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.tiCategories),
@@ -102,7 +102,7 @@ public class CreateEventTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textInputEditText5.perform(replaceText("d"), closeSoftKeyboard());
+        textInputEditText5.perform(replaceText("12:30"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText6 = onView(
                 allOf(withId(R.id.tiSpotsTotal),
@@ -120,9 +120,9 @@ public class CreateEventTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                7),
+                                6),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("e"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("UBC"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.btnPickDate), withText("Pick Date"),
@@ -130,7 +130,7 @@ public class CreateEventTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                7),
                         isDisplayed()));
         appCompatButton5.perform(click());
 
@@ -155,14 +155,14 @@ public class CreateEventTest {
         appCompatButton7.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tvCName), withText("Dummy Name"),
+                allOf(withId(R.id.tvCName), withText("name"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Dummy Name")));
+        textView.check(matches(withText("name")));
     }
 
     private static Matcher<View> childAtPosition(

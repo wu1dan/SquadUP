@@ -27,10 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+//import java.util.Set;
 
 public class PendingEvent extends AppCompatActivity {
 
@@ -87,7 +87,7 @@ public class PendingEvent extends AppCompatActivity {
         tvPLocation = (TextView) findViewById(R.id.tvPLocation);
         tvPTotalSpots = (TextView) findViewById(R.id.tvPTotalSpots);
 
-        String defValue = " ";
+        //String defValue = " ";
 
         //sharedPreferencesEditor.putString("tempID","5ddcca075235c507581e619c");
         //sharedPreferencesEditor.commit();

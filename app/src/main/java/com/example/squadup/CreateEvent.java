@@ -6,18 +6,18 @@ import androidx.preference.PreferenceManager;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
+//import android.location.Address;
+//import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApiRequest;
+//import com.google.maps.GeocodingApiRequest;
 import com.google.maps.errors.ApiException;
-import com.google.maps.internal.ApiResponse;
+//import com.google.maps.internal.ApiResponse;
 import com.google.maps.model.GeocodingResult;
-import com.google.maps.model.LatLng;
+//import com.google.maps.model.LatLng;
 
 
 
@@ -37,20 +37,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.maps.GeocodingApiRequest;
+//import com.google.maps.GeocodingApiRequest;
 
-import org.json.JSONArray;
+//import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+//import java.util.List;
+//import java.util.Locale;
 import java.util.Map;
 
 public class CreateEvent extends AppCompatActivity{
@@ -71,7 +71,6 @@ public class CreateEvent extends AppCompatActivity{
     private String sLocation;
     private String sSpotsTotal;
     private String sDate;
-    private String aCategories[];
     private String dateToSend;
     private ArrayList<String> lCategories = new ArrayList<String>();
     private double lat = 0;
@@ -124,7 +123,7 @@ public class CreateEvent extends AppCompatActivity{
 
         Boolean areParamsFilled;
 
-        aCategories = sCategories.split("\\W+");
+        String[] aCategories = sCategories.split("\\W+");
         for(String s : aCategories){
             lCategories.add(s);
         }
@@ -246,7 +245,7 @@ public class CreateEvent extends AppCompatActivity{
                 .build();
         GeocodingResult[] results = new GeocodingResult[0];
         try {
-            results = GeocodingApi.geocode(context,
+            results = GeocodingApiUtils.geocode(context,
                     sLocation).await();
         } catch (ApiException e) {
             e.printStackTrace();
@@ -255,15 +254,20 @@ public class CreateEvent extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonString = gson.toJson(results[0].geometry);
+        try {
+            String jsonString = gson.toJson(results[0].geometry);
 
-        //JSONArray root = new JSONArray(gson.toJson(results[0].geometry));
-        JSONObject geometryObj = new JSONObject(jsonString);
-        JSONObject locationObj = geometryObj.getJSONObject("location");
-        lat = locationObj.getDouble("lat");
-        longitude = locationObj.getDouble("lng");
-
+            //JSONArray root = new JSONArray(gson.toJson(results[0].geometry));
+            JSONObject geometryObj = new JSONObject(jsonString);
+            JSONObject locationObj = geometryObj.getJSONObject("location");
+            lat = locationObj.getDouble("lat");
+            longitude = locationObj.getDouble("lng");
+        }catch(ArrayIndexOutOfBoundsException exception){
+            lat = 0;
+            longitude = 0;
+        }
         //Toast.makeText(CreateEvent.this, "lat: " + lat + " long: " + longitude, Toast.LENGTH_SHORT).show();
 
         return true;

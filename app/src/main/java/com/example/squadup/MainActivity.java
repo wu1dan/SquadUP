@@ -15,7 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+//import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.app.NotificationChannel;
 
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             btnCreateEvent.setEnabled(false);
             btnCreateEvent.setText("Cannot create an event when in an event!");
             btnCurrentEvent.setText("Current Event");
-            Toast.makeText(MainActivity.this,"create" + sharedPreferences.getString("EventName", defValue), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this,"create" + sharedPreferences.getString("EventName", defValue), Toast.LENGTH_SHORT).show();
         }else if(!sharedPreferences.getString("tempID", defValue).equals(defValue)){ //this means that they do have a pending event
             btnCreateEvent.setEnabled(false);
             btnCreateEvent.setText("Cannot create an event when in an event!");
@@ -168,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        /*FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PendingEvent.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
     }
 
