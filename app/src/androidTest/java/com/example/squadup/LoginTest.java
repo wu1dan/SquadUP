@@ -31,20 +31,24 @@ import static org.hamcrest.Matchers.is;
 public class LoginTest {
 
     @Rule
-    public ActivityTestRule<Login> mActivityTestRule = new ActivityTestRule<>(Login.class);
+    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void fullTest() {
-        ViewInteraction hz = onView(
+    public void loginTest() {
+        /*ViewInteraction hz = onView(
                 allOf(withText("Sign in"),
                         childAtPosition(
                                 allOf(withId(R.id.btngsi),
                                         childAtPosition(
                                                 withClassName(is("android.widget.RelativeLayout")),
-                                                3)),
+                                                0)),
                                 0),
                         isDisplayed()));
-        hz.perform(click());
+        hz.perform(click());*/
+
+        //MainActivity.editor.putString("DateofBirth", "0");
+        //MainActivity.editor.apply();
+
 
         //UiObject googleProfile = device.findObject(new UiSelector()).
 

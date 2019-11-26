@@ -62,7 +62,7 @@ public class CreateEventTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("Dummy Name"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("name"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.tiCategories),
@@ -102,7 +102,7 @@ public class CreateEventTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textInputEditText5.perform(replaceText("d"), closeSoftKeyboard());
+        textInputEditText5.perform(replaceText("12:30"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText6 = onView(
                 allOf(withId(R.id.tiSpotsTotal),
@@ -120,9 +120,9 @@ public class CreateEventTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                7),
+                                6),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("e"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("UBC"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.btnPickDate), withText("Pick Date"),
@@ -130,7 +130,7 @@ public class CreateEventTest {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                8),
+                                7),
                         isDisplayed()));
         appCompatButton5.perform(click());
 
@@ -155,14 +155,14 @@ public class CreateEventTest {
         appCompatButton7.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tvCName), withText("Dummy Name"),
+                allOf(withId(R.id.tvCName), withText("name"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Dummy Name")));
+        textView.check(matches(withText("name")));
     }
 
     private static Matcher<View> childAtPosition(

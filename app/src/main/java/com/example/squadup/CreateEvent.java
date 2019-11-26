@@ -255,15 +255,20 @@ public class CreateEvent extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonString = gson.toJson(results[0].geometry);
+        try {
+            String jsonString = gson.toJson(results[0].geometry);
 
-        //JSONArray root = new JSONArray(gson.toJson(results[0].geometry));
-        JSONObject geometryObj = new JSONObject(jsonString);
-        JSONObject locationObj = geometryObj.getJSONObject("location");
-        lat = locationObj.getDouble("lat");
-        longitude = locationObj.getDouble("lng");
-
+            //JSONArray root = new JSONArray(gson.toJson(results[0].geometry));
+            JSONObject geometryObj = new JSONObject(jsonString);
+            JSONObject locationObj = geometryObj.getJSONObject("location");
+            lat = locationObj.getDouble("lat");
+            longitude = locationObj.getDouble("lng");
+        }catch(ArrayIndexOutOfBoundsException exception){
+            lat = 0;
+            longitude = 0;
+        }
         //Toast.makeText(CreateEvent.this, "lat: " + lat + " long: " + longitude, Toast.LENGTH_SHORT).show();
 
         return true;
