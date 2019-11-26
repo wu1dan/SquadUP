@@ -87,7 +87,7 @@ public class PendingEvent extends AppCompatActivity {
         tvPLocation = (TextView) findViewById(R.id.tvPLocation);
         tvPTotalSpots = (TextView) findViewById(R.id.tvPTotalSpots);
 
-        String defValue = " ";
+        //String defValue = " ";
 
         //sharedPreferencesEditor.putString("tempID","5ddcca075235c507581e619c");
         //sharedPreferencesEditor.commit();

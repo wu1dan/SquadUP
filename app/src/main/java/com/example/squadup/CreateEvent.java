@@ -71,7 +71,6 @@ public class CreateEvent extends AppCompatActivity{
     private String sLocation;
     private String sSpotsTotal;
     private String sDate;
-    private String aCategories[];
     private String dateToSend;
     private ArrayList<String> lCategories = new ArrayList<String>();
     private double lat = 0;
@@ -124,7 +123,7 @@ public class CreateEvent extends AppCompatActivity{
 
         Boolean areParamsFilled;
 
-        aCategories = sCategories.split("\\W+");
+        String[] aCategories = sCategories.split("\\W+");
         for(String s : aCategories){
             lCategories.add(s);
         }
@@ -246,7 +245,7 @@ public class CreateEvent extends AppCompatActivity{
                 .build();
         GeocodingResult[] results = new GeocodingResult[0];
         try {
-            results = GeocodingApi.geocode(context,
+            results = GeocodingApiUtils.geocode(context,
                     sLocation).await();
         } catch (ApiException e) {
             e.printStackTrace();

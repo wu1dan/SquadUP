@@ -56,7 +56,7 @@ public class LoginTest {
         assert(MainActivity.sharedPreferences.contains("DateofBirth"));
     }
 
-    private static Matcher<View> childAtPosition(
+   /* private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
@@ -73,5 +73,5 @@ public class LoginTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
+    }*/
 }
