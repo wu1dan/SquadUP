@@ -293,7 +293,7 @@ public class CreateProfile extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         int monthCorrection = month + 1;
                         String sday = Integer.toString(day);
-                        String smonth = Integer.toString(month);
+                        String smonth = Integer.toString(monthCorrection);
                         String syear = Integer.toString(year);
 
                         if (currentYear - year <= 18){
