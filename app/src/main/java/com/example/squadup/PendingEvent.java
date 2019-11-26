@@ -79,14 +79,6 @@ public class PendingEvent extends AppCompatActivity {
         //btnYes.setEnabled(false);
         //btnNo.setEnabled(false);
 
-        tvPName = (TextView) findViewById(R.id.tvPName);
-        tvPCategories = (TextView) findViewById(R.id.tvPCategories);
-        tvPDescription = (TextView) findViewById(R.id.tvPDescription);
-        tvPTime = (TextView) findViewById(R.id.tvPTime);
-        tvPDate = (TextView) findViewById(R.id.tvPDate);
-        tvPLocation = (TextView) findViewById(R.id.tvPLocation);
-        tvPTotalSpots = (TextView) findViewById(R.id.tvPTotalSpots);
-
         //String defValue = " ";
 
         //sharedPreferencesEditor.putString("tempID","5ddcca075235c507581e619c");
@@ -100,14 +92,6 @@ public class PendingEvent extends AppCompatActivity {
             btnNo.setEnabled(true);
 
             getJSON(); //this grabs the needed strings to set the text boxes
-
-            tvPName.setText(tempName);
-            tvPCategories.setText(tempCategories);
-            tvPDescription.setText(tempDescription);
-            tvPTime.setText(tempTime);
-            tvPDate.setText(tempDate);
-            tvPLocation.setText(tempLocation);
-            tvPTotalSpots.setText(tempTotalSpots);
 
             btnYes.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -241,6 +225,14 @@ public class PendingEvent extends AppCompatActivity {
                             tvPDate = (TextView) findViewById(R.id.tvPDate);
                             tvPLocation = (TextView) findViewById(R.id.tvPLocation);
                             tvPTotalSpots = (TextView) findViewById(R.id.tvPTotalSpots);
+
+                            tvPName.setText(tempName);
+                            tvPCategories.setText(tempCategories);
+                            tvPDescription.setText(tempDescription);
+                            tvPTime.setText(tempTime);
+                            tvPDate.setText(tempDate);
+                            tvPLocation.setText(tempLocation);
+                            tvPTotalSpots.setText(tempTotalSpots);
 
 
                         } catch (JSONException ex) {

@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {            //add cases depending on buttons
         switch (item.getItemId()) {
             case R.id.btnGhostmode:
-                MainActivity.editor = MainActivity.sharedPreferences.edit();
+                Toast.makeText(MainActivity.this, "Please go into Settings to toggle Ghost Mode.", Toast.LENGTH_SHORT).show();
+              /*  MainActivity.editor = MainActivity.sharedPreferences.edit();
                 if (sharedPreferences.getBoolean("Ghost Mode", false)) { //if ghost mode is on
                     editor.putBoolean("Ghost Mode", false); //turn it off
                     editor.apply();
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.apply();
                     Toast.makeText(MainActivity.this, "Ghost Mode is ON", Toast.LENGTH_SHORT).show();
                 }
-                return true;
+                return true;*/
             case R.id.btnSettings:
                 Intent intentSettings = new Intent(this, Settings.class);
                 this.startActivity(intentSettings);

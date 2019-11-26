@@ -40,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 //import com.google.maps.GeocodingApiRequest;
 
 //import org.json.JSONArray;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -226,7 +227,23 @@ public class CreateEvent extends AppCompatActivity{
     }
 
     protected Boolean checkTime(){
-        if (sTime.length() != 5 || sTime.charAt(2) != ':') {
+        int hours = 0;
+        int minutes = 0;
+
+        if(sTime.length() != 5 || sTime.charAt(2) != ':'){
+            Toast.makeText(CreateEvent.this, "Please enter a valid time (length)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        try {
+            hours = Integer.valueOf(sTime.substring(0, 2));
+            minutes = Integer.valueOf(sTime.substring(sTime.length() - 2));
+        }catch(NumberFormatException e){
+            Toast.makeText(CreateEvent.this, "Please enter a valid time (format exception)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if ( hours > 23 || minutes > 59) {
             Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -453,7 +470,13 @@ public class CreateEvent extends AppCompatActivity{
 
         try {
             eventJSON.put("EventName", sName);
-            eventJSON.put("Interests", lCategories);
+
+            JSONArray interests = new JSONArray();
+            for (String interest : lCategories){
+                interests.put(interest);
+            }
+
+            eventJSON.put("Interests", interests);
             eventJSON.put("Description", sDescription);
             eventJSON.put("Time", sTime);
             eventJSON.put("Date", dateToSend);
@@ -465,7 +488,12 @@ public class CreateEvent extends AppCompatActivity{
             eventJSON.put("latdec", lat);
             eventJSON.put("longdec", longitude);
             eventJSON.put("TotalSpots", totalSpots);
-            eventJSON.put("Users", users);
+
+            JSONArray usersJSON = new JSONArray();
+            for (String user : users){
+                usersJSON.put(user);
+            }
+            eventJSON.put("Users", usersJSON);
 
         } catch (JSONException e) {
             e.printStackTrace();
