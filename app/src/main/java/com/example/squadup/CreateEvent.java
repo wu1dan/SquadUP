@@ -226,7 +226,23 @@ public class CreateEvent extends AppCompatActivity{
     }
 
     protected Boolean checkTime(){
-        if (sTime.length() != 5 || sTime.charAt(2) != ':') {
+        int hours = 0;
+        int minutes = 0;
+
+        if(sTime.length() != 5 || sTime.charAt(2) != ':'){
+            Toast.makeText(CreateEvent.this, "Please enter a valid time (length)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        try {
+            hours = Integer.valueOf(sTime.substring(0, 2));
+            minutes = Integer.valueOf(sTime.substring(sTime.length() - 2));
+        }catch(NumberFormatException e){
+            Toast.makeText(CreateEvent.this, "Please enter a valid time (format exception)", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if ( hours > 23 || minutes > 59) {
             Toast.makeText(CreateEvent.this, "Please enter a valid time", Toast.LENGTH_SHORT).show();
             return false;
         }
