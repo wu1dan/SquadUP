@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-//import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,8 +35,6 @@ public class Interests extends AppCompatActivity {
 
 
     private Context context = Interests.this;
-    private Button btnSubmit;
-    private EditText editTextSubmit;
 
     private Set<String> userInterests = new HashSet<>();
 
@@ -80,11 +75,11 @@ public class Interests extends AppCompatActivity {
             sharedPreferencesEditor.apply();
         }
 
-        btnSubmit = findViewById(R.id.btnSubmit);
+        Button btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextSubmit = findViewById(R.id.etSubmit);
+                EditText editTextSubmit = findViewById(R.id.etSubmit);
                 if (sharedPreferences.contains("Submission")) {
                     Set<String> Submission = sharedPreferences.getStringSet("Submission", null);
                     Submission.add(editTextSubmit.getText().toString());
