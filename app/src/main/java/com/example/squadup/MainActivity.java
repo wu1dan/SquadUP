@@ -19,18 +19,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-//import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import android.app.NotificationChannel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import android.util.Log;
@@ -53,9 +48,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static com.example.squadup.PendingEvent.sharedPreferencesEditor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -256,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             if (sharedPreferences.contains("id")) {
                 String id = sharedPreferences.getString("id", "");
                 String substring = id.substring(7, 31);
-                url = "http://20.43.19.13:3000/Users/" + substring;
+                 url = "http://20.43.19.13:3000/Users/" + substring;
             }
 
             JSONObject userJSON = new JSONObject();
