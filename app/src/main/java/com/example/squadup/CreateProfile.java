@@ -1,7 +1,6 @@
 package com.example.squadup;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import android.Manifest;
@@ -32,8 +31,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,16 +42,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static com.example.squadup.PendingEvent.sharedPreferencesEditor;
 
 public class CreateProfile extends AppCompatActivity {
 
     private TextView tvDateofBirth;
-    private FusedLocationProviderClient client;
     private double lat;
-    private float flat;
-    private float flong;
     private double longitude;
     private String Date = "69";
     private String spinnerGender[] = {"", "Male", "Female", "Other", "Rather not say"};
@@ -487,8 +479,6 @@ public class CreateProfile extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             longitude = location.getLongitude();
             lat = location.getLatitude();
-            flong = (float) longitude;
-            flat = (float) lat;
         }
 
         @Override

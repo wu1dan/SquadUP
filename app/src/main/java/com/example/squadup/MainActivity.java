@@ -252,7 +252,13 @@ public class MainActivity extends AppCompatActivity {
     public void putJSON() {
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         try {
-            String url = "http://20.43.19.13:3000/Users/5ddb734416976566b576b2d8";
+            String url = "http://20.43.19.13:3000/Users/5dddbb83bba5a9f77bd4f275";
+            if (sharedPreferences.contains("id")) {
+                String id = sharedPreferences.getString("id", "");
+                String substring = id.substring(7, 31);
+                url = "http://20.43.19.13:3000/Users/" + substring;
+            }
+
             JSONObject userJSON = new JSONObject();
             userJSON.put("id", sharedPreferences.getString("id", ""));
             userJSON.put("FirstName", sharedPreferences.getString("FirstName", ""));
@@ -264,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
             float userlat = sharedPreferences.getFloat("latdec", flat);
             userJSON.put("latdec", lat);
             userJSON.put("longdec", longitude);
+            userJSON.put("Active", true);
 
             Set<String> setInterests = sharedPreferences.getStringSet("Interests", null);
             if (sharedPreferences.contains("Submission")) {
